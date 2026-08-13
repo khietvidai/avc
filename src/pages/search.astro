@@ -2,44 +2,42 @@
 export const prerender = false;
 
 import { search } from "emdash";
-import Base from "../../layouts/Base.astro";
+import Base from "../layouts/Base.astro";
+import { enProjectSlug } from "../utils/i18n-routes";
+import { projectEn } from "../utils/projects-en";
 
 const query = Astro.url.searchParams.get("q")?.trim() || "";
 
-// Use the FTS-backed search() API instead of loading every post and
-// filtering in JS. FTS scales as the post count grows, returns ranked
-// results, and handles tokenization/stemming. Templates that grep all
-// post bodies in JS quickly become unusable past a few hundred posts.
 const { items: results } = query
 	? await search(query, { collections: ["posts"], limit: 30 })
 	: { items: [] };
 ---
 
 <Base
-	title={query ? `Tìm kiếm: ${query}` : "Tìm kiếm"}
-	description="Tìm kiếm dự án"
+	title={query ? `Search: ${query}` : "Search"}
+	description="Search AVC commercial kitchen projects"
 >
 	<section class="search-page">
-		<h1 class="search-title">Tìm kiếm</h1>
+		<h1 class="search-title">Search</h1>
 
-		<form method="get" action="/vi/search" class="search-form">
+		<form method="get" action="/search" class="search-form">
 			<input
 				type="search"
 				name="q"
 				value={query}
-				placeholder="Tìm kiếm dự án..."
+				placeholder="Search projects…"
 				class="search-input"
 				autofocus
 			/>
-			<button type="submit" class="search-button">Tìm kiếm</button>
+			<button type="submit" class="search-button">Search</button>
 		</form>
 
 		{
 			query && (
 				<p class="search-summary">
 					{results.length === 0
-						? `Không có kết quả cho "${query}"`
-						: `${results.length} kết quả cho "${query}"`}
+						? `No results for “${query}”`
+						: `${results.length} result${results.length === 1 ? "" : "s"} for “${query}”`}
 				</p>
 			)
 		}
@@ -47,26 +45,23 @@ const { items: results } = query
 		{
 			results.length > 0 && (
 				<ol class="search-results">
-					{results.map((result) => (
-						<li class="search-result">
-							<a
-								href={`/vi/posts/${result.slug ?? result.id}`}
-								class="result-link"
-							>
-								<h2 class="result-title">
-									{result.title ?? "Không có tiêu đề"}
-								</h2>
-								{result.snippet && (
-									<p class="result-snippet" set:html={result.snippet} />
-								)}
-							</a>
-						</li>
-					))}
+					{results.filter((result) => result.slug).map((result) => {
+						const cmsSlug = result.slug as string;
+						const en = projectEn(cmsSlug);
+						return (
+							<li class="search-result">
+								<a href={`/projects/${enProjectSlug(cmsSlug)}`} class="result-link">
+									<h2 class="result-title">{en?.title ?? result.title ?? "Untitled project"}</h2>
+									{result.snippet && <p class="result-snippet" set:html={result.snippet} />}
+								</a>
+							</li>
+						);
+					})}
 				</ol>
 			)
 		}
 
-		{!query && <p class="search-hint">Nhập từ khoá để tìm kiếm dự án.</p>}
+		{!query && <p class="search-hint">Type a keyword to find a project.</p>}
 	</section>
 </Base>
 
@@ -116,7 +111,7 @@ const { items: results } = query
 	}
 
 	.search-button:hover {
-		opacity: 0.9;
+		background: var(--color-brand-hover);
 	}
 
 	.search-summary {
@@ -173,11 +168,9 @@ const { items: results } = query
 		color: var(--color-text-secondary);
 	}
 
-	/* FTS returns <mark> wrapping the matched terms */
 	.result-snippet :global(mark) {
 		background: var(--color-brand-ring);
 		color: inherit;
 		padding: 0 0.1em;
-		border-radius: 2px;
 	}
 </style>

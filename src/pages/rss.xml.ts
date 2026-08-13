@@ -1,13 +1,15 @@
 import type { APIRoute } from "astro";
-import { getEmDashCollection, getSiteSettings } from "emdash";
+import { getEmDashCollection } from "emdash";
 
-import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import { enProjectSlug } from "../utils/i18n-routes";
+import { projectEn } from "../utils/projects-en";
 import { publicOrigin } from "../utils/site-url";
 
-export const GET: APIRoute = async ({ site, url }) => {
+export const GET: APIRoute = async ({ url }) => {
 	const siteUrl = publicOrigin(url);
-	const { siteTitle, siteTagline } = resolveBlogSiteIdentity(await getSiteSettings());
+	const siteTitle = "AVC Industrial Equipment Co., Ltd";
+	const siteTagline =
+		"Turnkey commercial kitchen solutions in Vietnam — consulting, design, equipment supply, installation and maintenance";
 
 	const { entries: posts } = await getEmDashCollection("posts", {
 		orderBy: { published_at: "desc" },
@@ -19,10 +21,11 @@ export const GET: APIRoute = async ({ site, url }) => {
 		.map((post) => {
 			if (!post.data.publishedAt) return null;
 			const pubDate = post.data.publishedAt.toUTCString();
+			const en = projectEn(post.id);
 
 			const postUrl = `${siteUrl}/projects/${enProjectSlug(post.id)}`;
-			const title = escapeXml(post.data.title || "Không có tiêu đề");
-			const description = escapeXml(post.data.excerpt || "");
+			const title = escapeXml(en?.title || post.data.title || "Untitled project");
+			const description = escapeXml(en?.excerpt || post.data.excerpt || "");
 
 			return `    <item>
       <title>${title}</title>
@@ -42,7 +45,7 @@ export const GET: APIRoute = async ({ site, url }) => {
     <description>${escapeXml(siteTagline)}</description>
     <link>${siteUrl}</link>
     <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml"/>
-    <language>vi-vn</language>
+    <language>en</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 ${items}
   </channel>

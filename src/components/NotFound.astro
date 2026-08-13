@@ -1,0 +1,91 @@
+---
+interface Props {
+	locale: "en" | "vi";
+}
+
+const { locale } = Astro.props;
+const isVI = locale === "vi";
+const home = isVI ? "/vi/" : "/";
+const portfolio = isVI ? "/vi/portfolio" : "/portfolio";
+const contact = isVI ? "/vi/lien-he" : "/contact";
+---
+
+<div class="not-found">
+	<p class="code">404</p>
+	<h1 class="page-title">{isVI ? "TRANG KHÔNG TỒN TẠI" : "PAGE NOT FOUND"}</h1>
+	<hr class="dashed-divider" />
+	<p class="lead">
+		{
+			isVI
+				? "Đường dẫn này không còn hoặc chưa bao giờ có. AVC vẫn ở đây — chọn một hướng bên dưới."
+				: "This address is gone, or it never existed. AVC is still here — pick a path below."
+		}
+	</p>
+	<nav class="links" aria-label={isVI ? "Liên kết hữu ích" : "Helpful links"}>
+		<a href={home}>{isVI ? "Trang chủ" : "Home"}</a>
+		<a href={portfolio}>Portfolio</a>
+		<a href={contact}>{isVI ? "Liên hệ" : "Contact"}</a>
+	</nav>
+</div>
+
+<style>
+	.not-found {
+		max-width: 640px;
+		margin: 0 auto;
+		padding: 80px 24px 96px;
+		text-align: center;
+	}
+
+	.code {
+		font-size: 13px;
+		font-weight: 700;
+		letter-spacing: 3px;
+		color: var(--color-text-secondary);
+		margin-bottom: 8px;
+	}
+
+	.page-title {
+		font-size: 26px;
+		font-weight: 700;
+		letter-spacing: 2.5px;
+		color: var(--color-brand);
+	}
+
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 28px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.lead {
+		font-size: 15px;
+		line-height: 1.65;
+		color: var(--color-text);
+		margin-bottom: 32px;
+	}
+
+	.links {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 8px 0;
+	}
+
+	.links a {
+		padding: 8px 20px;
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 1.5px;
+		text-transform: uppercase;
+		color: var(--avc-nav-text);
+	}
+
+	.links a + a {
+		border-left: 1px solid var(--avc-nav-separator);
+	}
+
+	.links a:hover {
+		color: var(--color-brand);
+	}
+</style>

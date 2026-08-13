@@ -175,7 +175,7 @@ function socialInitials(label: string): string {
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<Font cssVariable="--font-body" preload />
 		<title>{fullTitle}</title>
-		<meta name="theme-color" content="#BBC647" />
+		<meta name="theme-color" content="#5f6a12" />
 		<link rel="canonical" href={pageCanonical} />
 		<link rel="alternate" hreflang="en" href={altLinks.en} />
 		<link rel="alternate" hreflang="vi" href={altLinks.vi} />
@@ -189,6 +189,7 @@ function socialInitials(label: string): string {
 	</head>
 	<body>
 		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">{isEN ? "Skip to content" : "Tới nội dung"}</a>
 		<header class="site-header">
 			<div class="header-inner">
 				<a href={localizeUrl("/")} class="site-logo">
@@ -243,11 +244,11 @@ function socialInitials(label: string): string {
 			</div>
 		</header>
 
-		<main>
+		<main id="main" tabindex="-1">
 			<slot />
 		</main>
 
-		<footer class="site-footer" id="lien-he">
+		<footer class="site-footer" id={isEN ? "contact" : "lien-he"}>
 			<nav class="footer-nav" aria-label={isEN ? "Footer navigation" : "Điều hướng chân trang"}>
 				{
 					menu?.items.map((item) => (
@@ -279,8 +280,18 @@ function socialInitials(label: string): string {
 				)
 			}
 			<div class="footer-contact">
-				<div class="footer-widgets">
-					<WidgetArea name="footer" />
+				<div class="footer-address">
+					{
+						isEN ? (
+							<p>
+								Showroom: 58 Nguyen Hoang, Binh Trung Ward, Ho Chi Minh City
+								{" · "}
+								Warehouse: 12/64 Thanh Loc 27 St., Quarter 3C, District 12, Ho Chi Minh City
+							</p>
+						) : (
+							<WidgetArea name="footer" />
+						)
+					}
 				</div>
 				<div>
 					Hotline <a href="tel:19000054" class="footer-hotline">1900 0054</a>
@@ -385,6 +396,28 @@ function socialInitials(label: string): string {
 		</style>
 
 		<style>
+			.skip-link {
+				position: absolute;
+				left: 12px;
+				top: -64px;
+				z-index: 9999;
+				padding: 8px 14px;
+				background: var(--color-brand);
+				color: var(--color-on-brand);
+				font-size: 13px;
+				font-weight: 600;
+				letter-spacing: 0.04em;
+			}
+
+			.skip-link:focus {
+				top: 12px;
+				color: var(--color-on-brand);
+			}
+
+			#main:focus {
+				outline: none;
+			}
+
 			.site-header {
 				background: var(--color-bg);
 			}
@@ -618,16 +651,16 @@ function socialInitials(label: string): string {
 				color: var(--avc-footer-text);
 			}
 
-			.footer-widgets :global(.widget__title) {
-				display: none;
-			}
-
-			.footer-widgets :global(.widget__content),
-			.footer-widgets :global(.widget__content p) {
+			.footer-address,
+			.footer-address :global(.widget__content),
+			.footer-address :global(.widget__content p) {
 				font-size: 12.5px;
 				line-height: 1.8;
 				color: var(--avc-footer-text);
-				margin: 0;
+			}
+
+			.footer-address :global(.widget__title) {
+				display: none;
 			}
 
 			.footer-hotline {

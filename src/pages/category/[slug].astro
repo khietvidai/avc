@@ -147,7 +147,8 @@ const slides = withImage.slice(0, 6).map((p) => ({
 
 		function restart() {
 			if (timer) clearInterval(timer);
-			if (slides.length > 1) {
+			const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			if (slides.length > 1 && !reduce) {
 				timer = setInterval(() => show(current + 1), 5000);
 			}
 		}

@@ -68,6 +68,11 @@ const { entries: recentPosts } = await getEmDashCollection("posts", {
 	locale: "vi",
 });
 const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
+const year = post.data.nam_hoan_thanh?.trim() || "";
+const scale = post.data.quy_mo?.trim() || "";
+const client = post.data.chu_dau_tu?.trim() || "";
+const location = post.data.dia_chi?.trim() || "";
+const showInfo = !!(year || scale || client || location);
 ---
 
 <Base
@@ -137,34 +142,44 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 				)
 			}
 
-			<div class="project-info">
-				<div class="info-col">
-					<div class="info-block">
-						<h2>Năm hoàn thành</h2>
-						<p {...post.edit.nam_hoan_thanh}>
-							{post.data.nam_hoan_thanh || "Đang cập nhật"}
-						</p>
+			{
+				showInfo && (
+					<div class="project-info">
+						{(year || scale) && (
+							<div class="info-col">
+								{year && (
+									<div class="info-block">
+										<h2>Năm hoàn thành</h2>
+										<p {...post.edit.nam_hoan_thanh}>{year}</p>
+									</div>
+								)}
+								{scale && (
+									<div class="info-block">
+										<h2>Quy mô</h2>
+										<p {...post.edit.quy_mo}>{scale}</p>
+									</div>
+								)}
+							</div>
+						)}
+						{(client || location) && (
+							<div class="info-col">
+								{client && (
+									<div class="info-block">
+										<h2>Chủ đầu tư</h2>
+										<p {...post.edit.chu_dau_tu}>{client}</p>
+									</div>
+								)}
+								{location && (
+									<div class="info-block">
+										<h2>Địa chỉ</h2>
+										<p {...post.edit.dia_chi}>{location}</p>
+									</div>
+								)}
+							</div>
+						)}
 					</div>
-					<div class="info-block">
-						<h2>Quy mô</h2>
-						<p {...post.edit.quy_mo}>{post.data.quy_mo || "Bảo mật"}</p>
-					</div>
-				</div>
-				<div class="info-col">
-					<div class="info-block">
-						<h2>Chủ đầu tư</h2>
-						<p {...post.edit.chu_dau_tu}>
-							{post.data.chu_dau_tu || "Đang cập nhật"}
-						</p>
-					</div>
-					<div class="info-block">
-						<h2>Địa chỉ</h2>
-						<p {...post.edit.dia_chi}>
-							{post.data.dia_chi || "Đang cập nhật"}
-						</p>
-					</div>
-				</div>
-			</div>
+				)
+			}
 
 			<div class="project-content">
 				<PortableText value={post.data.content} />
@@ -206,7 +221,9 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 						`.gallery-frame[data-index="${i}"]`
 					);
 					frame?.scrollIntoView({
-						behavior: "smooth",
+						behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+							? "auto"
+							: "smooth",
 						inline: "center",
 						block: "nearest",
 					});
@@ -314,7 +331,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 
 	.project-info {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 		gap: 0;
 		max-width: 640px;
 		margin: 0 auto 48px;
@@ -327,6 +344,10 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 
 	.info-col + .info-col {
 		border-left: 1px dashed var(--avc-divider);
+	}
+
+	.info-col:only-child {
+		border: none;
 	}
 
 	.info-block {

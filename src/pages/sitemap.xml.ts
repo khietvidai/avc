@@ -3,7 +3,7 @@ import { getEmDashCollection } from "emdash";
 import { CATEGORY_TO_EN, enProjectSlug } from "../utils/i18n-routes";
 import { publicOrigin } from "../utils/site-url";
 
-const STATIC_EN = ["/", "/about", "/services", "/products", "/contact", "/portfolio"];
+const STATIC_EN = ["/", "/about", "/services", "/products", "/contact", "/portfolio", "/search"];
 const STATIC_VI = [
 	"/vi/",
 	"/vi/gioi-thieu",
@@ -12,6 +12,7 @@ const STATIC_VI = [
 	"/vi/lien-he",
 	"/vi/portfolio",
 	"/vi/posts",
+	"/vi/search",
 ];
 
 function loc(origin: string, path: string, lastmod?: Date | string | null) {
