@@ -16,7 +16,7 @@
 			"label": "Dự án",
 			"labelSingular": "Dự án",
 			"description": "Công trình bếp đã triển khai. Thêm dự án mới: điền đủ các trường bên dưới, chọn danh mục, đăng ảnh đại diện + slide 16:9 + thư viện.",
-			"urlPattern": "/posts/{slug}",
+			"urlPattern": "/projects/{slug}",
 			"supports": [
 				"drafts",
 				"revisions",

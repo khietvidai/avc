@@ -2,6 +2,7 @@
 import { getEmDashCollection, getEmDashEntry } from "emdash";
 import { Image } from "emdash/ui";
 import Base from "../layouts/Base.astro";
+import { enCategorySlug } from "../utils/i18n-routes";
 
 const { entry: home, cacheHint: homeHint } = await getEmDashEntry("home", "home", { locale: "vi" });
 if (Astro.cache?.enabled) Astro.cache.set(homeHint);
@@ -59,7 +60,7 @@ const stats = [
 			</p>
 		</section>
 
-		<section class="gioi-thieu" id="gioi-thieu">
+		<section class="gioi-thieu" id="about">
 			<h1>AVC INDUSTRIAL EQUIPMENT CO., LTD</h1>
 			<hr class="dashed-divider" />
 			<div class="intro">
@@ -69,10 +70,10 @@ const stats = [
 				<p>AVC installs, warrants and maintains commercial kitchen systems under clear technical procedures, keeping equipment running <strong>stable, safe and efficient</strong> throughout the project's life cycle.</p>
 				<p>We keep improving to lead. Setting standards. <strong>Shaping the future of commercial kitchen solutions in Vietnam.</strong></p>
 			</div>
-			<a href="/gioi-thieu" class="btn">learn more</a>
+			<a href="/about" class="btn">learn more</a>
 		</section>
 
-		<section class="linh-vuc" id="linh-vuc">
+		<section class="linh-vuc" id="markets">
 			<h2>MARKETS WE SERVE</h2>
 			<hr class="dashed-divider" />
 			<div class="linh-vuc-intro">
@@ -83,7 +84,7 @@ const stats = [
 				linhVuc.length > 0 && (
 					<div class="linh-vuc-grid">
 						{linhVuc.map((lv) => (
-							<a class="linh-vuc-card" href={`/category/${lv.id}`}>
+							<a class="linh-vuc-card" href={`/category/${enCategorySlug(lv.id)}`}>
 								<div class="linh-vuc-image">
 									{lv.data.image && <Image image={lv.data.image} />}
 								</div>

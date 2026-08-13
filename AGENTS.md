@@ -51,22 +51,21 @@ Corporate one-page site for **Công ty TNHH Thiết Bị Công Nghiệp AVC** (i
 
 | Page         | Path               | What it shows                                                                                         |
 | ------------ | ------------------ | ----------------------------------------------------------------------------------------------------- |
-| Home         | `/`                | One-pager: hero image, stats strip, `#gioi-thieu` intro, `#linh-vuc` 6-card grid (cards link to `/category/<slug>`) |
-| Giới thiệu   | `/gioi-thieu`      | Company story, sứ mệnh/tầm nhìn, giá trị + yếu tố cốt lõi, dấu ấn 3 miền, đội ngũ, khách hàng tiêu biểu (static Astro page, content from PROFILE_AVC) |
-| Dịch vụ      | `/dich-vu`         | 6 dịch vụ (tư vấn → bảo trì), thiết kế 2D/3D & MEP, biện pháp thi công với ảnh thật (static Astro page) |
-| Sản phẩm     | `/san-pham`        | 8 nhóm sản phẩm, 21 thương hiệu phân phối, chính sách chất lượng ISO, nhà máy + kho hàng (static Astro page) |
-| Liên hệ      | `/lien-he`         | Showroom/kho/hotline/email + quy trình làm việc 4 bước (static Astro page)                            |
-| Dự án        | `/posts`           | 21 dự án thật từ company profile (Crust, Pizza 4P's, K-Mazing, Belgo, Bartels...) with real photos    |
-| Dự án detail | `/posts/[slug]`    | Featured image, title, body (chủ đầu tư + địa chỉ), left meta column, right sidebar                   |
-| Search       | `/search`          | Full-text search UI                                                                                   |
-| Page         | `/pages/[slug]`    | Static page content (Portable Text)                                                                   |
-| Category     | `/category/[slug]` | Projects filtered by danh mục (slugs match `linh_vuc` entry slugs)                                    |
-| Tag          | `/tag/[slug]`      | Projects filtered by thẻ                                                                              |
-| RSS          | `/rss.xml`         | Generated feed                                                                                        |
+| Home         | `/`                         | English one-pager (`#about`, `#markets`). Vietnamese: `/vi/` |
+| About        | `/about`                    | Company story. VI: `/vi/gioi-thieu` |
+| Services     | `/services`                 | Six services. VI: `/vi/dich-vu` |
+| Products     | `/products`                 | Product groups + brands. VI: `/vi/san-pham` |
+| Contact      | `/contact`                  | Showroom / warehouse. VI: `/vi/lien-he` |
+| Portfolio    | `/portfolio`                | Six markets. Same path under `/vi/portfolio` |
+| Project      | `/projects/[en-slug]`       | English detail (copy in `src/utils/projects-en.ts`). VI: `/vi/posts/[cms-slug]` |
+| Category     | `/category/restaurants` …   | English slugs. VI: `/vi/category/nha-hang` … |
+| RSS          | `/rss.xml`                  | Feed |
 
-Primary menu: Trang chủ `/` · Giới thiệu `/gioi-thieu` · Dịch vụ `/dich-vu` · Sản phẩm `/san-pham` · Portfolio `/portfolio` · Liên hệ `/lien-he`. "Giới thiệu", "Dịch vụ" and "Portfolio" have dropdown submenus (children in `_emdash_menu_items`, rendered by Base.astro's `.nav-dropdown`).
+Old `/posts/…`, `/gioi-thieu`, `/category/nha-hang` etc. 301 to the English URLs. Menu rows stay Vietnamese; `toEnUrl` / `toViUrl` map them.
 
-Portfolio flow (modeled on ricca design studios): `/portfolio` (checkerboard olive/gray grid of 6 lĩnh vực) → `/category/[slug]` (full-width auto-playing slider of featured projects + 3-col hover-overlay gallery) → `/posts/[slug]` (project detail: horizontal gallery with clickable thumbnails, title + olive subtitle, 2-col info block — năm hoàn thành/quy mô | chủ đầu tư/địa chỉ). `/posts` list page still exists but is not in the menu. `/dich-vu` is section-per-service: wide photo banner (`public/images/banner-*.jpg`) + description + 2-col bullet list, anchors `#tu-van #thiet-ke #cung-cap #thi-cong #bao-hanh #san-xuat`.
+Primary menu (CMS): Home `/` · About `/gioi-thieu` · Services `/dich-vu` · Products `/san-pham` · Portfolio `/portfolio` · Contact `/lien-he`. Dropdowns on About, Services, Portfolio.
+
+Portfolio flow: `/portfolio` → `/category/restaurants` → `/projects/thong-nhat-steel-canteen`. Service anchors: `#consulting #design #supply #installation #warranty #fabrication`.
 
 `posts` collection (label **Dự án**) is the project content type. Add new work in admin → Dự án with the same fields: `title`, `featured_image`, `slide_image` (16:9 banner), `excerpt`, `chu_dau_tu`, `dia_chi`, `nam_hoan_thanh`, `quy_mo`, `gallery` (json array of media), `content`. Assign a `category` term. `nam_hoan_thanh` may be empty; `quy_mo` defaults to "Bảo mật" when confidential.
 

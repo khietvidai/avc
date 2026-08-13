@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { getEmDashCollection, getSiteSettings } from "emdash";
 
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
+import { enProjectSlug } from "../utils/i18n-routes";
 
 export const GET: APIRoute = async ({ site, url }) => {
 	const siteUrl = site?.toString() || url.origin;
@@ -18,7 +19,7 @@ export const GET: APIRoute = async ({ site, url }) => {
 			if (!post.data.publishedAt) return null;
 			const pubDate = post.data.publishedAt.toUTCString();
 
-			const postUrl = `${siteUrl}/posts/${post.id}`;
+			const postUrl = `${siteUrl}/projects/${enProjectSlug(post.id)}`;
 			const title = escapeXml(post.data.title || "Không có tiêu đề");
 			const description = escapeXml(post.data.excerpt || "");
 

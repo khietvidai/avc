@@ -9,6 +9,7 @@ import {
 import { createPublicPageContext } from "emdash/page";
 import { Font } from "astro:assets";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
+import { toEnUrl, toViUrl } from "../utils/i18n-routes";
 import "../styles/tokens.css";
 import "../styles/theme.css";
 
@@ -102,29 +103,20 @@ const NAV_EN: Record<string, string> = {
 	"Bar & Café": "Bar & Café",
 };
 const t = (label: string) => (isEN ? (NAV_EN[label] ?? label) : label);
-const localizeUrl = (url: string) => {
-	if (!url.startsWith("/") || url.startsWith("/_")) return url;
-	const hashIdx = url.indexOf("#");
-	const hash = hashIdx >= 0 ? url.slice(hashIdx) : "";
-	const pathOnly = hashIdx >= 0 ? url.slice(0, hashIdx) : url;
-	const bare = pathOnly.replace(/^\/(en|vi)(?=\/|$)/, "") || "/";
-	if (isEN) return (bare === "/" ? "/" : bare) + hash;
-	return (bare === "/" ? "/vi/" : `/vi${bare}`) + hash;
-};
+const localizeUrl = (url: string) => (isEN ? toEnUrl(url) : toViUrl(url));
 
-// Switcher: same page in the other locale
 const path = Astro.url.pathname;
-const barePath = path.replace(/^\/(en|vi)(?=\/|$)/, "") || "/";
-const viUrl = barePath === "/" ? "/vi/" : `/vi${barePath}`;
-const enUrl = barePath === "/" ? "/" : barePath;
+const viUrl = toViUrl(path);
+const enUrl = toEnUrl(path);
 
 // Server-side active state for nav links. Anchor links ("/#gioi-thieu")
 // can't be matched against the pathname, so they're never marked active.
-const currentPath = barePath.replace(/\/{2,}/g, "/") || "/";
+const currentPath = (isEN ? toEnUrl(path) : path.replace(/^\/vi(?=\/|$)/, "") || "/").replace(/\/{2,}/g, "/") || "/";
 function isActive(url: string): boolean {
 	if (url.includes("#")) return false;
-	if (url === "/") return currentPath === "/";
-	return currentPath === url || currentPath.startsWith(`${url}/`);
+	const target = isEN ? toEnUrl(url) : url;
+	if (target === "/") return currentPath === "/";
+	return currentPath === target || currentPath.startsWith(`${target}/`);
 }
 
 const year = new Date().getFullYear();

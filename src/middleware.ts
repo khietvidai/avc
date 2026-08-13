@@ -1,6 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
+import { toEnUrl } from "./utils/i18n-routes";
 
-/** Legacy /en/... bookmarks → unprefixed English URLs. */
 export const onRequest = defineMiddleware((context, next) => {
 	const { pathname } = context.url;
 
@@ -8,11 +8,10 @@ export const onRequest = defineMiddleware((context, next) => {
 		return context.redirect("/", 302);
 	}
 	if (pathname.startsWith("/en/")) {
-		return context.redirect(pathname.slice(3) || "/", 302);
+		return context.redirect(toEnUrl(pathname.slice(3) || "/"), 301);
 	}
 
 	if (
-		pathname === "/" ||
 		pathname.startsWith("/vi") ||
 		pathname.startsWith("/_") ||
 		pathname.startsWith("/rss") ||
@@ -23,15 +22,9 @@ export const onRequest = defineMiddleware((context, next) => {
 		return next();
 	}
 
-	const [first, ...rest] = pathname.replace(/^\//, "").split("/");
-	if (first === "posts" && !rest[0]) {
-		return context.redirect("/vi/posts", 302);
-	}
-	if (first === "search") {
-		return context.redirect("/vi/search" + context.url.search, 302);
-	}
-	if (first === "tag" && rest[0]) {
-		return context.redirect(`/vi/tag/${rest[0]}`, 302);
+	const english = toEnUrl(pathname);
+	if (english !== pathname) {
+		return context.redirect(english + context.url.search, 301);
 	}
 
 	return next();
