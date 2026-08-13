@@ -2,17 +2,18 @@
 import { getEmDashEntry, decodeSlug } from "emdash";
 import { PortableText } from "emdash/ui";
 import Base from "../../../layouts/Base.astro";
+import { rewriteNotFound } from "../../../utils/not-found";
 
 const slug = decodeSlug(Astro.params.slug);
 
 if (!slug) {
-	return Astro.rewrite("/vi/404");
+	return rewriteNotFound(Astro, "/vi/404");
 }
 
 const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
 
 if (!page) {
-	return Astro.rewrite("/vi/404");
+	return rewriteNotFound(Astro, "/vi/404");
 }
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);

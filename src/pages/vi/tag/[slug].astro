@@ -9,12 +9,13 @@ import Base from "../../../layouts/Base.astro";
 import PostCard from "../../../components/PostCard.astro";
 import { getReadingTime } from "../../../utils/reading-time";
 import { viProjectPath } from "../../../utils/i18n-routes";
+import { rewriteNotFound } from "../../../utils/not-found";
 
 const slug = decodeSlug(Astro.params.slug);
 const term = slug ? await getTerm("tag", slug, { locale: "vi" }) : null;
 
 if (!term) {
-	return Astro.rewrite("/vi/404");
+	return rewriteNotFound(Astro, "/vi/404");
 }
 
 const { entries: posts, cacheHint } = await getEmDashCollection("posts", {

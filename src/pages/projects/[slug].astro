@@ -11,13 +11,14 @@ import Base from "../../layouts/Base.astro";
 import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 import { publicOrigin } from "../../utils/site-url";
 import { cmsProjectSlug, enProjectSlug, enCategorySlug, bareCmsId, marketLabelEn } from "../../utils/i18n-routes";
+import { rewriteNotFound } from "../../utils/not-found";
 import { projectEn } from "../../utils/projects-en";
 import { projectImageSeo } from "../../utils/image-seo";
 
 const param = decodeSlug(Astro.params.slug);
 
 if (!param) {
-	return Astro.rewrite("/404");
+	return rewriteNotFound(Astro, "/404");
 }
 
 const cmsSlug = cmsProjectSlug(param);
@@ -31,7 +32,7 @@ const { entry: post, cacheHint } = await getEmDashEntry("posts", cmsSlug, {
 });
 
 if (!post) {
-	return Astro.rewrite("/404");
+	return rewriteNotFound(Astro, "/404");
 }
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
