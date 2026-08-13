@@ -50,7 +50,7 @@ const slides = withImage.slice(0, 6).map((p) => ({
 >
 	{
 		slides.length > 0 && (
-			<section class="slider" aria-label={`Featured ${label} projects`}>
+			<div class="slider" role="region" aria-label={`Featured ${label} projects`}>
 				{slides.map(({ post: p, slide }, i) => (
 					<a
 						href={`/projects/${enProjectSlug(p.id)}`}
@@ -93,12 +93,12 @@ const slides = withImage.slice(0, 6).map((p) => ({
 									class:list={["dot", { active: i === 0 }]}
 									data-index={i}
 									aria-label={`Slide ${i + 1}`}
-								/>
+								></button>
 							))}
 						</div>
 					</>
 				)}
-			</section>
+			</div>
 		)
 	}
 
@@ -130,9 +130,8 @@ const slides = withImage.slice(0, 6).map((p) => ({
 			)
 		}
 	</div>
-</Base>
 
-<script>
+	<script>
 	const slider = document.querySelector(".slider");
 	if (slider) {
 		const slides = [...slider.querySelectorAll<HTMLElement>(".slide")];
@@ -172,7 +171,8 @@ const slides = withImage.slice(0, 6).map((p) => ({
 		);
 		restart();
 	}
-</script>
+	</script>
+</Base>
 
 <style>
 	.slider {

@@ -95,7 +95,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 		{/* Gallery: hàng ảnh lớn kéo ngang + thumbnails */}
 		{
 			images.length > 0 && (
-				<section class="gallery-viewer">
+				<div class="gallery-viewer">
 					<div class="gallery-track" id="gallery-track">
 						{images.map((img, i) => (
 							<div class="gallery-frame" data-index={i}>
@@ -116,7 +116,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 							))}
 						</div>
 					)}
-				</section>
+				</div>
 			)
 		}
 
@@ -140,25 +140,25 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 			<div class="project-info">
 				<div class="info-col">
 					<div class="info-block">
-						<h4>Năm hoàn thành</h4>
+						<h2>Năm hoàn thành</h2>
 						<p {...post.edit.nam_hoan_thanh}>
 							{post.data.nam_hoan_thanh || "Đang cập nhật"}
 						</p>
 					</div>
 					<div class="info-block">
-						<h4>Quy mô</h4>
+						<h2>Quy mô</h2>
 						<p {...post.edit.quy_mo}>{post.data.quy_mo || "Bảo mật"}</p>
 					</div>
 				</div>
 				<div class="info-col">
 					<div class="info-block">
-						<h4>Chủ đầu tư</h4>
+						<h2>Chủ đầu tư</h2>
 						<p {...post.edit.chu_dau_tu}>
 							{post.data.chu_dau_tu || "Đang cập nhật"}
 						</p>
 					</div>
 					<div class="info-block">
-						<h4>Địa chỉ</h4>
+						<h2>Địa chỉ</h2>
 						<p {...post.edit.dia_chi}>
 							{post.data.dia_chi || "Đang cập nhật"}
 						</p>
@@ -333,7 +333,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 		margin-bottom: 22px;
 	}
 
-	.info-block h4 {
+	.info-block h2 {
 		font-size: 14px;
 		font-weight: 700;
 		letter-spacing: 0.5px;

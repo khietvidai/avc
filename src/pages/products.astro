@@ -36,7 +36,7 @@ const principles = [
 			<div class="products-grid">
 				{products.map((s) => (
 					<div class="product-card">
-						<h3>{s.title}</h3>
+						<h2>{s.title}</h2>
 						<p>{s.desc}</p>
 					</div>
 				))}
@@ -84,10 +84,10 @@ const principles = [
 			<p class="factory-note">In-house fabrication to drawings keeps schedules under control, ensures detail-level quality and covers each project's special fabrication needs.</p>
 		</section>
 
-		<section class="section cta-section">
+		<div class="section cta-section">
 			<p class="cta-text">Need an equipment quote or a turnkey solution?</p>
 			<a href="/contact" class="btn">Contact AVC</a>
-		</section>
+		</div>
 	</div>
 </Base>
 
@@ -148,7 +148,7 @@ const principles = [
 		border: 1px solid var(--color-border);
 	}
 
-	.product-card h3 {
+	.product-card h2 {
 		font-size: 13px;
 		font-weight: 700;
 		text-transform: uppercase;

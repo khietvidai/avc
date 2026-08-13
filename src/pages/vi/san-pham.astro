@@ -36,7 +36,7 @@ const nguyenTac = [
 			<div class="products-grid">
 				{nhomSanPham.map((s) => (
 					<div class="product-card">
-						<h3>{s.title}</h3>
+						<h2>{s.title}</h2>
 						<p>{s.desc}</p>
 					</div>
 				))}
@@ -84,10 +84,10 @@ const nguyenTac = [
 			<p class="factory-note">Năng lực sản xuất inox theo bản vẽ giúp AVC chủ động tiến độ, kiểm soát chất lượng từng chi tiết và đáp ứng các yêu cầu chế tạo đặc thù của mỗi công trình.</p>
 		</section>
 
-		<section class="section cta-section">
+		<div class="section cta-section">
 			<p class="cta-text">Cần báo giá thiết bị hoặc giải pháp trọn gói?</p>
 			<a href="/vi/lien-he" class="btn">Liên hệ AVC</a>
-		</section>
+		</div>
 	</div>
 </Base>
 
@@ -148,7 +148,7 @@ const nguyenTac = [
 		border: 1px solid var(--color-border);
 	}
 
-	.product-card h3 {
+	.product-card h2 {
 		font-size: 14px;
 		font-weight: 700;
 		text-transform: uppercase;

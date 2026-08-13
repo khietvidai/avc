@@ -54,7 +54,7 @@ const stats = home
 		) : (
 			<div class="home">
 				{/* Hero */}
-				<section class="hero" id="top">
+				<div class="hero" id="top">
 					{home.data.hero_image && (
 						<div class="hero-image" {...home.edit.hero_image}>
 							<Image image={home.data.hero_image} alt={heroImageSeo().alt} title={heroImageSeo().title} priority width={1200} sizes="100vw" />
@@ -66,11 +66,11 @@ const stats = home
 					<span class="hero-arrow hero-arrow-right" aria-hidden="true">
 						›
 					</span>
-				</section>
+				</div>
 
 				{/* Stats strip */}
 				{stats.length > 0 && (
-					<section class="stats">
+					<div class="stats">
 						<p>
 							{stats.map((stat, i) => (
 								<>
@@ -79,7 +79,7 @@ const stats = home
 								</>
 							))}
 						</p>
-					</section>
+					</div>
 				)}
 
 				{/* Giới thiệu */}

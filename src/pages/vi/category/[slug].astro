@@ -33,7 +33,7 @@ const slides = withImage.slice(0, 6).map((p) => ({
 >
 	{
 		slides.length > 0 && (
-			<section class="slider" aria-label={`Dự án tiêu biểu ${term.label}`}>
+			<div class="slider" role="region" aria-label={`Dự án tiêu biểu ${term.label}`}>
 				{slides.map(({ post: p, slide }, i) => (
 					<a
 						href={`/vi/posts/${p.id}`}
@@ -69,12 +69,12 @@ const slides = withImage.slice(0, 6).map((p) => ({
 									class:list={["dot", { active: i === 0 }]}
 									data-index={i}
 									aria-label={`Slide ${i + 1}`}
-								/>
+								></button>
 							))}
 						</div>
 					</>
 				)}
-			</section>
+			</div>
 		)
 	}
 
@@ -102,9 +102,8 @@ const slides = withImage.slice(0, 6).map((p) => ({
 			)
 		}
 	</div>
-</Base>
 
-<script>
+	<script>
 	// Slider: tự chạy + mũi tên + chấm điều hướng
 	const slider = document.querySelector(".slider");
 	if (slider) {
@@ -145,7 +144,8 @@ const slides = withImage.slice(0, 6).map((p) => ({
 		);
 		restart();
 	}
-</script>
+	</script>
+</Base>
 
 <style>
 	/* Slider full-width */

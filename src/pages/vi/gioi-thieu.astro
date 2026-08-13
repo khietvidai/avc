@@ -54,11 +54,11 @@ const vungMien = [
 		<section class="section mission">
 			<div class="mission-grid">
 				<div class="mission-card">
-					<h3>Sứ mệnh</h3>
+					<h2>Sứ mệnh</h2>
 					<p>Tạo ra các giải pháp bếp an toàn – hiệu quả – bền vững, nâng cao trải nghiệm vận hành và giúp khách hàng đạt tiêu chuẩn quốc tế.</p>
 				</div>
 				<div class="mission-card dark">
-					<h3>Tầm nhìn</h3>
+					<h2>Tầm nhìn</h2>
 					<p>Dẫn đầu Việt Nam trong thiết kế – sản xuất – thi công giải pháp bếp công nghiệp chuẩn quốc tế, hướng đến hiệu quả, an toàn và phát triển bền vững.</p>
 				</div>
 			</div>
@@ -85,7 +85,7 @@ const vungMien = [
 			<div class="factors-grid">
 				{yeuTo.map((y) => (
 					<div class="factor-card">
-						<h4>{y.title}</h4>
+						<h3>{y.title}</h3>
 						<p>{y.desc}</p>
 					</div>
 				))}
@@ -98,7 +98,7 @@ const vungMien = [
 			<div class="regions-grid">
 				{vungMien.map((v) => (
 					<div class="region-card">
-						<h4>{v.ten}</h4>
+						<h3>{v.ten}</h3>
 						<p>{v.tinh}</p>
 					</div>
 				))}
@@ -134,9 +134,9 @@ const vungMien = [
 			</div>
 		</section>
 
-		<section class="section cta-section">
+		<div class="section cta-section">
 			<a href="/vi/posts" class="btn">Xem các dự án đã triển khai</a>
-		</section>
+		</div>
 	</div>
 </Base>
 
@@ -234,7 +234,7 @@ const vungMien = [
 		color: #e8e8e8;
 	}
 
-	.mission-card h3 {
+	.mission-card h2 {
 		font-size: 16px;
 		font-weight: 700;
 		text-transform: uppercase;
@@ -288,7 +288,7 @@ const vungMien = [
 		background: var(--color-bg-subtle);
 	}
 
-	.factor-card h4 {
+	.factor-card h3 {
 		font-size: 14px;
 		font-weight: 700;
 		text-transform: uppercase;
@@ -307,7 +307,7 @@ const vungMien = [
 		border: 1px solid var(--color-border);
 	}
 
-	.region-card h4 {
+	.region-card h3 {
 		display: inline-block;
 		background: #2b3440;
 		color: #fff;

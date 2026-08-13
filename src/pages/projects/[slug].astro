@@ -113,7 +113,7 @@ const body = en?.body;
 	<article class="project">
 		{
 			images.length > 0 && (
-				<section class="gallery-viewer">
+				<div class="gallery-viewer">
 					<div class="gallery-track" id="gallery-track">
 						{images.map((img, i) => (
 							<div class="gallery-frame" data-index={i}>
@@ -142,7 +142,7 @@ const body = en?.body;
 							))}
 						</div>
 					)}
-				</section>
+				</div>
 			)
 		}
 
@@ -166,21 +166,21 @@ const body = en?.body;
 			<div class="project-info">
 				<div class="info-col">
 					<div class="info-block">
-						<h4>Completed</h4>
+						<h2>Completed</h2>
 						<p>{post.data.nam_hoan_thanh || "Updating"}</p>
 					</div>
 					<div class="info-block">
-						<h4>Scale</h4>
+						<h2>Scale</h2>
 						<p>{post.data.quy_mo === "Bảo mật" ? "Confidential" : post.data.quy_mo || "Updating"}</p>
 					</div>
 				</div>
 				<div class="info-col">
 					<div class="info-block">
-						<h4>Client</h4>
+						<h2>Client</h2>
 						<p>{client || "Updating"}</p>
 					</div>
 					<div class="info-block">
-						<h4>Location</h4>
+						<h2>Location</h2>
 						<p>{location || "Updating"}</p>
 					</div>
 				</div>
@@ -360,7 +360,7 @@ const body = en?.body;
 		margin-bottom: 22px;
 	}
 
-	.info-block h4 {
+	.info-block h2 {
 		font-size: 12.5px;
 		font-weight: 700;
 		letter-spacing: 2px;

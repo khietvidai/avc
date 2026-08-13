@@ -1,7 +1,8 @@
 import { defineMiddleware } from "astro:middleware";
 import { toEnUrl } from "./utils/i18n-routes";
+import { sanitizeHtmlResponse } from "./utils/html-w3c";
 
-export const onRequest = defineMiddleware((context, next) => {
+export const onRequest = defineMiddleware(async (context, next) => {
 	const { pathname } = context.url;
 
 	if (pathname === "/en" || pathname === "/en/") {
@@ -12,20 +13,20 @@ export const onRequest = defineMiddleware((context, next) => {
 	}
 
 	if (
-		pathname.startsWith("/vi") ||
-		pathname.startsWith("/_") ||
-		pathname.startsWith("/rss") ||
-		pathname.startsWith("/favicon") ||
-		pathname.startsWith("/apple-touch") ||
-		pathname.startsWith("/images/")
+		!pathname.startsWith("/vi") &&
+		!pathname.startsWith("/_") &&
+		!pathname.startsWith("/rss") &&
+		!pathname.startsWith("/favicon") &&
+		!pathname.startsWith("/apple-touch") &&
+		!pathname.startsWith("/images/")
 	) {
-		return next();
+		const english = toEnUrl(pathname);
+		if (english !== pathname) {
+			return context.redirect(english + context.url.search, 301);
+		}
 	}
 
-	const english = toEnUrl(pathname);
-	if (english !== pathname) {
-		return context.redirect(english + context.url.search, 301);
-	}
-
-	return next();
+	const response = await next();
+	if (pathname.startsWith("/_")) return response;
+	return sanitizeHtmlResponse(response);
 });
