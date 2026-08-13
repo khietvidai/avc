@@ -32,16 +32,11 @@ export default defineConfig({
 	fonts: [
 		{
 			provider: fontProviders.google(),
-			name: "Be Vietnam Pro",
+			name: "Plus Jakarta Sans",
 			cssVariable: "--font-body",
-			weights: [400, 500, 600, 700],
-			fallbacks: ["sans-serif"],
-		},
-		{
-			provider: fontProviders.google(),
-			name: "Montserrat",
-			cssVariable: "--font-heading",
-			weights: [500, 600, 700],
+			weights: ["400 700"],
+			styles: ["normal"],
+			subsets: ["latin", "vietnamese"],
 			fallbacks: ["sans-serif"],
 		},
 		{
@@ -49,6 +44,8 @@ export default defineConfig({
 			name: "JetBrains Mono",
 			cssVariable: "--font-mono",
 			weights: [400, 500],
+			styles: ["normal"],
+			subsets: ["latin"],
 			fallbacks: ["monospace"],
 		},
 	],
