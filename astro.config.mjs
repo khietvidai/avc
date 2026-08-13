@@ -32,7 +32,7 @@ export default defineConfig({
 	fonts: [
 		{
 			provider: fontProviders.google(),
-			name: "Plus Jakarta Sans",
+			name: "Source Sans 3",
 			cssVariable: "--font-body",
 			weights: ["400 700"],
 			styles: ["normal"],

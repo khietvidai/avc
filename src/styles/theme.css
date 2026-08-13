@@ -6,7 +6,7 @@
   here are unlayered, so they always beat the @layer base defaults.
 
   AVC design: white corporate site, brand olive #BBC647, body text
-  #595959, Plus Jakarta Sans (loaded in astro.config.mjs). Square corners.
+  #595959, Source Sans 3 (loaded in astro.config.mjs). Square corners.
 */
 
 :root {
