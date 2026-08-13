@@ -3,6 +3,7 @@ import { getEmDashCollection, getEmDashEntry, getSiteSettings } from "emdash";
 import { Image, PortableText } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
 import { resolveBlogSiteIdentity } from "../../utils/site-identity";
+import { heroImageSeo, marketImageSeo } from "../../utils/image-seo";
 
 const [{ entry: home, cacheHint: homeHint }, settings] = await Promise.all([
 	getEmDashEntry("home", "home", { locale: "vi" }),
@@ -56,7 +57,7 @@ const stats = home
 				<section class="hero" id="top">
 					{home.data.hero_image && (
 						<div class="hero-image" {...home.edit.hero_image}>
-							<Image image={home.data.hero_image} priority width={1200} sizes="100vw" />
+							<Image image={home.data.hero_image} alt={heroImageSeo().alt} title={heroImageSeo().title} priority width={1200} sizes="100vw" />
 						</div>
 					)}
 					<span class="hero-arrow hero-arrow-left" aria-hidden="true">
@@ -117,7 +118,7 @@ const stats = home
 							{linhVuc.map((lv) => (
 								<a class="linh-vuc-card" href={`/vi/category/${lv.id}`}>
 									<div class="linh-vuc-image" {...lv.edit.image}>
-										{lv.data.image && <Image image={lv.data.image} />}
+										{lv.data.image && <Image image={lv.data.image} alt={marketImageSeo(lv.id).alt} title={marketImageSeo(lv.id).title} />}
 									</div>
 									<div class="linh-vuc-label" {...lv.edit.title}>
 										{lv.data.title}

@@ -10,6 +10,7 @@ import { createPublicPageContext } from "emdash/page";
 import { Font } from "astro:assets";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import { toEnUrl, toViUrl } from "../utils/i18n-routes";
+import { logoImageSeo } from "../utils/image-seo";
 import { publicOrigin } from "../utils/site-url";
 import {
 	absolutize,
@@ -192,7 +193,7 @@ function socialInitials(label: string): string {
 			<div class="header-inner">
 				<a href={localizeUrl("/")} class="site-logo">
 					{siteLogo
-						? <img src={siteLogo.url} alt={siteLogo.alt || siteTitle} class="site-logo-img" width="96" height="34" decoding="async" />
+						? <img src={siteLogo.url} alt={logoImageSeo().alt} title={logoImageSeo().title} class="site-logo-img" width="96" height="34" decoding="async" />
 						: <span class="site-logo-text">{siteTitle}</span>
 					}
 				</a>

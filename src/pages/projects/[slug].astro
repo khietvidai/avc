@@ -12,6 +12,7 @@ import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 import { publicOrigin } from "../../utils/site-url";
 import { cmsProjectSlug, enProjectSlug, enCategorySlug } from "../../utils/i18n-routes";
 import { projectEn } from "../../utils/projects-en";
+import { projectImageSeo } from "../../utils/image-seo";
 
 const param = decodeSlug(Astro.params.slug);
 
@@ -116,7 +117,11 @@ const body = en?.body;
 					<div class="gallery-track" id="gallery-track">
 						{images.map((img, i) => (
 							<div class="gallery-frame" data-index={i}>
-								<Image image={img} />
+								<Image
+									image={img}
+									alt={projectImageSeo(cmsSlug, i === 0 ? "featured" : "gallery").alt}
+									title={projectImageSeo(cmsSlug, i === 0 ? "featured" : "gallery").title}
+								/>
 							</div>
 						))}
 					</div>
@@ -126,9 +131,13 @@ const body = en?.body;
 								<button
 									class:list={["thumb", { active: i === 0 }]}
 									data-index={i}
-									aria-label={`Photo ${i + 1}`}
+									aria-label={`Photo ${i + 1} — ${title}`}
 								>
-									<Image image={img} />
+									<Image
+										image={img}
+										alt={projectImageSeo(cmsSlug, i === 0 ? "featured" : "gallery").alt}
+										title={projectImageSeo(cmsSlug, i === 0 ? "featured" : "gallery").title}
+									/>
 								</button>
 							))}
 						</div>
@@ -199,7 +208,11 @@ const body = en?.body;
 							<a href={`/projects/${enProjectSlug(p.id)}`} class="more-item">
 								{p.data.featured_image && (
 									<div class="more-image">
-										<Image image={p.data.featured_image} />
+										<Image
+											image={p.data.featured_image}
+											alt={projectImageSeo(p.id, "featured").alt}
+											title={projectImageSeo(p.id, "featured").title}
+										/>
 									</div>
 								)}
 								<span class="more-label">{projectEn(p.id)?.title ?? p.data.title}</span>

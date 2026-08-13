@@ -10,6 +10,7 @@ import { Image, PortableText } from "emdash/ui";
 import Base from "../../../layouts/Base.astro";
 import { resolveBlogSiteIdentity } from "../../../utils/site-identity";
 import { publicOrigin } from "../../../utils/site-url";
+import { projectImageSeo } from "../../../utils/image-seo";
 
 const slug = decodeSlug(Astro.params.slug);
 
@@ -98,7 +99,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 					<div class="gallery-track" id="gallery-track">
 						{images.map((img, i) => (
 							<div class="gallery-frame" data-index={i}>
-								<Image image={img} />
+								<Image image={img} alt={projectImageSeo(slug, i === 0 ? "featured" : "gallery").alt} title={projectImageSeo(slug, i === 0 ? "featured" : "gallery").title} />
 							</div>
 						))}
 					</div>
@@ -110,7 +111,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 									data-index={i}
 									aria-label={`Ảnh ${i + 1}`}
 								>
-									<Image image={img} />
+									<Image image={img} alt={projectImageSeo(slug, i === 0 ? "featured" : "gallery").alt} title={projectImageSeo(slug, i === 0 ? "featured" : "gallery").title} />
 								</button>
 							))}
 						</div>
@@ -181,7 +182,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 							<a href={`/vi/posts/${p.id}`} class="more-item">
 								{p.data.featured_image && (
 									<div class="more-image">
-										<Image image={p.data.featured_image} />
+										<Image image={p.data.featured_image} alt={projectImageSeo(p.id, "featured").alt} title={projectImageSeo(p.id, "featured").title} />
 									</div>
 								)}
 								<span class="more-label">{p.data.title}</span>

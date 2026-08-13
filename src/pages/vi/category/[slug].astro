@@ -3,6 +3,7 @@ import { getTerm, getEmDashCollection, decodeSlug } from "emdash";
 import { Image } from "emdash/ui";
 import Base from "../../../layouts/Base.astro";
 import { resolveSlide } from "../../../utils/slide-image";
+import { projectImageSeo } from "../../../utils/image-seo";
 
 const slug = decodeSlug(Astro.params.slug);
 const term = slug ? await getTerm("category", slug) : null;
@@ -43,7 +44,8 @@ const slides = withImage.slice(0, 6).map((p) => ({
 							slide?.kind === "static" ? (
 								<img
 									src={slide.src}
-									alt={p.data.title}
+									alt={projectImageSeo(p.id, "slide").alt}
+									title={projectImageSeo(p.id, "slide").title}
 									width="1920"
 									height="1080"
 									loading={i === 0 ? "eager" : "lazy"}
@@ -51,7 +53,7 @@ const slides = withImage.slice(0, 6).map((p) => ({
 									decoding="async"
 								/>
 							) : slide ? (
-								<Image image={slide.image} width={1920} height={1080} priority={i === 0} />
+								<Image image={slide.image} alt={projectImageSeo(p.id, "slide").alt} title={projectImageSeo(p.id, "slide").title} width={1920} height={1080} priority={i === 0} />
 							) : null
 						}
 						<span class="slide-caption">{p.data.title}</span>
@@ -90,7 +92,7 @@ const slides = withImage.slice(0, 6).map((p) => ({
 				<div class="gallery">
 					{withImage.map(({ id, data }) => (
 						<a href={`/vi/posts/${id}`} class="gallery-item">
-							<Image image={data.featured_image} />
+							<Image image={data.featured_image} alt={projectImageSeo(id, "featured").alt} title={projectImageSeo(id, "featured").title} />
 							<span class="gallery-overlay">
 								<span>{data.title}</span>
 							</span>

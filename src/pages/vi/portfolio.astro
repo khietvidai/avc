@@ -2,6 +2,7 @@
 import { getEmDashCollection } from "emdash";
 import { Image } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
+import { marketImageSeo } from "../../utils/image-seo";
 
 const { entries: linhVucRaw, cacheHint } = await getEmDashCollection("linh_vuc", { locale: "vi" });
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
@@ -33,7 +34,7 @@ function isBrand(i: number): boolean {
 							<span>{lv.data.title}</span>
 						</div>
 						<div class="cell-image">
-							{lv.data.image && <Image image={lv.data.image} />}
+							{lv.data.image && <Image image={lv.data.image} alt={marketImageSeo(lv.id).alt} title={marketImageSeo(lv.id).title} />}
 						</div>
 					</a>
 				))

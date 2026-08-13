@@ -3,6 +3,7 @@ import { getEmDashCollection, getEmDashEntry } from "emdash";
 import { Image } from "emdash/ui";
 import Base from "../layouts/Base.astro";
 import { enCategorySlug } from "../utils/i18n-routes";
+import { heroImageSeo, marketImageSeo } from "../utils/image-seo";
 
 const { entry: home, cacheHint: homeHint } = await getEmDashEntry("home", "home", { locale: "vi" });
 if (Astro.cache?.enabled) Astro.cache.set(homeHint);
@@ -52,7 +53,14 @@ const stats = [
 			{
 				home?.data.hero_image && (
 					<div class="hero-image">
-						<Image image={home.data.hero_image} priority width={1200} sizes="100vw" />
+						<Image
+							image={home.data.hero_image}
+							alt={heroImageSeo().alt}
+							title={heroImageSeo().title}
+							priority
+							width={1200}
+							sizes="100vw"
+						/>
 					</div>
 				)
 			}
@@ -97,7 +105,13 @@ const stats = [
 						{linhVuc.map((lv) => (
 							<a class="linh-vuc-card" href={`/category/${enCategorySlug(lv.id)}`}>
 								<div class="linh-vuc-image">
-									{lv.data.image && <Image image={lv.data.image} />}
+									{lv.data.image && (
+										<Image
+											image={lv.data.image}
+											alt={marketImageSeo(lv.id).alt}
+											title={marketImageSeo(lv.id).title}
+										/>
+									)}
 								</div>
 								<div class="linh-vuc-label">{LV_EN[lv.id] ?? lv.data.title}</div>
 							</a>

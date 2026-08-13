@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import { STATIC_IMAGE_SEO } from "../../utils/image-seo";
 
 const services = [
 	{
@@ -88,7 +89,7 @@ const services = [
 		{services.map((s, i) => (
 			<section class="service" id={s.id}>
 				<div class="service-banner">
-					<img src={s.banner} alt={s.title} width="1400" height="450" loading={i === 0 ? "eager" : "lazy"} fetchpriority={i === 0 ? "high" : undefined} decoding="async" />
+					<img src={s.banner} alt={STATIC_IMAGE_SEO[s.banner]?.alt ?? s.title} title={STATIC_IMAGE_SEO[s.banner]?.title ?? s.title} width="1400" height="450" loading={i === 0 ? "eager" : "lazy"} fetchpriority={i === 0 ? "high" : undefined} decoding="async" />
 				</div>
 				<h2 class="service-title">{s.title}</h2>
 				<p class="service-desc">{s.desc}</p>
