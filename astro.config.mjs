@@ -12,7 +12,7 @@ export default defineConfig({
 	i18n: {
 		defaultLocale: "en",
 		locales: ["en", "vi"],
-		fallback: { en: "vi" },
+		fallback: { vi: "en" },
 		routing: {
 			prefixDefaultLocale: true,
 			redirectToDefaultLocale: true,
