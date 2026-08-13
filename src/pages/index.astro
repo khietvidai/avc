@@ -1,3 +1,309 @@
 ---
-return Astro.redirect("/en/", 302);
+import { getEmDashCollection, getEmDashEntry } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+
+const { entry: home, cacheHint: homeHint } = await getEmDashEntry("home", "home", { locale: "vi" });
+if (Astro.cache?.enabled) Astro.cache.set(homeHint);
+
+const { entries: linhVucRaw, cacheHint: lvHint } =
+	await getEmDashCollection("linh_vuc", { locale: "vi" });
+if (Astro.cache?.enabled) Astro.cache.set(lvHint);
+
+const linhVuc = linhVucRaw.toSorted(
+	(a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0)
+);
+
+const LV_EN: Record<string, string> = {
+	"nha-hang": "Restaurants",
+	"khach-san": "Hotels",
+	"bep-trung-tam": "Central Kitchens",
+	"khu-cong-nghiep": "Industrial Canteens",
+	bakery: "Bakeries",
+	"bar-cafe": "Bar & Café",
+};
+
+const stats = [
+	"15+ Years of Experience",
+	"1,500+ Completed Projects",
+	"Nationwide Coverage",
+	"24/7 Support & Maintenance",
+];
 ---
+
+<Base
+	title="AVC Industrial Equipment Co., Ltd"
+	description="Turnkey commercial kitchen solutions in Vietnam — consulting, design, equipment supply, installation and maintenance"
+>
+	<div class="home">
+		<section class="hero" id="top">
+			{
+				home?.data.hero_image && (
+					<div class="hero-image">
+						<Image image={home.data.hero_image} />
+					</div>
+				)
+			}
+			<span class="hero-arrow hero-arrow-left" aria-hidden="true">‹</span>
+			<span class="hero-arrow hero-arrow-right" aria-hidden="true">›</span>
+		</section>
+
+		<section class="stats">
+			<p>
+				{stats.map((stat, i) => (
+					<>
+						{i > 0 && <span class="stats-sep"> | </span>}
+						<span>{stat}</span>
+					</>
+				))}
+			</p>
+		</section>
+
+		<section class="gioi-thieu" id="gioi-thieu">
+			<h1>AVC INDUSTRIAL EQUIPMENT CO., LTD</h1>
+			<hr class="dashed-divider" />
+			<div class="intro">
+				<p>AVC was founded with a clear focus: putting <strong>quality and safety first</strong> in every commercial kitchen solution. We continuously refine our products, services and construction processes to deliver kitchen systems that are efficient, durable and optimised for real-world operations.</p>
+				<p>With experience across F&B, restaurant &amp; hotel, central kitchen and industrial projects nationwide, AVC is committed to <strong>solutions that fit real operational needs</strong> — effective and sustainable for every project.</p>
+				<p>We work alongside investors, architects and contractors to create kitchens that maximise operational flow and meet each chef's specific needs. Our experienced engineers and technicians, backed by a <strong>fully integrated value chain</strong> — consulting, design, manufacturing, installation, after-sales — are the foundation of every project's quality.</p>
+				<p>AVC installs, warrants and maintains commercial kitchen systems under clear technical procedures, keeping equipment running <strong>stable, safe and efficient</strong> throughout the project's life cycle.</p>
+				<p>We keep improving to lead. Setting standards. <strong>Shaping the future of commercial kitchen solutions in Vietnam.</strong></p>
+			</div>
+			<a href="/gioi-thieu" class="btn">learn more</a>
+		</section>
+
+		<section class="linh-vuc" id="linh-vuc">
+			<h2>MARKETS WE SERVE</h2>
+			<hr class="dashed-divider" />
+			<div class="linh-vuc-intro">
+				<p>AVC provides turnkey commercial kitchen solutions for restaurants, hotels, central kitchens, industrial canteens, bakeries, bars &amp; cafés.</p>
+				<p>Services include investment consulting, 2D/3D layout &amp; MEP design, imported and fabricated equipment supply, installation, warranty and scheduled maintenance.</p>
+			</div>
+			{
+				linhVuc.length > 0 && (
+					<div class="linh-vuc-grid">
+						{linhVuc.map((lv) => (
+							<a class="linh-vuc-card" href={`/category/${lv.id}`}>
+								<div class="linh-vuc-image">
+									{lv.data.image && <Image image={lv.data.image} />}
+								</div>
+								<div class="linh-vuc-label">{LV_EN[lv.id] ?? lv.data.title}</div>
+							</a>
+						))}
+					</div>
+				)
+			}
+		</section>
+	</div>
+</Base>
+
+<style>
+	.hero {
+		position: relative;
+		width: 100%;
+		height: 440px;
+		background: #e9e9e9;
+		overflow: hidden;
+	}
+
+	.hero-image,
+	.hero-image :global(img) {
+		width: 100%;
+		height: 440px;
+		object-fit: cover;
+	}
+
+	.hero-arrow {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: 44px;
+		font-weight: 300;
+		color: rgba(255, 255, 255, 0.7);
+		pointer-events: none;
+		line-height: 1;
+	}
+
+	.hero-arrow-left {
+		left: 24px;
+	}
+
+	.hero-arrow-right {
+		right: 24px;
+	}
+
+	.stats {
+		max-width: var(--wide-width);
+		margin: 0 auto;
+		padding: 26px 24px 0;
+		text-align: center;
+	}
+
+	.stats p {
+		font-size: 14px;
+		font-weight: 600;
+		letter-spacing: 0.5px;
+		color: var(--avc-stats-text);
+	}
+
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 34px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.btn {
+		display: inline-block;
+		margin-top: 36px;
+		padding: 11px 26px;
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+		font-size: 14px;
+		border-radius: 0;
+		transition: background var(--transition-fast);
+	}
+
+	.btn:hover {
+		background: var(--color-brand-hover);
+		color: var(--color-on-brand);
+	}
+
+	.gioi-thieu {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 44px 24px 24px;
+		text-align: center;
+	}
+
+	.gioi-thieu h1 {
+		font-size: 26px;
+		font-weight: 700;
+		letter-spacing: 2.5px;
+		color: var(--color-brand);
+		text-wrap: balance;
+	}
+
+	.intro {
+		text-align: left;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.intro p {
+		font-size: 15px;
+		line-height: 1.65;
+		color: var(--color-text);
+	}
+
+	.intro strong {
+		color: var(--color-brand);
+		font-weight: 700;
+	}
+
+	.linh-vuc {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 56px 24px 80px;
+		text-align: center;
+	}
+
+	.linh-vuc h2 {
+		font-size: 23px;
+		font-weight: 700;
+		letter-spacing: 2.5px;
+		color: var(--color-brand);
+	}
+
+	.linh-vuc-intro {
+		text-align: left;
+		max-width: 700px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.linh-vuc-intro p {
+		font-size: 15px;
+		line-height: 1.65;
+		color: var(--color-text);
+	}
+
+	.linh-vuc-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 16px;
+		margin-top: 48px;
+	}
+
+	.linh-vuc-card {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+	}
+
+	.linh-vuc-card:hover .linh-vuc-label {
+		background: var(--color-brand-hover);
+	}
+
+	.linh-vuc-card:hover .linh-vuc-image :global(img) {
+		transform: scale(1.03);
+	}
+
+	.linh-vuc-image {
+		width: 100%;
+		height: 250px;
+		background: #e9e9e9;
+		overflow: hidden;
+	}
+
+	.linh-vuc-image :global(img) {
+		width: 100%;
+		height: 250px;
+		object-fit: cover;
+		transition: transform var(--transition-base);
+	}
+
+	.linh-vuc-label {
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+		font-size: 16px;
+		font-weight: 600;
+		letter-spacing: 1px;
+		padding: 12px 8px;
+	}
+
+	@media (max-width: 900px) {
+		.linh-vuc-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.hero,
+		.hero-image,
+		.hero-image :global(img) {
+			height: 320px;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.linh-vuc-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.gioi-thieu h1 {
+			font-size: 20px;
+		}
+
+		.linh-vuc h2 {
+			font-size: 18px;
+		}
+
+		.stats-sep {
+			display: block;
+			height: 0;
+			overflow: hidden;
+		}
+	}
+</style>

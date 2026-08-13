@@ -1,7 +1,7 @@
 ---
 import { getTerm, getEmDashCollection, decodeSlug } from "emdash";
 import { Image } from "emdash/ui";
-import Base from "../../../layouts/Base.astro";
+import Base from "../../layouts/Base.astro";
 
 const slug = decodeSlug(Astro.params.slug);
 // Nội dung dùng chung bản tiếng Việt (locale "vi")
@@ -42,7 +42,7 @@ const slides = withImage.slice(0, 6);
 			<section class="slider" aria-label={`Featured ${label} projects`}>
 				{slides.map((p, i) => (
 					<a
-						href={`/en/posts/${p.id}`}
+						href={`/posts/${p.id}`}
 						class:list={["slide", { active: i === 0 }]}
 						data-index={i}
 					>
@@ -77,12 +77,12 @@ const slides = withImage.slice(0, 6);
 			posts.length === 0 ? (
 				<p class="empty">
 					No projects in this market yet — new work is being added.
-					<a href="/en/portfolio"> Back to portfolio</a>
+					<a href="/portfolio"> Back to portfolio</a>
 				</p>
 			) : (
 				<div class="gallery">
 					{withImage.map(({ id, data }) => (
-						<a href={`/en/posts/${id}`} class="gallery-item">
+						<a href={`/posts/${id}`} class="gallery-item">
 							<Image image={data.featured_image} />
 							<span class="gallery-overlay">
 								<span>{data.title}</span>

@@ -14,8 +14,7 @@ export default defineConfig({
 		locales: ["en", "vi"],
 		fallback: { vi: "en" },
 		routing: {
-			prefixDefaultLocale: true,
-			redirectToDefaultLocale: true,
+			prefixDefaultLocale: false,
 		},
 	},
 	image: {

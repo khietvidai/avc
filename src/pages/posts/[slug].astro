@@ -7,8 +7,8 @@ import {
 	getSiteSettings,
 } from "emdash";
 import { Image, PortableText } from "emdash/ui";
-import Base from "../../../layouts/Base.astro";
-import { resolveBlogSiteIdentity } from "../../../utils/site-identity";
+import Base from "../../layouts/Base.astro";
+import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 
 const slug = decodeSlug(Astro.params.slug);
 
@@ -49,7 +49,7 @@ const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
 const seo = getSeoMeta(post, {
 	siteTitle,
 	siteUrl: Astro.url.origin,
-	path: `/en/posts/${slug}`,
+	path: `/posts/${slug}`,
 	defaultOgImage: featuredImageUrl,
 });
 
@@ -121,7 +121,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 				(post.data.dia_chi || categories.length > 0) && (
 					<p class="project-sub">
 						{categories.length > 0 && (
-							<a href={`/en/category/${categories[0].slug}`}>
+							<a href={`/category/${categories[0].slug}`}>
 								{LV_EN[categories[0].slug] ?? categories[0].label}
 							</a>
 						)}
@@ -167,7 +167,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 					<h2 class="more-title">More projects</h2>
 					<div class="more-grid">
 						{otherPosts.map((p) => (
-							<a href={`/en/posts/${p.id}`} class="more-item">
+							<a href={`/posts/${p.id}`} class="more-item">
 								{p.data.featured_image && (
 									<div class="more-image">
 										<Image image={p.data.featured_image} />

@@ -1,19 +1,18 @@
 import { defineMiddleware } from "astro:middleware";
 
-/** Old unprefixed Vietnamese URLs → English (default) when a twin exists. */
-const EN_PAGES = new Set([
-	"gioi-thieu",
-	"dich-vu",
-	"san-pham",
-	"lien-he",
-	"portfolio",
-]);
-
+/** Legacy /en/... bookmarks → unprefixed English URLs. */
 export const onRequest = defineMiddleware((context, next) => {
 	const { pathname } = context.url;
+
+	if (pathname === "/en" || pathname === "/en/") {
+		return context.redirect("/", 302);
+	}
+	if (pathname.startsWith("/en/")) {
+		return context.redirect(pathname.slice(3) || "/", 302);
+	}
+
 	if (
 		pathname === "/" ||
-		pathname.startsWith("/en") ||
 		pathname.startsWith("/vi") ||
 		pathname.startsWith("/_") ||
 		pathname.startsWith("/rss") ||
@@ -25,18 +24,7 @@ export const onRequest = defineMiddleware((context, next) => {
 	}
 
 	const [first, ...rest] = pathname.replace(/^\//, "").split("/");
-	if (!first) return next();
-
-	if (EN_PAGES.has(first) && rest.length === 0) {
-		return context.redirect(`/en/${first}`, 302);
-	}
-	if (first === "category" && rest[0]) {
-		return context.redirect(`/en/category/${rest[0]}`, 302);
-	}
-	if (first === "posts" && rest[0]) {
-		return context.redirect(`/en/posts/${rest[0]}`, 302);
-	}
-	if (first === "posts") {
+	if (first === "posts" && !rest[0]) {
 		return context.redirect("/vi/posts", 302);
 	}
 	if (first === "search") {

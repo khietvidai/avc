@@ -77,7 +77,6 @@ const isLoggedIn = !!Astro.locals.user;
 // --- Song ngữ: locale hiện tại + dịch label menu + URL prefix ---
 const locale = Astro.currentLocale ?? "en";
 const isEN = locale === "en";
-const prefix = isEN ? "/en" : "/vi";
 
 const NAV_EN: Record<string, string> = {
 	"Trang chủ": "Home",
@@ -105,19 +104,19 @@ const NAV_EN: Record<string, string> = {
 const t = (label: string) => (isEN ? (NAV_EN[label] ?? label) : label);
 const localizeUrl = (url: string) => {
 	if (!url.startsWith("/") || url.startsWith("/_")) return url;
-	if (url.startsWith("/#")) return `${prefix}/${url.slice(1)}`;
 	const hashIdx = url.indexOf("#");
 	const hash = hashIdx >= 0 ? url.slice(hashIdx) : "";
 	const pathOnly = hashIdx >= 0 ? url.slice(0, hashIdx) : url;
 	const bare = pathOnly.replace(/^\/(en|vi)(?=\/|$)/, "") || "/";
-	return (bare === "/" ? `${prefix}/` : `${prefix}${bare}`) + hash;
+	if (isEN) return (bare === "/" ? "/" : bare) + hash;
+	return (bare === "/" ? "/vi/" : `/vi${bare}`) + hash;
 };
 
 // Switcher: same page in the other locale
 const path = Astro.url.pathname;
 const barePath = path.replace(/^\/(en|vi)(?=\/|$)/, "") || "/";
 const viUrl = barePath === "/" ? "/vi/" : `/vi${barePath}`;
-const enUrl = barePath === "/" ? "/en/" : `/en${barePath}`;
+const enUrl = barePath === "/" ? "/" : barePath;
 
 // Server-side active state for nav links. Anchor links ("/#gioi-thieu")
 // can't be matched against the pathname, so they're never marked active.
