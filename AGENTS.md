@@ -69,13 +69,13 @@ Primary menu (CMS): Home `/` · About `/gioi-thieu` · Services `/dich-vu` · Pr
 
 Portfolio flow: `/portfolio` → `/category/restaurants` → `/projects/thong-nhat-steel-canteen`. Service anchors: `#consulting #design #supply #installation #warranty #fabrication`.
 
-`posts` collection (label **Dự án**) is the project content type. Add new work in admin → Dự án with the same fields: `title`, `featured_image`, `slide_image` (16:9 banner), `excerpt`, `chu_dau_tu`, `dia_chi`, `nam_hoan_thanh`, `quy_mo`, `gallery` (json array of media), `content`. Assign a `category` term. `nam_hoan_thanh` may be empty; `quy_mo` defaults to "Bảo mật" when confidential.
+`posts` collection (label **Dự án**) is the project content type. Add new work in admin → Dự án with the same fields: `title`, `featured_image`, `slide_image` (16:9 banner), `excerpt`, `chu_dau_tu`, `dia_chi`, `nam_hoan_thanh`, `quy_mo`, `gallery` (repeater of images — Add / reorder / remove in admin), `content`. Assign a `category` term. `nam_hoan_thanh` may be empty; `quy_mo` defaults to "Bảo mật" when confidential.
 
 **Images**: all real photos extracted from `PROFILE_AVC.pdf` (per-page via PyMuPDF, auto-cropped black borders, JPEG-compressed). CMS media (hero, 6 lĩnh vực, 21 project featured images, site logo) live in the media library/R2; static-page images live in `public/images/` (team, thi công, nhà máy, kho, logo…). The site logo is set in settings (`site:logo`) — note settings are cached per worker isolate, restart dev after changing them via SQL.
 
 ## Schema
 
-- `posts` collection ("Dự án"): `title`, `featured_image`, `slide_image` (16:9), `excerpt`, `chu_dau_tu`, `dia_chi`, `nam_hoan_thanh`, `quy_mo`, `gallery` (json), `content` (Portable Text).
+- `posts` collection ("Dự án"): `title`, `featured_image`, `slide_image` (16:9), `excerpt`, `chu_dau_tu`, `dia_chi`, `nam_hoan_thanh`, `quy_mo`, `gallery` (repeater of images), `content` (Portable Text).
 - `pages` collection ("Trang tĩnh"): `title`, `content`.
 - `home` collection ("Trang chủ", single entry with slug `home`): `hero_image`, `stat_1..stat_4`, `intro_heading`, `intro` (Portable Text -- **bold spans render in the brand colour** on the site), `cta_label`, `cta_url`, `services_heading`, `services_intro`.
 - `linh_vuc` collection ("Lĩnh vực", 6 entries): `title`, `image`, `sort_order`.

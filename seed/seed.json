@@ -70,7 +70,19 @@
 				{
 					"slug": "gallery",
 					"label": "Thư viện ảnh",
-					"type": "json"
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "image",
+								"type": "image",
+								"label": "Ảnh",
+								"required": true
+							}
+						],
+						"minItems": 0,
+						"maxItems": 24
+					}
 				},
 				{
 					"slug": "content",

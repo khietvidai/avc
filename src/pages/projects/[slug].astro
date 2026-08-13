@@ -14,6 +14,7 @@ import { cmsProjectSlug, enProjectSlug, enCategorySlug, bareCmsId, marketLabelEn
 import { rewriteNotFound } from "../../utils/not-found";
 import { projectEn } from "../../utils/projects-en";
 import { projectImageSeo } from "../../utils/image-seo";
+import { galleryImages } from "../../utils/gallery";
 
 const param = decodeSlug(Astro.params.slug);
 
@@ -64,7 +65,7 @@ const seo = getSeoMeta(post, {
 	defaultOgImage: featuredImageUrl,
 });
 
-const galleryRaw = Array.isArray(post.data.gallery) ? post.data.gallery : [];
+const galleryRaw = galleryImages(post.data.gallery);
 const images = [post.data.featured_image, ...galleryRaw].filter(Boolean);
 
 const categories = post.data.terms?.category ?? [];

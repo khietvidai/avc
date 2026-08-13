@@ -85,6 +85,8 @@ INSERT OR IGNORE INTO "_emdash_fields" (
 )
 SELECT
 	'01KZW9K62840B6C83EXP8TEEPY',
-	c.id, 'gallery', 'Thư viện ảnh', 'json', 'JSON',
-	0, 0, NULL, NULL, NULL, NULL, 8, datetime('now'), 0, 1
+	c.id, 'gallery', 'Thư viện ảnh', 'repeater', 'JSON',
+	0, 0, NULL,
+	'{"subFields":[{"slug":"image","type":"image","label":"Ảnh","required":true}],"minItems":0,"maxItems":24}',
+	NULL, NULL, 8, datetime('now'), 0, 1
 FROM "_emdash_collections" c WHERE c.slug = 'posts';
