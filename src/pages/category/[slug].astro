@@ -16,7 +16,7 @@ if (param && enSlug && param !== enSlug) {
 const term = cmsSlug ? await getTerm("category", cmsSlug, { locale: "vi" }) : null;
 
 if (!term) {
-	return Astro.redirect("/404");
+	return Astro.rewrite("/404");
 }
 
 const label = marketLabelEn(term.slug, term.label);

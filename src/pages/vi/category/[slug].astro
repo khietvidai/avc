@@ -14,7 +14,7 @@ if (raw && slug && raw !== slug) {
 const term = slug ? await getTerm("category", slug, { locale: "vi" }) : null;
 
 if (!term) {
-	return Astro.redirect("/404");
+	return Astro.rewrite("/vi/404");
 }
 
 const { entries: posts, cacheHint } = await getEmDashCollection("posts", {

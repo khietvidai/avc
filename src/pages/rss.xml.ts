@@ -13,7 +13,7 @@ export const GET: APIRoute = async ({ url }) => {
 
 	const { entries: posts } = await getEmDashCollection("posts", {
 		orderBy: { published_at: "desc" },
-		limit: 20,
+		limit: 50,
 		locale: "vi",
 	});
 
