@@ -42,17 +42,17 @@ const {
 } = Astro.props;
 const { siteTitle: siteTitleVI, siteLogo } = resolveBlogSiteIdentity(await getSiteSettings());
 const siteTitle =
-	(Astro.currentLocale ?? "vi") === "en"
+	(Astro.currentLocale ?? "en") === "en"
 		? "AVC Industrial Equipment Co., Ltd"
 		: siteTitleVI;
 // If title already includes site title (from getSeoMeta), use as-is
 const fullTitle = title.includes(siteTitle) ? title : `${title} — ${siteTitle}`;
 
 // Fetch primary menu defined in seed
-const menu = await getMenu("primary");
+const menu = await getMenu("primary", { locale: "vi" });
 
 // Optional "social" menu rendered as icon squares in the footer
-const socialMenu = await getMenu("social");
+const socialMenu = await getMenu("social", { locale: "vi" });
 
 // Build public page context for plugin contributions
 // SEO data is passed here and rendered securely by EmDashHead
@@ -75,8 +75,9 @@ const pageCtx = createPublicPageContext({
 const isLoggedIn = !!Astro.locals.user;
 
 // --- Song ngữ: locale hiện tại + dịch label menu + URL prefix ---
-const locale = Astro.currentLocale ?? "vi";
+const locale = Astro.currentLocale ?? "en";
 const isEN = locale === "en";
+const prefix = isEN ? "/en" : "/vi";
 
 const NAV_EN: Record<string, string> = {
 	"Trang chủ": "Home",
@@ -103,20 +104,24 @@ const NAV_EN: Record<string, string> = {
 };
 const t = (label: string) => (isEN ? (NAV_EN[label] ?? label) : label);
 const localizeUrl = (url: string) => {
-	if (!isEN || !url.startsWith("/") || url.startsWith("/en")) return url;
-	return url === "/" ? "/en/" : `/en${url}`;
+	if (!url.startsWith("/") || url.startsWith("/_")) return url;
+	if (url.startsWith("/#")) return `${prefix}/${url.slice(1)}`;
+	const hashIdx = url.indexOf("#");
+	const hash = hashIdx >= 0 ? url.slice(hashIdx) : "";
+	const pathOnly = hashIdx >= 0 ? url.slice(0, hashIdx) : url;
+	const bare = pathOnly.replace(/^\/(en|vi)(?=\/|$)/, "") || "/";
+	return (bare === "/" ? `${prefix}/` : `${prefix}${bare}`) + hash;
 };
 
-// Switcher: đường dẫn tương ứng của locale còn lại
+// Switcher: same page in the other locale
 const path = Astro.url.pathname;
-const viUrl = isEN ? path.replace(/^\/en\/?/, "/") : path;
-const enUrl = isEN ? path : path === "/" ? "/en/" : `/en${path}`;
+const barePath = path.replace(/^\/(en|vi)(?=\/|$)/, "") || "/";
+const viUrl = barePath === "/" ? "/vi/" : `/vi${barePath}`;
+const enUrl = barePath === "/" ? "/en/" : `/en${barePath}`;
 
 // Server-side active state for nav links. Anchor links ("/#gioi-thieu")
 // can't be matched against the pathname, so they're never marked active.
-const currentPathRaw = Astro.url.pathname;
-const currentPath =
-	currentPathRaw.replace(/^\/en(\/|$)/, "/").replace(/\/{2,}/g, "/") || "/";
+const currentPath = barePath.replace(/\/{2,}/g, "/") || "/";
 function isActive(url: string): boolean {
 	if (url.includes("#")) return false;
 	if (url === "/") return currentPath === "/";
@@ -148,7 +153,7 @@ function socialInitials(label: string): string {
 		<EmDashBodyStart page={pageCtx} />
 		<header class="site-header">
 			<div class="header-inner">
-				<a href="/" class="site-logo">
+				<a href={localizeUrl("/")} class="site-logo">
 					{siteLogo
 						? <img src={siteLogo.url} alt={siteLogo.alt || siteTitle} class="site-logo-img" />
 						: <span class="site-logo-text">{siteTitle}</span>

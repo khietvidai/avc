@@ -1,11 +1,11 @@
 ---
 import { getEmDashCollection, getEmDashEntry, getSiteSettings } from "emdash";
 import { Image, PortableText } from "emdash/ui";
-import Base from "../layouts/Base.astro";
-import { resolveBlogSiteIdentity } from "../utils/site-identity";
+import Base from "../../layouts/Base.astro";
+import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 
 const [{ entry: home, cacheHint: homeHint }, settings] = await Promise.all([
-	getEmDashEntry("home", "home"),
+	getEmDashEntry("home", "home", { locale: "vi" }),
 	getSiteSettings(),
 ]);
 const { siteTitle, siteTagline } = resolveBlogSiteIdentity(settings);
@@ -13,7 +13,7 @@ const { siteTitle, siteTagline } = resolveBlogSiteIdentity(settings);
 if (Astro.cache?.enabled) Astro.cache.set(homeHint);
 
 const { entries: linhVucRaw, cacheHint: linhVucHint } =
-	await getEmDashCollection("linh_vuc");
+	await getEmDashCollection("linh_vuc", { locale: "vi" });
 if (Astro.cache?.enabled) Astro.cache.set(linhVucHint);
 
 // Sort in JS: sort_order is a custom field, keep the query simple
@@ -93,7 +93,7 @@ const stats = home
 						</div>
 					)}
 					{home.data.cta_label && (
-						<a href={home.data.cta_url || "/#linh-vuc"} class="btn">
+						<a href={home.data.cta_url || "/vi/#linh-vuc"} class="btn">
 							{home.data.cta_label}
 						</a>
 					)}
@@ -115,7 +115,7 @@ const stats = home
 					{linhVuc.length > 0 && (
 						<div class="linh-vuc-grid">
 							{linhVuc.map((lv) => (
-								<a class="linh-vuc-card" href={`/category/${lv.id}`}>
+								<a class="linh-vuc-card" href={`/vi/category/${lv.id}`}>
 									<div class="linh-vuc-image" {...lv.edit.image}>
 										{lv.data.image && <Image image={lv.data.image} />}
 									</div>

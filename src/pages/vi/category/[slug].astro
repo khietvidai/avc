@@ -1,7 +1,7 @@
 ---
 import { getTerm, getEmDashCollection, decodeSlug } from "emdash";
 import { Image } from "emdash/ui";
-import Base from "../../layouts/Base.astro";
+import Base from "../../../layouts/Base.astro";
 
 const slug = decodeSlug(Astro.params.slug);
 const term = slug ? await getTerm("category", slug) : null;
@@ -32,7 +32,7 @@ const slides = withImage.slice(0, 6);
 			<section class="slider" aria-label={`Dự án tiêu biểu ${term.label}`}>
 				{slides.map((p, i) => (
 					<a
-						href={`/posts/${p.id}`}
+						href={`/vi/posts/${p.id}`}
 						class:list={["slide", { active: i === 0 }]}
 						data-index={i}
 					>
@@ -67,12 +67,12 @@ const slides = withImage.slice(0, 6);
 			posts.length === 0 ? (
 				<p class="empty">
 					Chưa có dự án trong lĩnh vực này — các công trình mới sẽ được cập
-					nhật sớm. <a href="/posts">Xem tất cả dự án</a>
+					nhật sớm. <a href="/vi/posts">Xem tất cả dự án</a>
 				</p>
 			) : (
 				<div class="gallery">
 					{withImage.map(({ id, data }) => (
-						<a href={`/posts/${id}`} class="gallery-item">
+						<a href={`/vi/posts/${id}`} class="gallery-item">
 							<Image image={data.featured_image} />
 							<span class="gallery-overlay">
 								<span>{data.title}</span>

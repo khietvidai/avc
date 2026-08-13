@@ -10,6 +10,7 @@ export const GET: APIRoute = async ({ site, url }) => {
 	const { entries: posts } = await getEmDashCollection("posts", {
 		orderBy: { published_at: "desc" },
 		limit: 20,
+		locale: "vi",
 	});
 
 	const items = posts
@@ -17,7 +18,7 @@ export const GET: APIRoute = async ({ site, url }) => {
 			if (!post.data.publishedAt) return null;
 			const pubDate = post.data.publishedAt.toUTCString();
 
-			const postUrl = `${siteUrl}/posts/${post.id}`;
+			const postUrl = `${siteUrl}/en/posts/${post.id}`;
 			const title = escapeXml(post.data.title || "Không có tiêu đề");
 			const description = escapeXml(post.data.excerpt || "");
 

@@ -7,8 +7,8 @@ import {
 	getSiteSettings,
 } from "emdash";
 import { Image, PortableText } from "emdash/ui";
-import Base from "../../layouts/Base.astro";
-import { resolveBlogSiteIdentity } from "../../utils/site-identity";
+import Base from "../../../layouts/Base.astro";
+import { resolveBlogSiteIdentity } from "../../../utils/site-identity";
 
 const slug = decodeSlug(Astro.params.slug);
 
@@ -16,7 +16,7 @@ if (!slug) {
 	return Astro.redirect("/404");
 }
 
-const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
+const { entry: post, cacheHint } = await getEmDashEntry("posts", slug, { locale: "vi" });
 
 if (!post) {
 	return Astro.redirect("/404");
@@ -48,7 +48,7 @@ const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
 const seo = getSeoMeta(post, {
 	siteTitle,
 	siteUrl: Astro.url.origin,
-	path: `/posts/${slug}`,
+	path: `/vi/posts/${slug}`,
 	defaultOgImage: featuredImageUrl,
 });
 
@@ -63,6 +63,7 @@ const categories = post.data.terms?.category ?? [];
 const { entries: recentPosts } = await getEmDashCollection("posts", {
 	orderBy: { published_at: "desc" },
 	limit: 4,
+	locale: "vi",
 });
 const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 ---
@@ -115,7 +116,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 				(post.data.dia_chi || categories.length > 0) && (
 					<p class="project-sub">
 						{categories.length > 0 && (
-							<a href={`/category/${categories[0].slug}`}>
+							<a href={`/vi/category/${categories[0].slug}`}>
 								{categories[0].label}
 							</a>
 						)}
@@ -167,7 +168,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 					<h2 class="more-title">Dự án khác</h2>
 					<div class="more-grid">
 						{otherPosts.map((p) => (
-							<a href={`/posts/${p.id}`} class="more-item">
+							<a href={`/vi/posts/${p.id}`} class="more-item">
 								{p.data.featured_image && (
 									<div class="more-image">
 										<Image image={p.data.featured_image} />

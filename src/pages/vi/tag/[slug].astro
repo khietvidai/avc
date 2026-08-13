@@ -5,12 +5,12 @@ import {
 	getTermsForEntries,
 	decodeSlug,
 } from "emdash";
-import Base from "../../layouts/Base.astro";
-import PostCard from "../../components/PostCard.astro";
-import { getReadingTime } from "../../utils/reading-time";
+import Base from "../../../layouts/Base.astro";
+import PostCard from "../../../components/PostCard.astro";
+import { getReadingTime } from "../../../utils/reading-time";
 
 const slug = decodeSlug(Astro.params.slug);
-const term = slug ? await getTerm("tag", slug) : null;
+const term = slug ? await getTerm("tag", slug, { locale: "vi" }) : null;
 
 if (!term) {
 	return Astro.redirect("/404");
@@ -19,6 +19,7 @@ if (!term) {
 const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 	where: { tag: term.slug },
 	orderBy: { published_at: "desc" },
+	locale: "vi",
 });
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
@@ -59,7 +60,7 @@ const filteredPosts = posts.map((post) => ({
 							title={post.data.title}
 							excerpt={post.data.excerpt}
 							featuredImage={post.data.featured_image}
-							href={`/posts/${post.id}`}
+							href={`/vi/posts/${post.id}`}
 							date={post.data.publishedAt ?? undefined}
 							readingTime={getReadingTime(post.data.content)}
 							tags={tags.map((t) => ({ slug: t.slug, label: t.label }))}

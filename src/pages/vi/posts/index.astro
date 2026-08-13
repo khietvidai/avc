@@ -1,12 +1,13 @@
 ---
 import { getEmDashCollection, getTermsForEntries } from "emdash";
-import Base from "../../layouts/Base.astro";
-import { getReadingTime } from "../../utils/reading-time";
+import Base from "../../../layouts/Base.astro";
+import { getReadingTime } from "../../../utils/reading-time";
 
 // Sort in the database rather than in JS — lets the DB use its index on
 // published_at and avoids a full-table scan on the client.
 const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 	orderBy: { published_at: "desc" },
+	locale: "vi",
 });
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
@@ -50,7 +51,7 @@ const formatDate = (date: Date) =>
 				<div class="posts-list">
 					{postsWithTags.map(({ post, tags, bylines }) => (
 						<article class="post-item">
-							<a href={`/posts/${post.id}`} class="post-link">
+							<a href={`/vi/posts/${post.id}`} class="post-link">
 								<div class="post-meta">
 									{bylines.length > 0 && (
 										<>
@@ -93,7 +94,7 @@ const formatDate = (date: Date) =>
 							{tags.length > 0 && (
 								<div class="post-tags">
 									{tags.slice(0, 3).map((t) => (
-										<a href={`/tag/${t.slug}`} class="post-tag">
+										<a href={`/vi/tag/${t.slug}`} class="post-tag">
 											{t.label}
 										</a>
 									))}

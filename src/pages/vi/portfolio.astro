@@ -1,9 +1,9 @@
 ---
 import { getEmDashCollection } from "emdash";
 import { Image } from "emdash/ui";
-import Base from "../layouts/Base.astro";
+import Base from "../../layouts/Base.astro";
 
-const { entries: linhVucRaw, cacheHint } = await getEmDashCollection("linh_vuc");
+const { entries: linhVucRaw, cacheHint } = await getEmDashCollection("linh_vuc", { locale: "vi" });
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
 const linhVuc = linhVucRaw.toSorted(
@@ -26,7 +26,7 @@ function isBrand(i: number): boolean {
 			{
 				linhVuc.map((lv, i) => (
 					<a
-						href={`/category/${lv.id}`}
+						href={`/vi/category/${lv.id}`}
 						class:list={["cell", isBrand(i) ? "cell-brand" : "cell-gray"]}
 					>
 						<div class="cell-label">
