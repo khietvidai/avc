@@ -2,65 +2,173 @@
 	"$schema": "https://emdashcms.com/seed.schema.json",
 	"version": "1",
 	"meta": {
-		"name": "Blog Starter",
-		"description": "A blog with posts and pages",
-		"author": "EmDash"
+		"name": "AVC",
+		"description": "Công ty TNHH Thiết Bị Công Nghiệp AVC — giải pháp bếp công nghiệp trọn gói",
+		"author": "AVC"
 	},
 	"settings": {
-		"title": "My Blog",
-		"tagline": "Thoughts on building for the web"
+		"title": "Công ty TNHH Thiết Bị Công Nghiệp AVC",
+		"tagline": "Giải pháp bếp công nghiệp trọn gói"
 	},
 	"collections": [
 		{
 			"slug": "posts",
-			"label": "Posts",
-			"labelSingular": "Post",
-			"supports": ["drafts", "revisions", "search", "seo"],
-			"commentsEnabled": true,
+			"label": "Dự án",
+			"labelSingular": "Dự án",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo"
+			],
+			"commentsEnabled": false,
 			"fields": [
 				{
 					"slug": "title",
-					"label": "Title",
+					"label": "Tên dự án",
 					"type": "string",
 					"required": true,
 					"searchable": true
 				},
 				{
 					"slug": "featured_image",
-					"label": "Featured Image",
+					"label": "Ảnh đại diện",
 					"type": "image"
 				},
 				{
 					"slug": "content",
-					"label": "Content",
+					"label": "Nội dung",
 					"type": "portableText",
 					"searchable": true
 				},
 				{
 					"slug": "excerpt",
-					"label": "Excerpt",
+					"label": "Tóm tắt",
 					"type": "text"
 				}
 			]
 		},
 		{
 			"slug": "pages",
-			"label": "Pages",
-			"labelSingular": "Page",
-			"supports": ["drafts", "revisions", "search"],
+			"label": "Trang tĩnh",
+			"labelSingular": "Trang tĩnh",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
 			"fields": [
 				{
 					"slug": "title",
-					"label": "Title",
+					"label": "Tiêu đề",
 					"type": "string",
 					"required": true,
 					"searchable": true
 				},
 				{
 					"slug": "content",
-					"label": "Content",
+					"label": "Nội dung",
 					"type": "portableText",
 					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "home",
+			"label": "Trang chủ",
+			"labelSingular": "Trang chủ",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Tiêu đề (nội bộ)",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "hero_image",
+					"label": "Ảnh hero",
+					"type": "image"
+				},
+				{
+					"slug": "stat_1",
+					"label": "Thống kê 1",
+					"type": "string"
+				},
+				{
+					"slug": "stat_2",
+					"label": "Thống kê 2",
+					"type": "string"
+				},
+				{
+					"slug": "stat_3",
+					"label": "Thống kê 3",
+					"type": "string"
+				},
+				{
+					"slug": "stat_4",
+					"label": "Thống kê 4",
+					"type": "string"
+				},
+				{
+					"slug": "intro_heading",
+					"label": "Tiêu đề giới thiệu",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Nội dung giới thiệu (bôi đậm = màu thương hiệu)",
+					"type": "portableText"
+				},
+				{
+					"slug": "cta_label",
+					"label": "Nhãn nút CTA",
+					"type": "string"
+				},
+				{
+					"slug": "cta_url",
+					"label": "Liên kết nút CTA",
+					"type": "string"
+				},
+				{
+					"slug": "services_heading",
+					"label": "Tiêu đề lĩnh vực",
+					"type": "string"
+				},
+				{
+					"slug": "services_intro",
+					"label": "Giới thiệu lĩnh vực",
+					"type": "portableText"
+				}
+			]
+		},
+		{
+			"slug": "linh_vuc",
+			"label": "Lĩnh vực",
+			"labelSingular": "Lĩnh vực",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Tên lĩnh vực",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "image",
+					"label": "Ảnh",
+					"type": "image"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Thứ tự",
+					"type": "integer"
 				}
 			]
 		}
@@ -68,83 +176,114 @@
 	"taxonomies": [
 		{
 			"name": "category",
-			"label": "Categories",
-			"labelSingular": "Category",
+			"label": "Danh mục dự án",
+			"labelSingular": "Danh mục",
 			"hierarchical": true,
-			"collections": ["posts"],
+			"collections": [
+				"posts"
+			],
 			"terms": [
 				{
-					"slug": "development",
-					"label": "Development"
+					"slug": "nha-hang",
+					"label": "Nhà hàng"
 				},
 				{
-					"slug": "design",
-					"label": "Design"
+					"slug": "khach-san",
+					"label": "Khách sạn"
 				},
 				{
-					"slug": "notes",
-					"label": "Notes"
+					"slug": "bep-trung-tam",
+					"label": "Bếp trung tâm"
+				},
+				{
+					"slug": "khu-cong-nghiep",
+					"label": "Khu công nghiệp"
+				},
+				{
+					"slug": "bakery",
+					"label": "Bakery"
+				},
+				{
+					"slug": "bar-cafe",
+					"label": "Bar & Café"
 				}
 			]
 		},
 		{
 			"name": "tag",
-			"label": "Tags",
-			"labelSingular": "Tag",
+			"label": "Thẻ",
+			"labelSingular": "Thẻ",
 			"hierarchical": false,
-			"collections": ["posts"],
+			"collections": [
+				"posts"
+			],
 			"terms": [
 				{
-					"slug": "webdev",
-					"label": "Web Development"
+					"slug": "thiet-ke",
+					"label": "Thiết kế"
 				},
 				{
-					"slug": "opinion",
-					"label": "Opinion"
+					"slug": "thi-cong",
+					"label": "Thi công"
 				},
 				{
-					"slug": "tools",
-					"label": "Tools"
+					"slug": "thiet-bi",
+					"label": "Thiết bị"
 				},
 				{
-					"slug": "creativity",
-					"label": "Creativity"
+					"slug": "bao-tri",
+					"label": "Bảo trì"
 				}
 			]
 		}
 	],
 	"bylines": [
 		{
-			"id": "byline-editorial",
-			"slug": "emdash-editorial",
-			"displayName": "EmDash Editorial"
-		},
-		{
-			"id": "byline-guest",
-			"slug": "guest-contributor",
-			"displayName": "Guest Contributor",
-			"isGuest": true
+			"id": "byline-avc",
+			"slug": "avc",
+			"displayName": "AVC"
 		}
 	],
 	"menus": [
 		{
 			"name": "primary",
-			"label": "Primary Navigation",
+			"label": "Điều hướng chính",
 			"items": [
 				{
 					"type": "custom",
-					"label": "Home",
+					"label": "Trang chủ",
 					"url": "/"
 				},
 				{
 					"type": "custom",
-					"label": "About",
-					"url": "/pages/about"
+					"label": "Giới thiệu",
+					"url": "/#gioi-thieu"
 				},
 				{
 					"type": "custom",
-					"label": "Posts",
+					"label": "Dịch vụ",
+					"url": "/#linh-vuc"
+				},
+				{
+					"type": "custom",
+					"label": "Dự án",
 					"url": "/posts"
+				},
+				{
+					"type": "custom",
+					"label": "Liên hệ",
+					"url": "/#lien-he"
+				}
+			]
+		},
+		{
+			"name": "social",
+			"label": "Mạng xã hội",
+			"items": [
+				{
+					"type": "custom",
+					"label": "LinkedIn",
+					"url": "https://www.linkedin.com/company/avc-equipment"
 				}
 			]
 		}
@@ -153,39 +292,20 @@
 		{
 			"name": "sidebar",
 			"label": "Sidebar",
-			"description": "Widget area displayed on single post pages",
+			"description": "Hiển thị trên trang chi tiết dự án",
 			"widgets": [
 				{
 					"type": "component",
-					"componentId": "core:search",
-					"title": "Search"
-				},
-				{
-					"type": "component",
 					"componentId": "core:categories",
-					"title": "Categories"
-				},
-				{
-					"type": "component",
-					"componentId": "core:tags",
-					"title": "Tags"
+					"title": "Danh mục dự án"
 				},
 				{
 					"type": "component",
 					"componentId": "core:recent-posts",
-					"title": "Recent Posts",
+					"title": "Dự án khác",
 					"settings": {
 						"count": 5,
-						"showDate": true
-					}
-				},
-				{
-					"type": "component",
-					"componentId": "core:archives",
-					"title": "Archives",
-					"settings": {
-						"type": "monthly",
-						"limit": 6
+						"showDate": false
 					}
 				}
 			]
@@ -193,11 +313,11 @@
 		{
 			"name": "footer",
 			"label": "Footer",
-			"description": "Widget area displayed in the site footer",
+			"description": "Thông tin liên hệ ở chân trang",
 			"widgets": [
 				{
 					"type": "content",
-					"title": "About",
+					"title": "Liên hệ",
 					"content": [
 						{
 							"_type": "block",
@@ -205,93 +325,57 @@
 							"children": [
 								{
 									"_type": "span",
-									"text": "A blog about software, design, and the occasional stray thought.",
-									"_key": "k1"
+									"text": "Showroom: 58 Nguyễn Hoàng, Phường Bình Trưng, TP.HCM · Kho hàng: 12/64 Đ. Thạnh Lộc 27, Quận 12, TP.HCM"
 								}
-							],
-							"_key": "k0"
+							]
 						}
 					]
 				}
 			]
 		}
 	],
-	"sections": [
-		{
-			"slug": "newsletter-signup",
-			"title": "Newsletter Signup",
-			"description": "A call-to-action block for newsletter subscriptions",
-			"keywords": ["newsletter", "subscribe", "email", "cta"],
-			"source": "theme",
-			"content": [
-				{
-					"_type": "block",
-					"style": "h3",
-					"children": [
-						{
-							"_type": "span",
-							"text": "Stay in the loop",
-							"_key": "k1"
-						}
-					],
-					"_key": "k0"
-				},
-				{
-					"_type": "block",
-					"style": "normal",
-					"children": [
-						{
-							"_type": "span",
-							"text": "Get notified when new posts are published. No spam, unsubscribe anytime.",
-							"_key": "k3"
-						}
-					],
-					"_key": "k2"
-				}
-			]
-		},
-		{
-			"slug": "about-author",
-			"title": "About the Author",
-			"description": "Brief author bio for use in posts or pages",
-			"keywords": ["author", "bio", "about"],
-			"source": "theme",
-			"content": [
-				{
-					"_type": "block",
-					"style": "normal",
-					"children": [
-						{
-							"_type": "span",
-							"text": "A software developer who writes about building things on the web. Based somewhere with good coffee and reliable internet.",
-							"_key": "k1"
-						}
-					],
-					"_key": "k0"
-				}
-			]
-		}
-	],
+	"sections": [],
 	"content": {
-		"pages": [
+		"home": [
 			{
-				"id": "about",
-				"slug": "about",
+				"id": "home",
+				"slug": "home",
 				"status": "published",
 				"data": {
-					"title": "About",
-					"content": [
+					"title": "Trang chủ",
+					"hero_image": {
+						"$media": {
+							"url": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1920&h=880&fit=crop",
+							"alt": "Hệ thống bếp công nghiệp",
+							"filename": "avc-hero.jpg"
+						}
+					},
+					"stat_1": "15+ Năm Kinh Nghiệm",
+					"stat_2": "1.500+ Công Trình Đã Triển Khai",
+					"stat_3": "Dự Án Trên Toàn Quốc",
+					"stat_4": "Hỗ Trợ & Bảo Trì 24/7",
+					"intro_heading": "CÔNG TY TNHH THIẾT BỊ CÔNG NGHIỆP AVC",
+					"intro": [
 						{
 							"_type": "block",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"text": "A place for writing about software, design, and the occasional stray thought. No posting schedule, no newsletter funnel. Just things I wanted to write down.",
-									"_key": "k1"
+									"text": "AVC được thành lập với định hướng lấy "
+								},
+								{
+									"_type": "span",
+									"text": "chất lượng và an toàn làm ưu tiên hàng đầu",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"text": " trong mọi giải pháp bếp công nghiệp. Chúng tôi không ngừng hoàn thiện sản phẩm, dịch vụ và quy trình thi công nhằm mang đến những hệ thống bếp hiệu quả, bền vững và tối ưu cho vận hành thực tế."
 								}
-							],
-							"_key": "k0"
+							]
 						},
 						{
 							"_type": "block",
@@ -299,29 +383,220 @@
 							"children": [
 								{
 									"_type": "span",
-									"text": "Built with Astro and EmDash. The source is open if you want to see how it works.",
-									"_key": "k3"
+									"text": "Với kinh nghiệm triển khai đa dạng các dự án F&B, nhà hàng – khách sạn, bếp trung tâm và khu công nghiệp trên toàn quốc, AVC cam kết mang đến "
+								},
+								{
+									"_type": "span",
+									"text": "giải pháp phù hợp nhu cầu thực tế",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"text": ", hiệu quả và bền vững cho từng công trình."
 								}
-							],
-							"_key": "k2"
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Chúng tôi làm việc cùng chủ đầu tư, kiến trúc sư và nhà thầu để tạo ra những không gian bếp tối ưu công năng vận hành và đáp ứng nhu cầu đặc thù của từng đầu bếp. Đội ngũ kỹ sư, kỹ thuật viên giàu kinh nghiệm thực tế cùng "
+								},
+								{
+									"_type": "span",
+									"text": "chuỗi giá trị khép kín",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"text": " — tư vấn, thiết kế, sản xuất, thi công, hậu mãi — là nền tảng cho chất lượng của từng công trình."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "AVC tổ chức lắp đặt, bảo hành và bảo trì hệ thống bếp công nghiệp theo quy trình kỹ thuật rõ ràng, đảm bảo thiết bị vận hành "
+								},
+								{
+									"_type": "span",
+									"text": "ổn định, an toàn và hiệu quả",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"text": " trong suốt vòng đời dự án."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Chúng tôi tiếp tục hoàn thiện để dẫn đầu. Xây dựng tiêu chuẩn. "
+								},
+								{
+									"_type": "span",
+									"text": "Kiến tạo tương lai của giải pháp bếp công nghiệp tại Việt Nam.",
+									"marks": [
+										"strong"
+									]
+								}
+							]
+						}
+					],
+					"cta_label": "tìm hiểu thêm",
+					"cta_url": "/#linh-vuc",
+					"services_heading": "LĨNH VỰC CHÚNG TÔI PHỤC VỤ",
+					"services_intro": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "AVC cung cấp giải pháp bếp công nghiệp trọn gói cho các thị trường: Nhà hàng, Khách sạn, Bếp trung tâm, Căn tin khu công nghiệp, Bakery, Bar & Café."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Dịch vụ bao gồm: Tư vấn đầu tư, Thiết kế mặt bằng 2D/3D & MEP, Cung cấp thiết bị nhập khẩu và sản xuất, Thi công lắp đặt, Bảo hành và Bảo trì định kỳ."
+								}
+							]
 						}
 					]
 				}
 			}
 		],
+		"linh_vuc": [
+			{
+				"id": "lv-nha-hang",
+				"slug": "nha-hang",
+				"status": "published",
+				"data": {
+					"title": "Nhà hàng",
+					"sort_order": 1,
+					"image": {
+						"$media": {
+							"url": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=500&fit=crop",
+							"alt": "Bếp nhà hàng",
+							"filename": "linh-vuc-nha-hang.jpg"
+						}
+					}
+				}
+			},
+			{
+				"id": "lv-khach-san",
+				"slug": "khach-san",
+				"status": "published",
+				"data": {
+					"title": "Khách sạn",
+					"sort_order": 2,
+					"image": {
+						"$media": {
+							"url": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=500&fit=crop",
+							"alt": "Bếp khách sạn",
+							"filename": "linh-vuc-khach-san.jpg"
+						}
+					}
+				}
+			},
+			{
+				"id": "lv-bep-trung-tam",
+				"slug": "bep-trung-tam",
+				"status": "published",
+				"data": {
+					"title": "Bếp trung tâm",
+					"sort_order": 3,
+					"image": {
+						"$media": {
+							"url": "https://images.unsplash.com/photo-1581299894007-aaa50297cf16?w=800&h=500&fit=crop",
+							"alt": "Bếp trung tâm",
+							"filename": "linh-vuc-bep-trung-tam.jpg"
+						}
+					}
+				}
+			},
+			{
+				"id": "lv-khu-cong-nghiep",
+				"slug": "khu-cong-nghiep",
+				"status": "published",
+				"data": {
+					"title": "Khu công nghiệp",
+					"sort_order": 4,
+					"image": {
+						"$media": {
+							"url": "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&h=500&fit=crop",
+							"alt": "Căn tin khu công nghiệp",
+							"filename": "linh-vuc-khu-cong-nghiep.jpg"
+						}
+					}
+				}
+			},
+			{
+				"id": "lv-bakery",
+				"slug": "bakery",
+				"status": "published",
+				"data": {
+					"title": "Bakery",
+					"sort_order": 5,
+					"image": {
+						"$media": {
+							"url": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&h=500&fit=crop",
+							"alt": "Bếp bakery",
+							"filename": "linh-vuc-bakery.jpg"
+						}
+					}
+				}
+			},
+			{
+				"id": "lv-bar-cafe",
+				"slug": "bar-cafe",
+				"status": "published",
+				"data": {
+					"title": "Bar & Café",
+					"sort_order": 6,
+					"image": {
+						"$media": {
+							"url": "https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=800&h=500&fit=crop",
+							"alt": "Quầy bar và café",
+							"filename": "linh-vuc-bar-cafe.jpg"
+						}
+					}
+				}
+			}
+		],
 		"posts": [
 			{
-				"id": "post-1",
-				"slug": "building-for-the-long-term",
+				"id": "du-an-1",
+				"slug": "he-thong-bep-trung-tam-chuoi-nha-hang",
 				"status": "published",
 				"data": {
-					"title": "Building for the Long Term",
-					"excerpt": "The frameworks will change. The databases will change. What survives is the clarity of your thinking.",
+					"title": "Hệ thống bếp trung tâm cho chuỗi nhà hàng",
+					"excerpt": "Tư vấn, thiết kế và thi công bếp trung tâm công suất 5.000 suất ăn/ngày, đồng bộ thiết bị nhập khẩu và quy trình vận hành một chiều.",
 					"featured_image": {
 						"$media": {
-							"url": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=800&fit=crop",
-							"alt": "Code on a monitor in a dark room",
-							"filename": "building-long-term.jpg"
+							"url": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=1200&h=800&fit=crop",
+							"alt": "Bếp trung tâm chuỗi nhà hàng",
+							"filename": "du-an-bep-trung-tam.jpg"
 						}
 					},
 					"content": [
@@ -331,11 +606,9 @@
 							"children": [
 								{
 									"_type": "span",
-									"text": "Every few years the industry collectively decides that everything we've been doing is wrong and there's a better way. New frameworks, new paradigms, new build tools. The churn is relentless, and if you're not careful, you spend more time migrating than building.",
-									"_key": "k1"
+									"text": "AVC đảm nhận trọn gói từ tư vấn đầu tư, thiết kế mặt bằng 2D/3D và hệ MEP đến cung cấp, lắp đặt thiết bị cho bếp trung tâm phục vụ chuỗi nhà hàng với công suất 5.000 suất ăn mỗi ngày."
 								}
-							],
-							"_key": "k0"
+							]
 						},
 						{
 							"_type": "block",
@@ -343,88 +616,39 @@
 							"children": [
 								{
 									"_type": "span",
-									"text": "I've been writing software long enough to have seen several of these cycles. jQuery to Backbone to Angular to React to whatever comes next. Each transition felt urgent at the time. Looking back, the things that actually mattered were rarely about the framework.",
-									"_key": "k3"
+									"text": "Hệ thống được bố trí theo quy trình một chiều — tiếp nhận, sơ chế, chế biến, chia suất, rửa — đảm bảo an toàn vệ sinh thực phẩm và tối ưu nhân lực vận hành."
 								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "What survives",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Clean data models survive. Clear boundaries between systems survive. Good naming survives. The decision to keep things simple when you could have made them clever - that definitely survives.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "What doesn't survive is code that was written to impress, abstractions built for problems that never materialized, and architectures designed around a framework's opinions rather than the domain's reality.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The best code I've written is boring. It reads like prose, does one thing well, and doesn't require a PhD in category theory to understand. The worst code I've written was technically impressive at the time.",
-									"_key": "k11"
-								}
-							],
-							"_key": "k10"
+							]
 						}
 					]
 				},
 				"bylines": [
 					{
-						"byline": "byline-editorial"
-					},
-					{
-						"byline": "byline-guest",
-						"roleLabel": "Guest essay"
+						"byline": "byline-avc"
 					}
 				],
 				"taxonomies": {
-					"category": ["development"],
-					"tag": ["opinion"]
+					"category": [
+						"bep-trung-tam"
+					],
+					"tag": [
+						"thiet-ke",
+						"thi-cong"
+					]
 				}
 			},
 			{
-				"id": "post-2",
-				"slug": "the-case-for-static",
+				"id": "du-an-2",
+				"slug": "bep-khach-san-5-sao",
 				"status": "published",
 				"data": {
-					"title": "The Case for Static",
-					"excerpt": "Static sites aren't a step backwards. They're what you get when you take performance and simplicity seriously.",
+					"title": "Bếp khách sạn 5 sao tiêu chuẩn quốc tế",
+					"excerpt": "Cung cấp và lắp đặt hệ thống bếp nóng, bếp bánh và khu buffet cho khách sạn 5 sao — thiết bị nhập khẩu châu Âu, nghiệm thu theo tiêu chuẩn quốc tế.",
 					"featured_image": {
 						"$media": {
-							"url": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&h=800&fit=crop",
-							"alt": "Laptop and coffee on a wooden table",
-							"filename": "case-for-static.jpg"
+							"url": "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=1200&h=800&fit=crop",
+							"alt": "Bếp khách sạn 5 sao",
+							"filename": "du-an-khach-san.jpg"
 						}
 					},
 					"content": [
@@ -434,11 +658,9 @@
 							"children": [
 								{
 									"_type": "span",
-									"text": "There's a certain irony in the fact that the web started static, went dynamic, and is now swinging back toward static again. But the static sites of today aren't the hand-coded HTML pages of 1998. They're generated, optimized, and deployed to edge networks that serve them in milliseconds.",
-									"_key": "k1"
+									"text": "Dự án bao gồm khu bếp nóng, bếp lạnh, bếp bánh và khu vực buffet với thiết bị nhập khẩu từ châu Âu, đáp ứng tiêu chuẩn vận hành của tập đoàn quản lý khách sạn quốc tế."
 								}
-							],
-							"_key": "k0"
+							]
 						},
 						{
 							"_type": "block",
@@ -446,72 +668,38 @@
 							"children": [
 								{
 									"_type": "span",
-									"text": "The pitch for server-rendered everything was compelling: dynamic content, personalization, real-time data. But most sites don't need most of that most of the time. A blog post doesn't need to be rendered on every request. A product page doesn't change every second.",
-									"_key": "k3"
+									"text": "AVC phối hợp cùng đơn vị tư vấn quản lý và đầu bếp điều hành từ giai đoạn thiết kế để tối ưu luồng vận hành và công năng từng khu vực."
 								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The performance argument",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "A static file served from a CDN is as fast as the web gets. No cold starts, no database queries, no server-side rendering overhead. The Time to First Byte is essentially the network latency to your nearest edge node. You can't beat physics.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "And when you do need dynamic behavior, you can add it surgically. An island of interactivity in a sea of static HTML. The best of both worlds, without paying the cost of either at all times.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
+							]
 						}
 					]
 				},
 				"bylines": [
 					{
-						"byline": "byline-editorial"
+						"byline": "byline-avc"
 					}
 				],
 				"taxonomies": {
-					"category": ["development"],
-					"tag": ["webdev", "opinion"]
+					"category": [
+						"khach-san"
+					],
+					"tag": [
+						"thiet-bi"
+					]
 				}
 			},
 			{
-				"id": "post-3",
-				"slug": "learning-in-public",
+				"id": "du-an-3",
+				"slug": "can-tin-khu-cong-nghiep",
 				"status": "published",
 				"data": {
-					"title": "Learning in Public",
-					"excerpt": "Writing about what you're learning is the fastest way to find out what you don't actually understand.",
+					"title": "Căn tin khu công nghiệp 3.000 công nhân",
+					"excerpt": "Thi công hệ thống bếp và khu phục vụ căn tin cho nhà máy 3.000 công nhân, kèm hợp đồng bảo trì định kỳ 24/7.",
 					"featured_image": {
 						"$media": {
-							"url": "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?w=1200&h=800&fit=crop",
-							"alt": "Notebook and pen on a desk",
-							"filename": "learning-in-public.jpg"
+							"url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&h=800&fit=crop",
+							"alt": "Căn tin khu công nghiệp",
+							"filename": "du-an-can-tin-kcn.jpg"
 						}
 					},
 					"content": [
@@ -521,11 +709,9 @@
 							"children": [
 								{
 									"_type": "span",
-									"text": "I started writing about things I was learning not because I had anything original to say, but because I kept forgetting what I'd figured out. The blog posts were notes to my future self, published publicly more out of laziness than courage.",
-									"_key": "k1"
+									"text": "Hệ thống bếp công nghiệp phục vụ 3.000 suất ăn ca cho nhà máy trong khu công nghiệp, gồm dây chuyền nấu, giữ nóng, chia suất và khu rửa công suất lớn."
 								}
-							],
-							"_key": "k0"
+							]
 						},
 						{
 							"_type": "block",
@@ -533,403 +719,24 @@
 							"children": [
 								{
 									"_type": "span",
-									"text": "What I didn't expect was how much the writing itself would accelerate the learning. There's a particular kind of clarity that comes from trying to explain something to someone else. The gaps in your understanding, which you can happily ignore when the knowledge lives only in your head, become painfully obvious when you try to put it into sentences.",
-									"_key": "k3"
+									"text": "Sau bàn giao, AVC duy trì hợp đồng bảo trì định kỳ với đội kỹ thuật hỗ trợ 24/7, đảm bảo thiết bị vận hành ổn định trong suốt vòng đời dự án."
 								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The fear of being wrong",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The biggest barrier isn't time or writing skill. It's the fear of publishing something that turns out to be wrong. But here's the thing: being wrong publicly is one of the most efficient ways to learn. Someone will correct you, often kindly, and you'll remember that correction forever.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The posts that helped me most weren't written by experts. They were written by people one step ahead of me on the same path, in language that hadn't yet been polished into abstraction. There's a place for that kind of writing, and it's more valuable than most people realize.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
+							]
 						}
 					]
 				},
+				"bylines": [
+					{
+						"byline": "byline-avc"
+					}
+				],
 				"taxonomies": {
-					"category": ["notes"],
-					"tag": ["opinion"]
-				}
-			},
-			{
-				"id": "post-4",
-				"slug": "small-tools-big-impact",
-				"status": "published",
-				"data": {
-					"title": "Small Tools, Big Impact",
-					"excerpt": "The best developer tools do one thing well and get out of your way. A love letter to focused software.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1575026615908-666710ae5e47?w=1200&h=800&fit=crop",
-							"alt": "Wrenches and hand tools hanging on a workshop wall",
-							"filename": "small-tools.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "There's a class of software that doesn't get enough appreciation. Not the frameworks or the platforms or the IDEs, but the small, sharp tools that solve one problem so well you stop thinking about them. They become invisible, which is the highest compliment you can pay a tool.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "I'm talking about things like ripgrep, which searches code so fast it changed how I think about searching. Or jq, which makes JSON feel like a first-class data format in the terminal. Or curl, which has been quietly powering the internet's plumbing for decades.",
-									"_key": "k3"
-								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The Unix philosophy, revisited",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Do one thing well. The advice is old enough to be a cliche, but the best modern tools still follow it. They don't try to be platforms. They don't have plugin ecosystems or configuration languages or startup wizards. They do their job and they compose with other tools that do theirs.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The temptation is always to add more. One more feature, one more option, one more integration. But every addition is a decision someone has to make, a path through the code that has to be maintained, a thing that can break. The best tools resist this. They stay small, and in staying small, they stay reliable.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["development"],
-					"tag": ["tools"]
-				}
-			},
-			{
-				"id": "post-5",
-				"slug": "designing-with-constraints",
-				"status": "published",
-				"data": {
-					"title": "Designing with Constraints",
-					"excerpt": "Limitations aren't obstacles to creativity. They're the structure that makes creativity possible.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1200&h=800&fit=crop",
-							"alt": "Pencils and design tools on a desk",
-							"filename": "designing-with-constraints.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Give a designer a blank canvas and unlimited time, and they'll often produce something mediocre. Give them a tight brief, a small screen, and a deadline, and they'll surprise you. This isn't a paradox - it's how creativity actually works.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Constraints force decisions. When you can't use more than two typefaces, you have to choose carefully. When the page has to load in under a second, every element earns its place. When the interface has to work on a 320px screen, you discover what's truly essential.",
-									"_key": "k3"
-								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Embracing the box",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The web itself is a constraint. HTML flows in one direction. CSS has a box model. Browsers have viewport sizes and font rendering quirks. You can fight these constraints or you can work with them, and the results are dramatically different.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The designs I admire most don't look like they were forced through a framework. They look like they grew naturally from the medium, respecting its grain rather than working against it. That only happens when you treat constraints as creative partners rather than enemies.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["design"],
-					"tag": ["creativity"]
-				}
-			},
-			{
-				"id": "post-6",
-				"slug": "a-weekend-with-a-side-project",
-				"status": "published",
-				"data": {
-					"title": "A Weekend with a Side Project",
-					"excerpt": "No stakeholders, no deadlines, no Jira tickets. Just you and a dumb idea that might turn into something.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=1200&h=800&fit=crop",
-							"alt": "Code on a screen with a dark theme",
-							"filename": "weekend-side-project.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Saturday morning. Coffee's made, the house is quiet, and I've got an idea that's been nagging at me all week. Not a good idea, necessarily - just a persistent one. A small tool that does a thing I keep doing manually. How hard could it be?",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "This is the best kind of programming. No requirements document, no sprint planning, no pull request reviews. Just a text editor and a problem. The freedom to make terrible architectural decisions, rewrite everything twice, and follow tangents that turn out to be dead ends.",
-									"_key": "k3"
-								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Why side projects matter",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Side projects are where you learn things your day job would never teach you. Not because the problems are harder, but because you're free to take risks. Try a language you've never used. Build something without a framework. Deploy to a platform you've only read about. The stakes are zero, which makes the learning maximum.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "By Sunday evening, the thing sort of works. It's rough, the error handling is nonexistent, and the README is a single sentence. But it solves the problem I set out to solve, and I learned three things I didn't know on Friday. Not a bad weekend.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["development"],
-					"tag": ["creativity"]
-				}
-			},
-			{
-				"id": "post-7",
-				"slug": "notes-on-simplicity",
-				"status": "published",
-				"data": {
-					"title": "Notes on Simplicity",
-					"excerpt": "Simplicity isn't the absence of complexity. It's the result of understanding a problem well enough to solve it cleanly.",
-					"featured_image": {
-						"$media": {
-							"url": "https://images.unsplash.com/photo-1559051668-e1fa58f25786?w=1200&h=800&fit=crop",
-							"alt": "Geometric pattern carved into white paper",
-							"filename": "notes-on-simplicity.jpg"
-						}
-					},
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Every piece of software starts simple. A few files, a clear purpose, a small surface area. Then features get added, edge cases get handled, and before long you're looking at something that requires a diagram to understand. This isn't inevitable, but it takes discipline to prevent.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The hard part of simplicity isn't the initial design. It's the ongoing resistance to complication. Every feature request, every bug fix, every refactor is an opportunity to add complexity. Saying no is the most important design skill, and the least celebrated.",
-									"_key": "k3"
-								}
-							],
-							"_key": "k2"
-						},
-						{
-							"_type": "block",
-							"style": "h2",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Removing as a feature",
-									"_key": "k5"
-								}
-							],
-							"_key": "k4"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "The best version of a product often has fewer features than the previous one. Not because features were missing, but because someone had the courage to remove things that weren't earning their keep. Every feature has a cost - in maintenance, in cognitive load, in the weight of the interface.",
-									"_key": "k7"
-								}
-							],
-							"_key": "k6"
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Simplicity is a practice, not a destination. You never arrive at simple. You just keep asking: is this necessary? Could this be clearer? Is there a way to solve this problem by removing something instead of adding something? The answer is yes more often than you'd expect.",
-									"_key": "k9"
-								}
-							],
-							"_key": "k8"
-						}
-					]
-				},
-				"taxonomies": {
-					"category": ["notes"],
-					"tag": ["opinion"]
-				}
-			},
-			{
-				"id": "post-draft",
-				"slug": "work-in-progress",
-				"status": "draft",
-				"data": {
-					"title": "Work in Progress",
-					"excerpt": "This post is still being written.",
-					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "This is a draft post that won't appear in the public listing.",
-									"_key": "k1"
-								}
-							],
-							"_key": "k0"
-						}
+					"category": [
+						"khu-cong-nghiep"
+					],
+					"tag": [
+						"thi-cong",
+						"bao-tri"
 					]
 				}
 			}

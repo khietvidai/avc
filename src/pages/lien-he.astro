@@ -1,0 +1,220 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Liên hệ" description="Liên hệ Công ty TNHH Thiết Bị Công Nghiệp AVC — Hotline 1900 0054, showroom 58 Nguyễn Hoàng, Phường Bình Trưng, TP.HCM">
+	<div class="page">
+		<section class="section">
+			<h1 class="page-title">LIÊN HỆ AVC</h1>
+			<hr class="dashed-divider" />
+			<p class="lead">Đội ngũ AVC sẵn sàng tư vấn giải pháp bếp công nghiệp phù hợp cho công trình của bạn — từ khảo sát, thiết kế đến báo giá thiết bị.</p>
+
+			<div class="contact-grid">
+				<div class="contact-card">
+					<h3>Showroom</h3>
+					<p>58 Nguyễn Hoàng, Phường Bình Trưng,<br />Thành phố Hồ Chí Minh, Việt Nam</p>
+				</div>
+				<div class="contact-card">
+					<h3>Kho hàng</h3>
+					<p>12/64 Đ. Thạnh Lộc 27, Khu phố 3C, Quận 12,<br />Thành phố Hồ Chí Minh, Việt Nam</p>
+				</div>
+				<div class="contact-card highlight">
+					<h3>Hotline</h3>
+					<p class="hotline"><a href="tel:19000054">1900 0054</a></p>
+					<p class="sub">Hỗ trợ & bảo trì 24/7</p>
+				</div>
+				<div class="contact-card">
+					<h3>Email & Website</h3>
+					<p><a href="mailto:info@avc.equipment">info@avc.equipment</a></p>
+					<p class="sub">thietbibepauviet.com | avc.equipment</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section steps-section">
+			<h2 class="section-title">QUY TRÌNH LÀM VIỆC</h2>
+			<hr class="dashed-divider" />
+			<div class="steps">
+				<div class="step"><span>1</span><h4>Tiếp nhận yêu cầu</h4><p>Gọi hotline hoặc gửi email mô tả nhu cầu công trình.</p></div>
+				<div class="step"><span>2</span><h4>Khảo sát & tư vấn</h4><p>AVC khảo sát mặt bằng, tư vấn công suất và tiêu chuẩn phù hợp.</p></div>
+				<div class="step"><span>3</span><h4>Thiết kế & báo giá</h4><p>Thiết kế mặt bằng 2D/3D, bố trí MEP và báo giá chi tiết.</p></div>
+				<div class="step"><span>4</span><h4>Thi công & bàn giao</h4><p>Sản xuất, lắp đặt, nghiệm thu và đồng hành bảo hành – bảo trì.</p></div>
+			</div>
+		</section>
+
+		<section class="section cta-section">
+			<a href="tel:19000054" class="btn">Gọi 1900 0054</a>
+			<a href="mailto:info@avc.equipment" class="btn btn-outline">Gửi email</a>
+		</section>
+	</div>
+</Base>
+
+<style>
+	.page {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 44px 24px 80px;
+	}
+
+	.section {
+		margin-bottom: 64px;
+		text-align: center;
+	}
+
+	.page-title {
+		font-size: 35px;
+		font-weight: 700;
+		letter-spacing: 1px;
+		color: var(--color-brand);
+	}
+
+	.section-title {
+		font-size: 28px;
+		font-weight: 700;
+		letter-spacing: 1px;
+		color: var(--color-brand);
+	}
+
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 34px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.lead {
+		max-width: 640px;
+		margin: 0 auto 40px;
+		font-size: 17px;
+		line-height: 1.65;
+	}
+
+	.contact-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 16px;
+		text-align: left;
+	}
+
+	.contact-card {
+		padding: 28px;
+		border: 1px solid var(--color-border);
+	}
+
+	.contact-card.highlight {
+		border-color: var(--color-brand);
+		background: var(--color-bg-subtle);
+	}
+
+	.contact-card h3 {
+		font-size: 14px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		color: var(--color-brand);
+		margin-bottom: 10px;
+	}
+
+	.contact-card p {
+		font-size: 16px;
+		line-height: 1.6;
+	}
+
+	.hotline a {
+		font-size: 30px;
+		font-weight: 700;
+		color: var(--color-brand);
+	}
+
+	.sub {
+		font-size: 14px;
+		color: var(--color-text-secondary);
+		margin-top: 4px;
+	}
+
+	.steps {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 16px;
+		text-align: left;
+	}
+
+	.step {
+		padding: 20px;
+		background: var(--color-bg-subtle);
+	}
+
+	.step span {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 34px;
+		height: 34px;
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+		font-weight: 700;
+		font-size: 16px;
+		margin-bottom: 10px;
+	}
+
+	.step h4 {
+		font-size: 15px;
+		font-weight: 700;
+		text-transform: uppercase;
+		margin-bottom: 6px;
+	}
+
+	.step p {
+		font-size: 14px;
+		line-height: 1.6;
+		color: var(--color-text-secondary);
+	}
+
+	.btn {
+		display: inline-block;
+		margin: 0 6px;
+		padding: 11px 26px;
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+		font-size: 15px;
+		border-radius: 0;
+		transition: background var(--transition-fast);
+	}
+
+	.btn:hover {
+		background: var(--color-brand-hover);
+		color: var(--color-on-brand);
+	}
+
+	.btn-outline {
+		background: transparent;
+		border: 1px solid var(--color-brand);
+		color: var(--color-brand);
+	}
+
+	.btn-outline:hover {
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+	}
+
+	@media (max-width: 800px) {
+		.steps {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	@media (max-width: 540px) {
+		.contact-grid,
+		.steps {
+			grid-template-columns: 1fr;
+		}
+
+		.page-title {
+			font-size: 26px;
+		}
+
+		.section-title {
+			font-size: 22px;
+		}
+	}
+</style>

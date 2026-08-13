@@ -1,0 +1,290 @@
+---
+import Base from "../layouts/Base.astro";
+
+const nhomSanPham = [
+	{ title: "Bếp công nghiệp", desc: "Bếp Âu, bếp Á, bếp chiên nhúng, bếp chiên phẳng, bếp nướng than/gas — Eagle, Berjaya, Lestov, Berto's." },
+	{ title: "Thiết bị lạnh", desc: "Tủ đông, tủ mát, bàn lạnh, tủ mát trưng bày công nghiệp — Turbocool, Hoshizaki, Turbo Air." },
+	{ title: "Máy làm đá", desc: "Máy làm đá viên, đá vảy công suất từ quán café đến bếp trung tâm — Hoshizaki, Scotsman." },
+	{ title: "Lò hấp nướng đa năng", desc: "Combi oven và lò nướng đối lưu cho nhà hàng, khách sạn, bakery — Unox, Lainox, Venix." },
+	{ title: "Tủ trưng bày", desc: "Tủ trưng bày bánh, tủ mát trưng bày thực phẩm cho bakery, café và cửa hàng tiện lợi." },
+	{ title: "Máy rửa chén & sơ chế", desc: "Máy rửa chén công nghiệp, máy cắt – xay – trộn thực phẩm — Hobart, Robot Coupe, Sirman, Fimar." },
+	{ title: "Thiết bị inox chế tạo", desc: "Bàn, chậu, kệ, tủ, xe đẩy và quầy bar inox gia công theo bản vẽ tại nhà máy AVC." },
+	{ title: "Hệ thống hút khói", desc: "Chụp hút khói, ống gió, quạt hút và xử lý không khí cho bếp công nghiệp — thiết kế và thi công đồng bộ." },
+];
+
+const thuongHieu = [
+	"Eagle", "Turbocool", "Hoshizaki", "Unox", "Lainox", "Robot Coupe", "Hobart", "Scotsman",
+	"Fimar", "Lotus", "Venix", "Lestov", "Sirman", "Berjaya", "Chanmag", "Menumaster",
+	"Hatco", "ATA", "Jiwins", "Turbo Air", "Berto's",
+];
+
+const nguyenTac = [
+	"Lắng nghe và thấu hiểu nhu cầu khách hàng",
+	"Áp dụng và cải tiến liên tục hệ thống quản lý chất lượng ISO 14001:2015",
+	"Tuân thủ đầy đủ các quy định về chất lượng",
+	"Thực hiện đúng quy trình và nâng cao chất lượng sản phẩm",
+];
+---
+
+<Base title="Sản phẩm & Thương hiệu" description="AVC cung cấp giải pháp thiết bị bếp công nghiệp toàn diện: bếp, tủ lạnh, máy rửa chén, thiết bị inox, quầy bar và hệ thống hút khói từ các thương hiệu uy tín">
+	<div class="page">
+		<section class="section">
+			<h1 class="page-title">SẢN PHẨM & THƯƠNG HIỆU</h1>
+			<hr class="dashed-divider" />
+			<p class="lead">AVC cung cấp giải pháp thiết bị bếp công nghiệp toàn diện: bếp, tủ lạnh, máy rửa chén, thiết bị inox, quầy bar và hệ thống hút khói… từ những thương hiệu uy tín, đảm bảo <strong>chất lượng cao và chi phí hiệu quả</strong>.</p>
+			<div class="products-grid">
+				{nhomSanPham.map((s) => (
+					<div class="product-card">
+						<h3>{s.title}</h3>
+						<p>{s.desc}</p>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="section">
+			<h2 class="section-title">THƯƠNG HIỆU PHÂN PHỐI</h2>
+			<hr class="dashed-divider" />
+			<div class="brands">
+				{thuongHieu.map((b) => <span class="brand-chip">{b}</span>)}
+			</div>
+		</section>
+
+		<section class="section">
+			<h2 class="section-title">CHÍNH SÁCH CHẤT LƯỢNG</h2>
+			<hr class="dashed-divider" />
+			<div class="quality-grid">
+				<div class="quality-text">
+					<p>AVC luôn xem chất lượng là ưu tiên hàng đầu và là nền tảng quan trọng để cam kết với khách hàng. Chúng tôi không ngừng cải tiến kỹ thuật, đổi mới công nghệ và nâng cao tiêu chuẩn sản phẩm nhằm đáp ứng kỳ vọng ngày càng cao của thị trường.</p>
+					<ul>
+						{nguyenTac.map((n) => <li>{n}</li>)}
+					</ul>
+				</div>
+				<figure><img src="/images/bep-hoan-thien-2.jpg" alt="Hệ thống bếp công nghiệp AVC hoàn thiện" loading="lazy" /></figure>
+			</div>
+		</section>
+
+		<section class="section">
+			<h2 class="section-title">NHÀ MÁY SẢN XUẤT & KHO HÀNG</h2>
+			<hr class="dashed-divider" />
+			<div class="factory-grid">
+				<figure>
+					<img src="/images/nha-may.jpg" alt="Nhà máy sản xuất inox AVC với máy cắt laser CNC" loading="lazy" />
+					<figcaption>Nhà máy sản xuất inox — chuyên nghiệp, chuẩn hoá, hiện đại với máy cắt laser CNC</figcaption>
+				</figure>
+				<figure>
+					<img src="/images/kho-hang.jpg" alt="Kho hàng AVC" loading="lazy" />
+					<figcaption>Kho hàng AVC — hàng hoá có sẵn, giao nhanh toàn quốc</figcaption>
+				</figure>
+			</div>
+			<p class="factory-note">Năng lực sản xuất inox theo bản vẽ giúp AVC chủ động tiến độ, kiểm soát chất lượng từng chi tiết và đáp ứng các yêu cầu chế tạo đặc thù của mỗi công trình.</p>
+		</section>
+
+		<section class="section cta-section">
+			<p class="cta-text">Cần báo giá thiết bị hoặc giải pháp trọn gói?</p>
+			<a href="/lien-he" class="btn">Liên hệ AVC</a>
+		</section>
+	</div>
+</Base>
+
+<style>
+	.page {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 44px 24px 80px;
+	}
+
+	.section {
+		margin-bottom: 64px;
+		text-align: center;
+	}
+
+	.page-title {
+		font-size: 35px;
+		font-weight: 700;
+		letter-spacing: 1px;
+		color: var(--color-brand);
+	}
+
+	.section-title {
+		font-size: 28px;
+		font-weight: 700;
+		letter-spacing: 1px;
+		color: var(--color-brand);
+	}
+
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 34px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.lead {
+		max-width: 700px;
+		margin: 0 auto 40px;
+		font-size: 17px;
+		line-height: 1.65;
+	}
+
+	.lead strong {
+		color: var(--color-brand);
+		font-weight: 700;
+	}
+
+	.products-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 16px;
+		text-align: left;
+	}
+
+	.product-card {
+		padding: 20px;
+		border: 1px solid var(--color-border);
+	}
+
+	.product-card h3 {
+		font-size: 15px;
+		font-weight: 700;
+		text-transform: uppercase;
+		color: var(--color-brand);
+		margin-bottom: 8px;
+	}
+
+	.product-card p {
+		font-size: 14px;
+		line-height: 1.6;
+		color: var(--color-text-secondary);
+	}
+
+	.brands {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 10px;
+	}
+
+	.brand-chip {
+		padding: 10px 22px;
+		border: 1px solid var(--color-border);
+		font-size: 15px;
+		font-weight: 700;
+		letter-spacing: 0.5px;
+		text-transform: uppercase;
+		color: var(--color-text-secondary);
+	}
+
+	.quality-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 32px;
+		align-items: center;
+		text-align: left;
+	}
+
+	.quality-text p {
+		font-size: 16px;
+		line-height: 1.65;
+		margin-bottom: 16px;
+	}
+
+	.quality-text ul {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.quality-text li {
+		font-size: 15px;
+		line-height: 1.5;
+		padding-left: 22px;
+		position: relative;
+	}
+
+	.quality-text li::before {
+		content: "✓";
+		position: absolute;
+		left: 0;
+		color: var(--color-brand);
+		font-weight: 700;
+	}
+
+	.quality-grid img {
+		width: 100%;
+		object-fit: cover;
+	}
+
+	.factory-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 16px;
+	}
+
+	.factory-grid img {
+		width: 100%;
+		height: 280px;
+		object-fit: cover;
+	}
+
+	.factory-grid figcaption {
+		font-size: 13px;
+		color: var(--avc-footer-text);
+		margin-top: 8px;
+	}
+
+	.factory-note {
+		max-width: 700px;
+		margin: 28px auto 0;
+		font-size: 16px;
+		line-height: 1.65;
+	}
+
+	.cta-text {
+		font-size: 18px;
+		margin-bottom: 20px;
+	}
+
+	.btn {
+		display: inline-block;
+		padding: 11px 26px;
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+		font-size: 15px;
+		border-radius: 0;
+		transition: background var(--transition-fast);
+	}
+
+	.btn:hover {
+		background: var(--color-brand-hover);
+		color: var(--color-on-brand);
+	}
+
+	@media (max-width: 900px) {
+		.products-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	@media (max-width: 800px) {
+		.quality-grid,
+		.factory-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 540px) {
+		.products-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.page-title {
+			font-size: 26px;
+		}
+
+		.section-title {
+			font-size: 22px;
+		}
+	}
+</style>

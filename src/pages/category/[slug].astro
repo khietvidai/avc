@@ -37,20 +37,19 @@ const filteredPosts = posts.map((post) => ({
 }));
 ---
 
-<Base title={`${term.label} posts`} description={`All posts in ${term.label}`}>
+<Base title={`Dự án ${term.label}`} description={`Các dự án thuộc danh mục ${term.label}`}>
 	<section class="archive-section">
 		<header class="archive-header">
-			<span class="archive-label">Category</span>
+			<span class="archive-label">Danh mục</span>
 			<h1 class="archive-title">{term.label}</h1>
 			<p class="archive-count">
-				{filteredPosts.length}
-				{filteredPosts.length === 1 ? "post" : "posts"}
+				{filteredPosts.length} dự án
 			</p>
 		</header>
 
 		{
 			filteredPosts.length === 0 ? (
-				<p class="no-posts">No posts in this category yet.</p>
+				<p class="no-posts">Chưa có dự án trong danh mục này.</p>
 			) : (
 				<div class="posts-grid">
 					{filteredPosts.map(({ post, tags }) => (

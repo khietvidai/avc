@@ -1,0 +1,427 @@
+---
+import Base from "../layouts/Base.astro";
+
+const giaTri = [
+	{ num: "01", title: "An toàn", desc: "Ưu tiên hàng đầu trong thiết kế, thi công và vận hành hệ thống bếp công nghiệp." },
+	{ num: "02", title: "Chính trực", desc: "Trung thực, minh bạch và trách nhiệm trong mọi hoạt động và hợp tác." },
+	{ num: "03", title: "Chất lượng", desc: "Sản phẩm và giải pháp đạt tiêu chuẩn kỹ thuật, đảm bảo độ bền và hiệu quả sử dụng." },
+	{ num: "04", title: "Tận tâm", desc: "Lắng nghe, thấu hiểu và đồng hành cùng khách hàng trong suốt quá trình dự án." },
+	{ num: "05", title: "Cam kết", desc: "Cam kết về tiến độ, chất lượng và dịch vụ hậu mãi theo hợp đồng." },
+	{ num: "06", title: "Chân thành", desc: "Hợp tác trên tinh thần tin cậy, xây dựng mối quan hệ bền vững lâu dài." },
+];
+
+const yeuTo = [
+	{ title: "An toàn", desc: "Tuân thủ tiêu chuẩn kỹ thuật, an toàn lao động và quy định hiện hành." },
+	{ title: "Giải pháp trọn gói", desc: "Tư vấn – thiết kế – sản xuất – thi công – bảo hành đồng bộ." },
+	{ title: "Năng lực kỹ thuật", desc: "Đội ngũ kỹ sư, kỹ thuật viên có kinh nghiệm thực tế dự án." },
+	{ title: "Sản xuất", desc: "Gia công thiết bị inox theo bản vẽ, kiểm soát chất lượng và tiến độ." },
+	{ title: "Quản lý dự án", desc: "Tổ chức thi công khoa học, đảm bảo tiến độ và chất lượng." },
+	{ title: "Hậu mãi & hỗ trợ", desc: "Bảo hành, bảo trì và hỗ trợ kỹ thuật theo cam kết hợp đồng." },
+];
+
+const khachHang = [
+	"Pizza 4P's", "Lotte Hotels & Resorts", "Sun Group", "Golden Gate Group", "Vinpearl", "Novaland",
+	"Heineken Việt Nam", "Aman", "Lotteria", "Sushi Tei", "Cộng Cà Phê", "Katinat", "Vinschool",
+	"TTC Hotel", "Sailing Club Nha Trang", "Quán Bụi Group", "Jumbo Seafood", "Luk Lak", "Chickita", "East West Brewing",
+];
+
+const vungMien = [
+	{ ten: "Miền Bắc", tinh: "Hà Nội, Bắc Ninh, Hải Dương, Hải Phòng, Lào Cai, Nghệ An, Hà Tĩnh" },
+	{ ten: "Miền Trung", tinh: "Đà Nẵng, Lâm Đồng, Quảng Ngãi, Khánh Hòa, Huế" },
+	{ ten: "Miền Nam", tinh: "TP.HCM, Đồng Nai, Tây Ninh, Cần Thơ, An Giang, Cà Mau, Vĩnh Long" },
+];
+---
+
+<Base title="Giới thiệu" description="Về Công ty TNHH Thiết Bị Công Nghiệp AVC — 15+ năm kinh nghiệm, 1.500+ công trình bếp công nghiệp trên toàn quốc">
+	<div class="page">
+		<section class="section">
+			<h1 class="page-title">GIỚI THIỆU AVC</h1>
+			<hr class="dashed-divider" />
+			<div class="intro-grid">
+				<div class="intro-text">
+					<p>AVC được thành lập với định hướng lấy <strong>chất lượng và an toàn làm ưu tiên hàng đầu</strong> trong mọi giải pháp bếp công nghiệp. Chúng tôi không ngừng hoàn thiện sản phẩm, dịch vụ và quy trình thi công nhằm mang đến những hệ thống bếp hiệu quả, bền vững và tối ưu cho vận hành thực tế.</p>
+					<p>Với kinh nghiệm triển khai đa dạng các dự án F&B, nhà hàng – khách sạn, bếp trung tâm và khu công nghiệp trên toàn quốc, AVC cam kết mang đến <strong>giải pháp phù hợp nhu cầu thực tế</strong>, hiệu quả và bền vững cho từng công trình.</p>
+					<p>Đội ngũ kỹ sư, kỹ thuật viên giàu kinh nghiệm thực tế cùng <strong>chuỗi giá trị khép kín</strong> — tư vấn, thiết kế, sản xuất, thi công, hậu mãi — là nền tảng cho chất lượng của từng công trình.</p>
+				</div>
+				<figure class="intro-photo">
+					<img src="/images/team-avc.jpg" alt="Đội ngũ AVC" loading="lazy" />
+					<figcaption>Đội ngũ AVC — Stress-Free Kitchen</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<section class="section mission">
+			<div class="mission-grid">
+				<div class="mission-card">
+					<h3>Sứ mệnh</h3>
+					<p>Tạo ra các giải pháp bếp an toàn – hiệu quả – bền vững, nâng cao trải nghiệm vận hành và giúp khách hàng đạt tiêu chuẩn quốc tế.</p>
+				</div>
+				<div class="mission-card dark">
+					<h3>Tầm nhìn</h3>
+					<p>Dẫn đầu Việt Nam trong thiết kế – sản xuất – thi công giải pháp bếp công nghiệp chuẩn quốc tế, hướng đến hiệu quả, an toàn và phát triển bền vững.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section">
+			<h2 class="section-title">GIÁ TRỊ CỐT LÕI</h2>
+			<hr class="dashed-divider" />
+			<div class="values-grid">
+				{giaTri.map((v) => (
+					<div class="value-card">
+						<span class="value-num">{v.num}</span>
+						<h3>{v.title}</h3>
+						<p>{v.desc}</p>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="section">
+			<h2 class="section-title">YẾU TỐ CỐT LÕI</h2>
+			<hr class="dashed-divider" />
+			<p class="section-sub">Những giá trị tạo nên năng lực và uy tín của AVC</p>
+			<div class="factors-grid">
+				{yeuTo.map((y) => (
+					<div class="factor-card">
+						<h4>{y.title}</h4>
+						<p>{y.desc}</p>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="section">
+			<h2 class="section-title">DẤU ẤN DỰ ÁN</h2>
+			<hr class="dashed-divider" />
+			<div class="regions-grid">
+				{vungMien.map((v) => (
+					<div class="region-card">
+						<h4>{v.ten}</h4>
+						<p>{v.tinh}</p>
+					</div>
+				))}
+			</div>
+			<div class="stats-row">
+				<div class="stat"><strong>15+</strong><span>Năm kinh nghiệm</span></div>
+				<div class="stat"><strong>1.500+</strong><span>Công trình đã triển khai</span></div>
+				<div class="stat"><strong>24/7</strong><span>Dịch vụ hỗ trợ & bảo trì</span></div>
+			</div>
+		</section>
+
+		<section class="section">
+			<h2 class="section-title">ĐỘI NGŨ & VĂN HOÁ</h2>
+			<hr class="dashed-divider" />
+			<div class="culture-grid">
+				<figure><img src="/images/khen-thuong.jpg" alt="Vinh danh tập thể xuất sắc AVC" loading="lazy" /></figure>
+				<div class="culture-text">
+					<p>Một trong những lợi thế cạnh tranh mạnh mẽ nhất của AVC chính là đội ngũ nhân lực nhiệt huyết, bản lĩnh và luôn khát khao tạo nên sự khác biệt — những con người dám nghĩ, dám làm, sẵn sàng đón nhận mọi thử thách để vươn đến chuẩn mực cao hơn trong từng dự án.</p>
+					<p>AVC tin rằng con người là nền tảng của mọi thành công. Chúng tôi không ngừng đầu tư vào đào tạo và phát triển nguồn nhân lực — từ kỹ năng chuyên môn, công nghệ mới đến tinh thần phục vụ.</p>
+					<p>AVC cũng tích cực tham gia các triển lãm ngành F&B như <strong>Food & Hospitality Vietnam</strong>, cập nhật công nghệ và xu hướng thiết bị bếp mới nhất cho khách hàng.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section">
+			<h2 class="section-title">KHÁCH HÀNG TIÊU BIỂU</h2>
+			<hr class="dashed-divider" />
+			<div class="clients">
+				{khachHang.map((k) => <span class="client-chip">{k}</span>)}
+			</div>
+		</section>
+
+		<section class="section cta-section">
+			<a href="/posts" class="btn">Xem các dự án đã triển khai</a>
+		</section>
+	</div>
+</Base>
+
+<style>
+	.page {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 44px 24px 80px;
+	}
+
+	.section {
+		margin-bottom: 64px;
+		text-align: center;
+	}
+
+	.page-title {
+		font-size: 35px;
+		font-weight: 700;
+		letter-spacing: 1px;
+		color: var(--color-brand);
+	}
+
+	.section-title {
+		font-size: 28px;
+		font-weight: 700;
+		letter-spacing: 1px;
+		color: var(--color-brand);
+	}
+
+	.section-sub {
+		color: var(--color-text-secondary);
+		font-style: italic;
+		margin-bottom: 24px;
+	}
+
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 34px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.intro-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 32px;
+		align-items: center;
+		text-align: left;
+	}
+
+	.intro-text {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.intro-text p {
+		font-size: 17px;
+		line-height: 1.65;
+	}
+
+	.intro-text strong,
+	.culture-text strong {
+		color: var(--color-brand);
+		font-weight: 700;
+	}
+
+	.intro-photo img {
+		width: 100%;
+		object-fit: cover;
+	}
+
+	.intro-photo figcaption {
+		font-size: 13px;
+		color: var(--avc-footer-text);
+		margin-top: 8px;
+		text-align: center;
+	}
+
+	.mission-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 16px;
+		text-align: left;
+	}
+
+	.mission-card {
+		padding: 32px 28px;
+		background: var(--color-bg-subtle);
+		border-top: 3px solid var(--color-brand);
+	}
+
+	.mission-card.dark {
+		background: #2b3440;
+		color: #e8e8e8;
+	}
+
+	.mission-card h3 {
+		font-size: 20px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		color: var(--color-brand);
+		margin-bottom: 12px;
+	}
+
+	.mission-card p {
+		font-size: 16px;
+		line-height: 1.65;
+	}
+
+	.values-grid,
+	.factors-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16px;
+		text-align: left;
+	}
+
+	.value-card {
+		padding: 24px;
+		border: 1px solid var(--color-border);
+	}
+
+	.value-num {
+		display: inline-block;
+		font-size: 22px;
+		font-weight: 700;
+		color: var(--color-brand);
+		margin-bottom: 8px;
+	}
+
+	.value-card h3 {
+		font-size: 17px;
+		font-weight: 700;
+		text-transform: uppercase;
+		margin-bottom: 8px;
+	}
+
+	.value-card p,
+	.factor-card p {
+		font-size: 15px;
+		line-height: 1.6;
+		color: var(--color-text-secondary);
+	}
+
+	.factor-card {
+		padding: 20px;
+		background: var(--color-bg-subtle);
+	}
+
+	.factor-card h4 {
+		font-size: 15px;
+		font-weight: 700;
+		text-transform: uppercase;
+		color: var(--color-brand);
+		margin-bottom: 6px;
+	}
+
+	.regions-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16px;
+	}
+
+	.region-card {
+		padding: 20px;
+		border: 1px solid var(--color-border);
+	}
+
+	.region-card h4 {
+		display: inline-block;
+		background: #2b3440;
+		color: #fff;
+		font-size: 14px;
+		padding: 4px 14px;
+		margin-bottom: 10px;
+	}
+
+	.region-card p {
+		font-size: 14px;
+		line-height: 1.6;
+		color: var(--color-text-secondary);
+	}
+
+	.stats-row {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16px;
+		margin-top: 32px;
+	}
+
+	.stat strong {
+		display: block;
+		font-size: 34px;
+		font-weight: 700;
+		color: var(--color-brand);
+	}
+
+	.stat span {
+		font-size: 13px;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		color: var(--color-text-secondary);
+	}
+
+	.culture-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 32px;
+		align-items: center;
+		text-align: left;
+	}
+
+	.culture-grid img {
+		width: 100%;
+		object-fit: cover;
+	}
+
+	.culture-text {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.culture-text p {
+		font-size: 16px;
+		line-height: 1.65;
+	}
+
+	.clients {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 10px;
+	}
+
+	.client-chip {
+		padding: 8px 18px;
+		border: 1px solid var(--color-border);
+		font-size: 14px;
+		font-weight: 500;
+		color: var(--color-text-secondary);
+	}
+
+	.btn {
+		display: inline-block;
+		padding: 11px 26px;
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+		font-size: 15px;
+		border-radius: 0;
+		transition: background var(--transition-fast);
+	}
+
+	.btn:hover {
+		background: var(--color-brand-hover);
+		color: var(--color-on-brand);
+	}
+
+	@media (max-width: 800px) {
+		.intro-grid,
+		.mission-grid,
+		.culture-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.values-grid,
+		.factors-grid,
+		.regions-grid,
+		.stats-row {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	@media (max-width: 540px) {
+		.values-grid,
+		.factors-grid,
+		.regions-grid,
+		.stats-row {
+			grid-template-columns: 1fr;
+		}
+
+		.page-title {
+			font-size: 26px;
+		}
+
+		.section-title {
+			font-size: 22px;
+		}
+	}
+</style>

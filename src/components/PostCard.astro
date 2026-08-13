@@ -25,7 +25,7 @@ const {
 } = Astro.props;
 
 const formattedDate = date
-	? date.toLocaleDateString("en-US", {
+	? date.toLocaleDateString("vi-VN", {
 			year: "numeric",
 			month: "short",
 			day: "numeric",
@@ -87,7 +87,7 @@ const formattedDate = date
 				}
 				{formattedDate && <time>{formattedDate}</time>}
 				{formattedDate && readingTime && <span class="meta-dot" />}
-				{readingTime && <span>{readingTime} min</span>}
+				{readingTime && <span>{readingTime} phút</span>}
 			</div>
 			<h2 class="card-title">{title}</h2>
 			{excerpt && <p class="card-excerpt">{excerpt}</p>}

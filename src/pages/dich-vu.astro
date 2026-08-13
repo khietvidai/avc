@@ -1,0 +1,292 @@
+---
+import Base from "../layouts/Base.astro";
+
+const dichVu = [
+	{ title: "Tư vấn", desc: "Tư vấn giai đoạn đầu tư: công suất dự án, tiêu chuẩn kỹ thuật, ngân sách và yêu cầu vận hành thực tế của khách hàng." },
+	{ title: "Thiết kế", desc: "Kiểm tra mặt bằng, thiết kế mặt bằng 2D, mô hình 3D và bố trí hệ thống MEP theo quy trình làm việc của từng bếp." },
+	{ title: "Cung cấp", desc: "Sản phẩm nhập khẩu từ các thương hiệu uy tín và sản phẩm inox sản xuất theo bản vẽ — hàng hoá có sẵn, giao nhanh tận nơi." },
+	{ title: "Lắp đặt", desc: "Thi công và lắp đặt thiết bị theo bản vẽ kỹ thuật đã phê duyệt, phối hợp đồng bộ các hạng mục, kiểm tra vận hành, nghiệm thu và bàn giao." },
+	{ title: "Bảo hành", desc: "Thực hiện bảo hành thiết bị theo cam kết hợp đồng; tiếp nhận và xử lý sự cố kỹ thuật kịp thời, hướng dẫn vận hành cho đơn vị sử dụng." },
+	{ title: "Bảo trì", desc: "Dịch vụ bảo trì định kỳ; kiểm tra, đánh giá tình trạng thiết bị, đảm bảo hệ thống bếp vận hành ổn định và an toàn lâu dài." },
+];
+
+const bienPhap = [
+	{
+		title: "Thi công hệ thống bếp",
+		img: "/images/thi-cong-bep.jpg",
+		desc: "Thi công hệ thống bếp chuyên nghiệp là một quá trình phức tạp, nơi an toàn và kỹ thuật luôn được đặt lên hàng đầu. AVC ứng dụng công nghệ tiên tiến, quy trình kiểm soát rủi ro toàn diện và phương pháp thi công chuẩn quốc tế.",
+	},
+	{
+		title: "Thi công hút khói",
+		img: "/images/thi-cong-hut-khoi.jpg",
+		desc: "Hệ thống hút khói là hạng mục thi công có độ rủi ro cao. AVC triển khai quy trình an toàn đa lớp, giám sát nghiêm ngặt từng bước, sử dụng thiết bị chuyên dụng và tuân thủ tiêu chuẩn kỹ thuật.",
+	},
+	{
+		title: "Thi công quầy bar inox",
+		img: "/images/quay-bar-inox.jpg",
+		desc: "Quầy bar inox chế tạo theo thiết kế riêng từng công trình: khoang đá, chậu rửa, khay speed rail và hệ lạnh âm quầy — gia công chính xác tại nhà máy AVC và lắp đặt hoàn thiện tại chỗ.",
+	},
+	{
+		title: "Thi công kho đông – kho mát",
+		img: "/images/kho-lanh.jpg",
+		desc: "Thi công kho đông, kho mát cho bếp công nghiệp: panel cách nhiệt, cửa kho chuyên dụng, dàn lạnh và hệ giá kệ inox — đảm bảo chuỗi lạnh bảo quản nguyên liệu đạt chuẩn an toàn thực phẩm.",
+	},
+];
+---
+
+<Base title="Dịch vụ" description="Giải pháp bếp công nghiệp trọn gói của AVC: tư vấn, thiết kế 2D/3D & MEP, cung cấp thiết bị, thi công lắp đặt, bảo hành và bảo trì 24/7">
+	<div class="page">
+		<section class="section">
+			<h1 class="page-title">DỊCH VỤ CỦA AVC</h1>
+			<hr class="dashed-divider" />
+			<p class="lead">Chuỗi giá trị khép kín <strong>tư vấn – thiết kế – sản xuất – thi công – hậu mãi</strong> giúp AVC kiểm soát chất lượng xuyên suốt và tối ưu chi phí đầu tư cho từng công trình bếp công nghiệp.</p>
+			<div class="services-grid">
+				{dichVu.map((s, i) => (
+					<div class="service-card">
+						<span class="service-num">{String(i + 1).padStart(2, "0")}</span>
+						<h3>{s.title}</h3>
+						<p>{s.desc}</p>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="section">
+			<h2 class="section-title">THIẾT KẾ 2D/3D & MEP</h2>
+			<hr class="dashed-divider" />
+			<div class="design-grid">
+				<figure><img src="/images/thiet-ke-3d.jpg" alt="Mô hình 3D mặt bằng bếp công nghiệp AVC" loading="lazy" /></figure>
+				<div class="design-text">
+					<p>Mỗi dự án bắt đầu bằng khảo sát mặt bằng và quy trình vận hành thực tế của đầu bếp. AVC dựng <strong>mặt bằng 2D, mô hình 3D</strong> và bố trí <strong>hệ thống MEP</strong> (điện – nước – thông gió) trước khi sản xuất, giúp chủ đầu tư hình dung chính xác không gian bếp và loại bỏ rủi ro khi thi công.</p>
+					<p>Thiết kế theo quy trình một chiều — tiếp nhận, sơ chế, chế biến, chia suất, rửa — đảm bảo an toàn vệ sinh thực phẩm và tối ưu nhân lực vận hành.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section">
+			<h2 class="section-title">BIỆN PHÁP THI CÔNG</h2>
+			<hr class="dashed-divider" />
+			<div class="methods-grid">
+				{bienPhap.map((b) => (
+					<div class="method-card">
+						<div class="method-img"><img src={b.img} alt={b.title} loading="lazy" /></div>
+						<div class="method-body">
+							<h3>{b.title}</h3>
+							<p>{b.desc}</p>
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="section cta-section">
+			<p class="cta-text">Cần tư vấn giải pháp bếp cho công trình của bạn?</p>
+			<a href="/lien-he" class="btn">Liên hệ AVC</a>
+			<a href="/posts" class="btn btn-outline">Xem dự án đã triển khai</a>
+		</section>
+	</div>
+</Base>
+
+<style>
+	.page {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 44px 24px 80px;
+	}
+
+	.section {
+		margin-bottom: 64px;
+		text-align: center;
+	}
+
+	.page-title {
+		font-size: 35px;
+		font-weight: 700;
+		letter-spacing: 1px;
+		color: var(--color-brand);
+	}
+
+	.section-title {
+		font-size: 28px;
+		font-weight: 700;
+		letter-spacing: 1px;
+		color: var(--color-brand);
+	}
+
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 34px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.lead {
+		max-width: 700px;
+		margin: 0 auto 40px;
+		font-size: 17px;
+		line-height: 1.65;
+	}
+
+	.lead strong,
+	.design-text strong {
+		color: var(--color-brand);
+		font-weight: 700;
+	}
+
+	.services-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16px;
+		text-align: left;
+	}
+
+	.service-card {
+		padding: 24px;
+		border: 1px solid var(--color-border);
+	}
+
+	.service-num {
+		display: inline-block;
+		font-size: 22px;
+		font-weight: 700;
+		color: var(--color-brand);
+		margin-bottom: 8px;
+	}
+
+	.service-card h3 {
+		font-size: 17px;
+		font-weight: 700;
+		text-transform: uppercase;
+		margin-bottom: 8px;
+	}
+
+	.service-card p {
+		font-size: 15px;
+		line-height: 1.6;
+		color: var(--color-text-secondary);
+	}
+
+	.design-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 32px;
+		align-items: center;
+		text-align: left;
+	}
+
+	.design-grid img {
+		width: 100%;
+		object-fit: cover;
+	}
+
+	.design-text {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.design-text p {
+		font-size: 16px;
+		line-height: 1.65;
+	}
+
+	.methods-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 16px;
+		text-align: left;
+	}
+
+	.method-card {
+		border: 1px solid var(--color-border);
+		display: flex;
+		flex-direction: column;
+	}
+
+	.method-img {
+		height: 240px;
+		overflow: hidden;
+		background: #e9e9e9;
+	}
+
+	.method-img img {
+		width: 100%;
+		height: 240px;
+		object-fit: cover;
+	}
+
+	.method-body {
+		padding: 20px 22px 24px;
+	}
+
+	.method-body h3 {
+		font-size: 17px;
+		font-weight: 700;
+		text-transform: uppercase;
+		color: var(--color-brand);
+		margin-bottom: 8px;
+	}
+
+	.method-body p {
+		font-size: 15px;
+		line-height: 1.6;
+		color: var(--color-text-secondary);
+	}
+
+	.cta-text {
+		font-size: 18px;
+		margin-bottom: 20px;
+	}
+
+	.btn {
+		display: inline-block;
+		margin: 0 6px;
+		padding: 11px 26px;
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+		font-size: 15px;
+		border-radius: 0;
+		transition: background var(--transition-fast);
+	}
+
+	.btn:hover {
+		background: var(--color-brand-hover);
+		color: var(--color-on-brand);
+	}
+
+	.btn-outline {
+		background: transparent;
+		border: 1px solid var(--color-brand);
+		color: var(--color-brand);
+	}
+
+	.btn-outline:hover {
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+	}
+
+	@media (max-width: 800px) {
+		.services-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.design-grid,
+		.methods-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 540px) {
+		.services-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.page-title {
+			font-size: 26px;
+		}
+
+		.section-title {
+			font-size: 22px;
+		}
+	}
+</style>

@@ -27,9 +27,9 @@ export default defineConfig({
 	fonts: [
 		{
 			provider: fontProviders.google(),
-			name: "Inter",
+			name: "Roboto",
 			cssVariable: "--font-body",
-			weights: [400, 500, 600, 700],
+			weights: [400, 500, 700],
 			fallbacks: ["sans-serif"],
 		},
 		{

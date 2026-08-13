@@ -5,6 +5,43 @@
 
 import type { ContentBylineCredit, TaxonomyTerm, PortableTextBlock } from "emdash";
 
+export interface Home {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
+  stat_1?: string;
+  stat_2?: string;
+  stat_3?: string;
+  stat_4?: string;
+  intro_heading?: string;
+  intro?: PortableTextBlock[];
+  cta_label?: string;
+  cta_url?: string;
+  services_heading?: string;
+  services_intro?: PortableTextBlock[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface LinhVuc {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  image?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
+  sort_order?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 export interface Page {
   id: string;
   slug: string | null;
@@ -23,7 +60,7 @@ export interface Post {
   slug: string | null;
   status: string;
   title: string;
-  featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number };
+  featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
   content?: PortableTextBlock[];
   excerpt?: string;
   createdAt: Date;
@@ -35,6 +72,8 @@ export interface Post {
 
 declare module "emdash" {
   interface EmDashCollections {
+    home: Home;
+    linh_vuc: LinhVuc;
     pages: Page;
     posts: Post;
   }

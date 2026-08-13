@@ -44,37 +44,50 @@ This template ships with `.mcp.json`, `.cursor/mcp.json`, and `.vscode/mcp.json`
 
 ## This Template
 
-A blog with posts, pages, categories, tags, full-text search, and RSS. Designed for personal writing, technical writing, indie newsletters, and anything where the writing is the product. Editorial-tech aesthetic: confident sans-serif, restrained accent, real article structure with bylines and reading time.
+Corporate one-page site for **Công ty TNHH Thiết Bị Công Nghiệp AVC** (industrial kitchen equipment, Vietnamese) built from the claude.ai/design project `AVC Website v2.dc.html`. The homepage is a single scrolling page (hero → stats → giới thiệu → lĩnh vực grid → footer/liên hệ) with anchor navigation; the `posts` collection is repurposed as **"Dự án"** (completed projects) with list/detail pages, search, and RSS.
 
 ## Pages
 
-| Page        | Path               | What it shows                                                                                          |
-| ----------- | ------------------ | ------------------------------------------------------------------------------------------------------ |
-| Home        | `/`                | Featured post hero (large image + excerpt), latest posts grid                                          |
-| All posts   | `/posts`           | Article count, full post list with excerpts and tag chips                                              |
-| Post detail | `/posts/[slug]`    | Featured image, title, body, left meta column (authors + date), right TOC + search + categories gutter |
-| Search      | `/search`          | Full-text search UI                                                                                    |
-| Page        | `/pages/[slug]`    | Static page content (Portable Text)                                                                    |
-| Category    | `/category/[slug]` | Posts filtered by category                                                                             |
-| Tag         | `/tag/[slug]`      | Posts filtered by tag                                                                                  |
-| RSS         | `/rss.xml`         | Generated feed                                                                                         |
+| Page         | Path               | What it shows                                                                                         |
+| ------------ | ------------------ | ----------------------------------------------------------------------------------------------------- |
+| Home         | `/`                | One-pager: hero image, stats strip, `#gioi-thieu` intro, `#linh-vuc` 6-card grid (cards link to `/category/<slug>`) |
+| Giới thiệu   | `/gioi-thieu`      | Company story, sứ mệnh/tầm nhìn, giá trị + yếu tố cốt lõi, dấu ấn 3 miền, đội ngũ, khách hàng tiêu biểu (static Astro page, content from PROFILE_AVC) |
+| Dịch vụ      | `/dich-vu`         | 6 dịch vụ (tư vấn → bảo trì), thiết kế 2D/3D & MEP, biện pháp thi công với ảnh thật (static Astro page) |
+| Sản phẩm     | `/san-pham`        | 8 nhóm sản phẩm, 21 thương hiệu phân phối, chính sách chất lượng ISO, nhà máy + kho hàng (static Astro page) |
+| Liên hệ      | `/lien-he`         | Showroom/kho/hotline/email + quy trình làm việc 4 bước (static Astro page)                            |
+| Dự án        | `/posts`           | 21 dự án thật từ company profile (Crust, Pizza 4P's, K-Mazing, Belgo, Bartels...) with real photos    |
+| Dự án detail | `/posts/[slug]`    | Featured image, title, body (chủ đầu tư + địa chỉ), left meta column, right sidebar                   |
+| Search       | `/search`          | Full-text search UI                                                                                   |
+| Page         | `/pages/[slug]`    | Static page content (Portable Text)                                                                   |
+| Category     | `/category/[slug]` | Projects filtered by danh mục (slugs match `linh_vuc` entry slugs)                                    |
+| Tag          | `/tag/[slug]`      | Projects filtered by thẻ                                                                              |
+| RSS          | `/rss.xml`         | Generated feed                                                                                        |
+
+Primary menu: Trang chủ `/` · Giới thiệu `/gioi-thieu` · Dịch vụ `/dich-vu` · Sản phẩm `/san-pham` · Dự án `/posts` · Liên hệ `/lien-he`.
+
+**Images**: all real photos extracted from `PROFILE_AVC.pdf` (per-page via PyMuPDF, auto-cropped black borders, JPEG-compressed). CMS media (hero, 6 lĩnh vực, 21 project featured images, site logo) live in the media library/R2; static-page images live in `public/images/` (team, thi công, nhà máy, kho, logo…). The site logo is set in settings (`site:logo`) — note settings are cached per worker isolate, restart dev after changing them via SQL.
 
 ## Schema
 
-- `posts` collection: `title`, `featured_image`, `content` (Portable Text), `excerpt` (text).
-- `pages` collection: `title`, `content` (Portable Text). Used for `/about` etc.
-- Taxonomies: `category`, `tag`.
-- Single `primary` menu (Home, About, Posts by default).
+- `posts` collection (label "Dự án"): `title`, `featured_image`, `content` (Portable Text), `excerpt` (text).
+- `pages` collection ("Trang tĩnh"): `title`, `content`.
+- `home` collection ("Trang chủ", single entry with slug `home`): `hero_image`, `stat_1..stat_4`, `intro_heading`, `intro` (Portable Text -- **bold spans render in the brand colour** on the site), `cta_label`, `cta_url`, `services_heading`, `services_intro`.
+- `linh_vuc` collection ("Lĩnh vực", 6 entries): `title`, `image`, `sort_order`.
+- Taxonomies: `category` (6 sector terms), `tag`.
+- Menus: `primary` (Trang chủ `/`, Giới thiệu `/#gioi-thieu`, Dịch vụ `/#linh-vuc`, Dự án `/posts`, Liên hệ `/#lien-he`), `social` (LinkedIn → footer icon square).
+- Widget areas: `footer` (content widget with showroom/warehouse address -- editable), `sidebar` (project detail pages).
 
-Site settings have `title` and `tagline` -- both render in the header / footer.
+Site settings have `title` and `tagline`; the header shows the settings `logo` when uploaded (150×52), else the title as styled text.
+
+**Seeding gotcha:** the runtime auto-seed on first boot applies schema/menus/settings only. To load the demo content into a fresh local DB, run `npx emdash seed seed/seed.json -d .wrangler/state/v3/d1/miniflare-D1DatabaseObject/<hash>.sqlite`, then copy `uploads/*.jpg` into local R2 with `npx wrangler r2 object put "avc-md/<file>" --file uploads/<file> --content-type image/jpeg --local`.
 
 ## Visual character
 
-Single typeface: **Inter** on `--font-body`, used for everything including headings (`--font-heading` defaults to the body face; tighter letter-spacing on h1/h2). **JetBrains Mono** on `--font-mono` for inline code and code blocks. Body and headings share the same family; weight and size carry the hierarchy (`--font-weight-heading` 600, `--font-weight-display` 700 for h1/page titles).
+Single typeface: **Roboto** on `--font-body` (400/500/700), used for everything including headings. **JetBrains Mono** on `--font-mono` for code. Uppercase bold nav links with 1px vertical separators; heading hierarchy carried by weight and the brand colour.
 
-The brand colour is `#0066cc` (`--color-brand`) -- used for links, the post-card title hover, and the search input focus ring. There's also a secondary text colour (`--color-text-secondary`) and a `--color-muted` for meta info. Don't add a second accent.
+The brand colour is the olive `#BBC647` (`--color-brand`, hover `#a9b43c`) -- used for section headings, nav active/hover state, highlighted intro spans (`strong` inside `.intro`), the CTA button, and the lĩnh vực card label bars. Body text is `#595959`, nav/secondary `#7F7470` (`--avc-nav-text`), dashed dividers `#cfcfcf` (`--avc-divider`). Corners are square (`--radius: 0`). Light mode is pinned (`color-scheme: light` in `theme.css`). Don't add a second accent.
 
-The article layout is the standout feature: a three-column reading view with a left meta column (author bylines, date), centred 680px body column, and a right gutter for search, table of contents, and categories. Don't flatten that into one column on desktop -- the layout signals "this is something to read".
+Signature elements from the design: the 440px full-width hero with decorative ‹ › arrows, the bold stats strip ("15+ Năm Kinh Nghiệm | ..."), the 210px dashed divider under each section heading, and the 3-column lĩnh vực grid with olive label bars.
 
 ## Customisation
 
@@ -99,9 +112,9 @@ CSS variables worth knowing (see `tokens.css` for the full list):
 
 ## What not to do
 
-- Don't add a second accent colour or coloured section backgrounds. The page should be black, white, and one blue.
-- Don't replace Inter with a display sans (Bebas, Anton, etc.). Headings rely on weight contrast, not novelty faces.
-- Don't collapse the article gutter on desktop -- it's part of the reading experience.
-- Don't use stock blog copy ("Welcome to my blog", "Stay tuned for more"). Write a real tagline that says what this blog is about.
-- Don't seed the home page with three identical placeholder posts. If you only have one real post, show one real post.
-- Don't enable comments without a plan to moderate them. The template doesn't ship a comments system by default for a reason.
+- Don't add a second accent colour or coloured section backgrounds. The page is white, grey text, and one olive (`#BBC647`).
+- Don't replace Roboto with a display sans. Headings rely on weight and the brand colour, not novelty faces.
+- Don't round corners -- the design uses square buttons and cards (`--radius: 0`).
+- Don't hardcode homepage copy in `index.astro`; it lives in the `home` entry (slug `home`) and the `linh_vuc` entries, editable in the admin.
+- Don't re-enable dark mode without designing for it; `color-scheme: light` is pinned in `theme.css` to match the corporate white design.
+- Don't enable comments on dự án -- `commentsEnabled` is off deliberately.
