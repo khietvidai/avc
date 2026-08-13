@@ -2,6 +2,7 @@
 import { getTerm, getEmDashCollection, decodeSlug } from "emdash";
 import { Image } from "emdash/ui";
 import Base from "../../../layouts/Base.astro";
+import { slideImageSrc } from "../../../utils/slide-image";
 
 const slug = decodeSlug(Astro.params.slug);
 const term = slug ? await getTerm("category", slug) : null;
@@ -36,7 +37,18 @@ const slides = withImage.slice(0, 6);
 						class:list={["slide", { active: i === 0 }]}
 						data-index={i}
 					>
-						<Image image={p.data.featured_image} />
+						{
+							slideImageSrc(p.id) ? (
+								<img
+									src={slideImageSrc(p.id)!}
+									alt={p.data.title}
+									width="1920"
+									height="1080"
+								/>
+							) : (
+								<Image image={p.data.featured_image} width={1920} height={1080} />
+							)
+						}
 						<span class="slide-caption">{p.data.title}</span>
 					</a>
 				))}
@@ -133,7 +145,8 @@ const slides = withImage.slice(0, 6);
 	.slider {
 		position: relative;
 		width: 100%;
-		height: 480px;
+		aspect-ratio: 16 / 9;
+		max-height: 560px;
 		background: #e9e9e9;
 		overflow: hidden;
 	}
@@ -154,8 +167,9 @@ const slides = withImage.slice(0, 6);
 
 	.slide :global(img) {
 		width: 100%;
-		height: 480px;
+		height: 100%;
 		object-fit: cover;
+		object-position: center;
 	}
 
 	.slide-caption {
@@ -302,9 +316,8 @@ const slides = withImage.slice(0, 6);
 	}
 
 	@media (max-width: 800px) {
-		.slider,
-		.slide :global(img) {
-			height: 320px;
+		.slider {
+			max-height: 320px;
 		}
 
 		.gallery {
