@@ -107,8 +107,9 @@ const MARKET_SEO: Record<string, ImageSeo> = {
 };
 
 export function marketImageSeo(slug: string): ImageSeo {
+	const bare = slug.replace(/^(vi|en)\//, "");
 	return (
-		MARKET_SEO[slug] ?? {
+		MARKET_SEO[bare] ?? {
 			alt: "AVC commercial kitchen project",
 			title: "Commercial kitchen equipment by AVC Vietnam",
 			comment: SUFFIX,
@@ -118,7 +119,7 @@ export function marketImageSeo(slug: string): ImageSeo {
 
 export function projectImageSeo(cmsSlug: string, kind: "featured" | "slide" | "gallery" = "featured"): ImageSeo {
 	const p = projectEn(cmsSlug);
-	const name = p?.title ?? cmsSlug.replace(/-/g, " ");
+	const name = p?.title ?? cmsSlug.replace(/^(vi|en)\//, "").replace(/-/g, " ");
 	const where = p?.location ? `, ${p.location}` : ", Vietnam";
 	const role =
 		kind === "slide"

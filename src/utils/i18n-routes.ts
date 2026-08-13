@@ -76,20 +76,29 @@ export const PROJECT_TO_VI: Record<string, string> = Object.fromEntries(
 	Object.entries(PROJECT_TO_EN).map(([vi, en]) => [en, vi]),
 );
 
+/** EmDash may prefix entry.id with the locale (`vi/slug`). Public slugs never include it. */
+export function bareCmsId(id: string): string {
+	return id.replace(/^(vi|en)\//, "");
+}
+
 export function cmsProjectSlug(param: string): string {
-	return PROJECT_TO_VI[param] ?? param;
+	const bare = bareCmsId(param);
+	return PROJECT_TO_VI[bare] ?? bare;
 }
 
 export function enProjectSlug(cmsSlug: string): string {
-	return PROJECT_TO_EN[cmsSlug] ?? cmsSlug;
+	const bare = bareCmsId(cmsSlug);
+	return PROJECT_TO_EN[bare] ?? bare;
 }
 
 export function cmsCategorySlug(param: string): string {
-	return CATEGORY_TO_VI[param] ?? param;
+	const bare = bareCmsId(param);
+	return CATEGORY_TO_VI[bare] ?? bare;
 }
 
 export function enCategorySlug(cmsSlug: string): string {
-	return CATEGORY_TO_EN[cmsSlug] ?? cmsSlug;
+	const bare = bareCmsId(cmsSlug);
+	return CATEGORY_TO_EN[bare] ?? bare;
 }
 
 function splitHash(url: string): { path: string; hash: string } {
@@ -118,6 +127,10 @@ export function toEnUrl(url: string): string {
 		return `/projects/${enProjectSlug(slug)}` + mapHash(hash, HASH_TO_EN);
 	}
 	if (bare === "/posts") return "/projects" + mapHash(hash, HASH_TO_EN);
+	if (bare.startsWith("/projects/")) {
+		const slug = bare.slice("/projects/".length);
+		return `/projects/${enProjectSlug(cmsProjectSlug(slug))}` + mapHash(hash, HASH_TO_EN);
+	}
 	if (bare.startsWith("/category/")) {
 		const slug = bare.slice("/category/".length);
 		return `/category/${enCategorySlug(slug)}` + mapHash(hash, HASH_TO_EN);

@@ -220,5 +220,6 @@ export const PROJECTS_EN: Record<string, ProjectEn> = {
 };
 
 export function projectEn(cmsSlug: string): ProjectEn | undefined {
-	return PROJECTS_EN[cmsSlug];
+	const bare = cmsSlug.replace(/^(vi|en)\//, "");
+	return PROJECTS_EN[bare];
 }

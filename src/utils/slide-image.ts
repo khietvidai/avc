@@ -17,7 +17,8 @@ const SLIDE_SLUGS = new Set([
 ]);
 
 export function slideImageSrc(slug: string): string | null {
-	return SLIDE_SLUGS.has(slug) ? `/images/slides/${slug}.jpg` : null;
+	const bare = slug.replace(/^(vi|en)\//, "");
+	return SLIDE_SLUGS.has(bare) ? `/images/slides/${bare}.jpg` : null;
 }
 
 type MediaLike = { id?: string; src?: string } | null | undefined;
