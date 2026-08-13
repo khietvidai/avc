@@ -4,6 +4,7 @@ import { Image, PortableText } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
 import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 import { heroImageSeo, marketImageSeo } from "../../utils/image-seo";
+import { toViUrl, viCategoryPath } from "../../utils/i18n-routes";
 
 const [{ entry: home, cacheHint: homeHint }, settings] = await Promise.all([
 	getEmDashEntry("home", "home", { locale: "vi" }),
@@ -94,7 +95,7 @@ const stats = home
 						</div>
 					)}
 					{home.data.cta_label && (
-						<a href={home.data.cta_url || "/vi/#linh-vuc"} class="btn">
+						<a href={home.data.cta_url ? toViUrl(home.data.cta_url) : "/vi/#linh-vuc"} class="btn">
 							{home.data.cta_label}
 						</a>
 					)}
@@ -116,7 +117,7 @@ const stats = home
 					{linhVuc.length > 0 && (
 						<div class="linh-vuc-grid">
 							{linhVuc.map((lv) => (
-								<a class="linh-vuc-card" href={`/vi/category/${lv.id}`}>
+								<a class="linh-vuc-card" href={viCategoryPath(lv.id)}>
 									<div class="linh-vuc-image" {...lv.edit.image}>
 										{lv.data.image && <Image image={lv.data.image} alt={marketImageSeo(lv.id).alt} title={marketImageSeo(lv.id).title} />}
 									</div>

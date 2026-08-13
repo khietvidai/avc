@@ -10,7 +10,7 @@ import { Image, PortableText } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
 import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 import { publicOrigin } from "../../utils/site-url";
-import { cmsProjectSlug, enProjectSlug, enCategorySlug } from "../../utils/i18n-routes";
+import { cmsProjectSlug, enProjectSlug, enCategorySlug, bareCmsId, marketLabelEn } from "../../utils/i18n-routes";
 import { projectEn } from "../../utils/projects-en";
 import { projectImageSeo } from "../../utils/image-seo";
 
@@ -66,14 +66,6 @@ const seo = getSeoMeta(post, {
 const galleryRaw = Array.isArray(post.data.gallery) ? post.data.gallery : [];
 const images = [post.data.featured_image, ...galleryRaw].filter(Boolean);
 
-const LV_EN: Record<string, string> = {
-	"nha-hang": "Restaurants",
-	"khach-san": "Hotels",
-	"bep-trung-tam": "Central Kitchens",
-	"khu-cong-nghiep": "Industrial Canteens",
-	bakery: "Bakeries",
-	"bar-cafe": "Bar & Café",
-};
 const categories = post.data.terms?.category ?? [];
 
 const { entries: recentPosts } = await getEmDashCollection("posts", {
@@ -81,7 +73,7 @@ const { entries: recentPosts } = await getEmDashCollection("posts", {
 	limit: 4,
 	locale: "vi",
 });
-const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
+const otherPosts = recentPosts.filter((p) => bareCmsId(p.id) !== bareCmsId(post.id)).slice(0, 3);
 const en = projectEn(cmsSlug);
 const title = en?.title ?? post.data.title;
 const client = (en?.client ?? post.data.chu_dau_tu)?.trim() || "";
@@ -161,7 +153,7 @@ const showInfo = !!(year || scale || client || location);
 					<p class="project-sub">
 						{categories.length > 0 && (
 							<a href={`/category/${enCategorySlug(categories[0].slug)}`}>
-								{LV_EN[categories[0].slug] ?? categories[0].label}
+								{marketLabelEn(categories[0].slug, categories[0].label)}
 							</a>
 						)}
 						{categories.length > 0 && location && " | "}

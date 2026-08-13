@@ -1,10 +1,10 @@
 ---
-import { getEmDashCollection, getTermsForEntries } from "emdash";
+import { getEmDashCollection } from "emdash";
+import { Image } from "emdash/ui";
 import Base from "../../../layouts/Base.astro";
-import { getReadingTime } from "../../../utils/reading-time";
+import { projectImageSeo } from "../../../utils/image-seo";
+import { viProjectPath } from "../../../utils/i18n-routes";
 
-// Sort in the database rather than in JS — lets the DB use its index on
-// published_at and avoids a full-table scan on the client.
 const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 	orderBy: { published_at: "desc" },
 	locale: "vi",
@@ -12,95 +12,31 @@ const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
-// Single batched query for tags across all posts, instead of one
-// getEntryTerms() call per post (which would be N round-trips).
-// Bylines are already hydrated on entry.data.bylines.
-const tagsByEntry = await getTermsForEntries(
-	"posts",
-	posts.map((p) => p.data.id),
-	"tag",
-);
-
-const postsWithTags = posts.map((post) => ({
-	post,
-	tags: tagsByEntry.get(post.data.id) ?? [],
-	bylines: post.data.bylines ?? [],
-}));
-
-const formatDate = (date: Date) =>
-	date.toLocaleDateString("vi-VN", {
-		year: "numeric",
-		month: "long",
-		day: "numeric",
-	});
+const withImage = posts.filter((p) => p.data.featured_image);
 ---
 
-<Base title="Dự án" description="Các công trình AVC đã triển khai">
-	<div class="posts-page">
-		<header class="page-header">
-			<h1 class="page-title">Dự án</h1>
-			<p class="page-description">
-				{posts.length} công trình
-			</p>
-		</header>
+<Base title="Dự án" description="Các công trình bếp công nghiệp AVC đã triển khai trên toàn quốc">
+	<div class="page">
+		<h1 class="page-title">DỰ ÁN ĐÃ TRIỂN KHAI</h1>
+		<hr class="dashed-divider" />
+		<p class="lead">{withImage.length} công trình — chọn một dự án để xem chi tiết.</p>
 
 		{
-			posts.length === 0 ? (
+			withImage.length === 0 ? (
 				<p class="empty">Chưa có dự án nào.</p>
 			) : (
-				<div class="posts-list">
-					{postsWithTags.map(({ post, tags, bylines }) => (
-						<article class="post-item">
-							<a href={`/vi/posts/${post.id}`} class="post-link">
-								<div class="post-meta">
-									{bylines.length > 0 && (
-										<>
-											<div class="post-bylines">
-												{bylines.slice(0, 2).map((credit, index) => (
-													<>
-														{index > 0 && <span class="byline-sep">,</span>}
-														<span class="post-byline">
-															{credit.byline.avatarMediaId && (
-																<img
-																	src={`/_emdash/api/media/file/${credit.byline.avatarMediaId}`}
-																	alt={credit.byline.displayName}
-																	class="post-byline-avatar"
-																/>
-															)}
-															<span class="post-byline-name">
-																{credit.byline.displayName}
-															</span>
-														</span>
-													</>
-												))}
-												{bylines.length > 2 && (
-													<span class="byline-more">+{bylines.length - 2}</span>
-												)}
-											</div>
-											<span class="meta-dot" />
-										</>
-									)}
-									{post.data.publishedAt && (
-										<time>{formatDate(post.data.publishedAt)}</time>
-									)}
-									{post.data.publishedAt && <span class="meta-dot" />}
-									<span>{getReadingTime(post.data.content)} phút đọc</span>
-								</div>
-								<h2 class="post-title">{post.data.title}</h2>
-								{post.data.excerpt && (
-									<p class="post-excerpt">{post.data.excerpt}</p>
-								)}
-							</a>
-							{tags.length > 0 && (
-								<div class="post-tags">
-									{tags.slice(0, 3).map((t) => (
-										<a href={`/vi/tag/${t.slug}`} class="post-tag">
-											{t.label}
-										</a>
-									))}
-								</div>
-							)}
-						</article>
+				<div class="gallery">
+					{withImage.map(({ id, data }) => (
+						<a href={viProjectPath(id)} class="gallery-item">
+							<Image
+								image={data.featured_image}
+								alt={projectImageSeo(id, "featured").alt}
+								title={projectImageSeo(id, "featured").title}
+							/>
+							<span class="gallery-overlay">
+								<span>{data.title}</span>
+							</span>
+						</a>
 					))}
 				</div>
 			)
@@ -109,164 +45,103 @@ const formatDate = (date: Date) =>
 </Base>
 
 <style>
-	.posts-page {
-		max-width: var(--content-width);
+	.page {
+		max-width: 1000px;
 		margin: 0 auto;
-		padding: var(--spacing-8) var(--spacing-6) var(--spacing-16);
-	}
-
-	.page-header {
-		margin-bottom: var(--spacing-12);
+		padding: 52px 24px 80px;
+		text-align: center;
 	}
 
 	.page-title {
-		font-size: var(--font-size-4xl);
-		font-weight: var(--font-weight-display);
-		letter-spacing: var(--tracking-tight);
-		margin-bottom: var(--spacing-2);
-	}
-
-	.page-description {
-		font-size: var(--font-size-lg);
-		color: var(--color-muted);
-	}
-
-	.empty {
-		color: var(--color-muted);
-		font-size: var(--font-size-lg);
-	}
-
-	.posts-list {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.post-item {
-		padding: var(--spacing-8) 0;
-		border-bottom: 1px solid var(--color-border-subtle);
-	}
-
-	.post-item:first-child {
-		padding-top: 0;
-	}
-
-	.post-item:last-child {
-		border-bottom: none;
-	}
-
-	.post-link {
-		display: block;
-		text-decoration: none;
-		color: inherit;
-	}
-
-	.post-meta {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-3);
-		font-size: var(--font-size-sm);
-		color: var(--color-muted);
-		margin-bottom: var(--spacing-2);
-	}
-
-	.meta-dot {
-		width: 3px;
-		height: 3px;
-		border-radius: 50%;
-		background: var(--color-muted);
-	}
-
-	/* Post bylines */
-	.post-bylines {
-		display: flex;
-		align-items: center;
-		gap: 2px;
-	}
-
-	.post-byline {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--spacing-1);
-	}
-
-	.post-byline-avatar {
-		width: var(--avatar-size-sm);
-		height: var(--avatar-size-sm);
-		border-radius: 50%;
-		object-fit: cover;
-	}
-
-	.post-byline-name {
-		font-weight: 500;
-		color: var(--color-text-secondary);
-	}
-
-	.byline-sep {
-		color: var(--color-muted);
-		margin-right: 2px;
-	}
-
-	.byline-more {
-		font-size: var(--font-size-xs);
-		color: var(--color-muted);
-		margin-left: 2px;
-	}
-
-	.post-title {
-		font-size: var(--font-size-2xl);
-		font-weight: var(--font-weight-heading);
-		line-height: var(--leading-snug);
-		letter-spacing: var(--tracking-snug);
-		margin-bottom: var(--spacing-2);
-		transition: color var(--transition-fast);
-	}
-
-	.post-link:hover .post-title {
+		font-size: 25px;
+		font-weight: 700;
+		letter-spacing: 3px;
+		text-transform: uppercase;
 		color: var(--color-brand);
 	}
 
-	.post-excerpt {
-		font-size: var(--font-size-lg);
-		line-height: var(--leading-relaxed);
-		color: var(--color-text-secondary);
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 24px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
 	}
 
-	.post-tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--spacing-2);
-		margin-top: var(--spacing-4);
-	}
-
-	.post-tag {
-		display: inline-block;
-		padding: var(--tag-padding-y) var(--spacing-2);
-		font-size: var(--font-size-xs);
-		color: var(--color-text-secondary);
-		background: var(--color-surface);
-		border-radius: var(--radius);
-		text-decoration: none;
-		transition:
-			color var(--transition-fast),
-			background var(--transition-fast);
-	}
-
-	.post-tag:hover {
+	.lead {
+		max-width: 640px;
+		margin: 0 auto 40px;
+		font-size: 15px;
+		line-height: 1.65;
 		color: var(--color-text);
-		background: var(--color-border);
 	}
 
-	@media (max-width: 600px) {
-		.posts-page {
-			padding: var(--spacing-6) var(--spacing-4) var(--spacing-12);
+	.empty {
+		color: var(--color-text-secondary);
+		font-size: 14.5px;
+	}
+
+	.gallery {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 16px;
+	}
+
+	.gallery-item {
+		position: relative;
+		display: block;
+		height: 280px;
+		overflow: hidden;
+		background: #e9e9e9;
+	}
+
+	.gallery-item :global(img) {
+		width: 100%;
+		height: 280px;
+		object-fit: cover;
+		transition: transform var(--transition-base);
+	}
+
+	.gallery-item:hover :global(img) {
+		transform: scale(1.04);
+	}
+
+	.gallery-overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 20px;
+		background: rgba(255, 255, 255, 0.72);
+		opacity: 0;
+		transition: opacity var(--transition-base);
+	}
+
+	.gallery-item:hover .gallery-overlay {
+		opacity: 1;
+	}
+
+	.gallery-overlay span {
+		font-size: 15px;
+		font-weight: 500;
+		line-height: 1.35;
+		color: #4a4440;
+		text-align: center;
+	}
+
+	@media (max-width: 800px) {
+		.gallery {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	@media (max-width: 540px) {
+		.gallery {
+			grid-template-columns: 1fr;
 		}
 
 		.page-title {
-			font-size: var(--font-size-3xl);
-		}
-
-		.post-title {
-			font-size: var(--font-size-xl);
+			font-size: 19px;
 		}
 	}
 </style>

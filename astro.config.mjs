@@ -42,15 +42,6 @@ export default defineConfig({
 			subsets: ["latin", "vietnamese"],
 			fallbacks: ["sans-serif"],
 		},
-		{
-			provider: fontProviders.google(),
-			name: "JetBrains Mono",
-			cssVariable: "--font-mono",
-			weights: [400, 500],
-			styles: ["normal"],
-			subsets: ["latin"],
-			fallbacks: ["monospace"],
-		},
 	],
 	devToolbar: { enabled: false },
 });

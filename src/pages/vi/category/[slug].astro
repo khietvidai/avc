@@ -4,16 +4,21 @@ import { Image } from "emdash/ui";
 import Base from "../../../layouts/Base.astro";
 import { resolveSlide } from "../../../utils/slide-image";
 import { projectImageSeo } from "../../../utils/image-seo";
+import { bareCmsId, viProjectPath } from "../../../utils/i18n-routes";
 
-const slug = decodeSlug(Astro.params.slug);
-const term = slug ? await getTerm("category", slug) : null;
+const raw = decodeSlug(Astro.params.slug);
+const slug = raw ? bareCmsId(raw) : "";
+if (raw && slug && raw !== slug) {
+	return Astro.redirect(`/vi/category/${slug}`, 301);
+}
+const term = slug ? await getTerm("category", slug, { locale: "vi" }) : null;
 
 if (!term) {
 	return Astro.redirect("/404");
 }
 
 const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
-	where: { category: term.slug },
+	where: { category: bareCmsId(term.slug) },
 	orderBy: { published_at: "desc" },
 	locale: "vi",
 });
@@ -36,7 +41,7 @@ const slides = withImage.slice(0, 6).map((p) => ({
 			<div class="slider" role="region" aria-label={`Dự án tiêu biểu ${term.label}`}>
 				{slides.map(({ post: p, slide }, i) => (
 					<a
-						href={`/vi/posts/${p.id}`}
+						href={viProjectPath(p.id)}
 						class:list={["slide", { active: i === 0 }]}
 						data-index={i}
 					>
@@ -91,7 +96,7 @@ const slides = withImage.slice(0, 6).map((p) => ({
 			) : (
 				<div class="gallery">
 					{withImage.map(({ id, data }) => (
-						<a href={`/vi/posts/${id}`} class="gallery-item">
+						<a href={viProjectPath(id)} class="gallery-item">
 							<Image image={data.featured_image} alt={projectImageSeo(id, "featured").alt} title={projectImageSeo(id, "featured").title} />
 							<span class="gallery-overlay">
 								<span>{data.title}</span>

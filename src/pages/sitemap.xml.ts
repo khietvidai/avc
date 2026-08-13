@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { getEmDashCollection } from "emdash";
-import { CATEGORY_TO_EN, enProjectSlug } from "../utils/i18n-routes";
+import { CATEGORY_TO_EN, enProjectSlug, viProjectPath } from "../utils/i18n-routes";
 import { publicOrigin } from "../utils/site-url";
 
 const STATIC_EN = ["/", "/about", "/services", "/products", "/contact", "/portfolio", "/search"];
@@ -36,7 +36,7 @@ export const GET: APIRoute = async ({ url }) => {
 		...Object.keys(CATEGORY_TO_EN).map((slug) => loc(origin, `/vi/category/${slug}`)),
 		...posts.flatMap((p) => [
 			loc(origin, `/projects/${enProjectSlug(p.id)}`, p.data.updatedAt ?? p.data.publishedAt),
-			loc(origin, `/vi/posts/${p.id}`, p.data.updatedAt ?? p.data.publishedAt),
+			loc(origin, viProjectPath(p.id), p.data.updatedAt ?? p.data.publishedAt),
 		]),
 	];
 

@@ -3,6 +3,7 @@ export const prerender = false;
 
 import { search } from "emdash";
 import Base from "../../layouts/Base.astro";
+import { viProjectPath } from "../../utils/i18n-routes";
 
 const query = Astro.url.searchParams.get("q")?.trim() || "";
 
@@ -50,7 +51,7 @@ const { items: results } = query
 					{results.map((result) => (
 						<li class="search-result">
 							<a
-								href={`/vi/posts/${result.slug ?? result.id}`}
+								href={viProjectPath(result.slug ?? result.id)}
 								class="result-link"
 							>
 								<h2 class="result-title">

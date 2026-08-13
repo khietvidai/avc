@@ -47,6 +47,27 @@ export const CATEGORY_TO_VI: Record<string, string> = Object.fromEntries(
 	Object.entries(CATEGORY_TO_EN).map(([vi, en]) => [en, vi]),
 );
 
+export const MARKET_LABEL_EN: Record<string, string> = {
+	"nha-hang": "Restaurants",
+	"khach-san": "Hotels",
+	"bep-trung-tam": "Central Kitchens",
+	"khu-cong-nghiep": "Industrial Canteens",
+	bakery: "Bakeries",
+	"bar-cafe": "Bar & Café",
+};
+
+export function marketLabelEn(id: string, fallback?: string): string {
+	return MARKET_LABEL_EN[bareCmsId(id)] ?? fallback ?? bareCmsId(id);
+}
+
+export function viProjectPath(id: string): string {
+	return `/vi/posts/${bareCmsId(id)}`;
+}
+
+export function viCategoryPath(id: string): string {
+	return `/vi/category/${cmsCategorySlug(id)}`;
+}
+
 /** CMS slug (Vietnamese / original) → English URL slug */
 export const PROJECT_TO_EN: Record<string, string> = {
 	"bartels-sonatus": "bartels-sonatus",
@@ -152,7 +173,7 @@ export function toViUrl(url: string): string {
 	}
 	if (bare === "/projects") return "/vi/posts" + mapHash(hash, HASH_TO_VI);
 	if (bare.startsWith("/posts/")) {
-		return `/vi/posts/${bare.slice("/posts/".length)}` + mapHash(hash, HASH_TO_VI);
+		return `/vi/posts/${bareCmsId(bare.slice("/posts/".length))}` + mapHash(hash, HASH_TO_VI);
 	}
 	if (bare === "/posts") return "/vi/posts" + mapHash(hash, HASH_TO_VI);
 	if (bare.startsWith("/category/")) {

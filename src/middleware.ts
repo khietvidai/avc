@@ -12,6 +12,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		return context.redirect(toEnUrl(pathname.slice(3) || "/"), 301);
 	}
 
+	const collapsed = pathname.replace(/^\/vi\/(posts|category)\/(?:vi|en)\//, "/vi/$1/");
+	if (collapsed !== pathname) {
+		return context.redirect(collapsed + context.url.search, 301);
+	}
+
 	if (
 		!pathname.startsWith("/vi") &&
 		!pathname.startsWith("/_") &&

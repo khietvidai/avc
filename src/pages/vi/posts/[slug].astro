@@ -11,11 +11,16 @@ import Base from "../../../layouts/Base.astro";
 import { resolveBlogSiteIdentity } from "../../../utils/site-identity";
 import { publicOrigin } from "../../../utils/site-url";
 import { projectImageSeo } from "../../../utils/image-seo";
+import { bareCmsId, viCategoryPath, viProjectPath } from "../../../utils/i18n-routes";
 
-const slug = decodeSlug(Astro.params.slug);
+const raw = decodeSlug(Astro.params.slug);
+const slug = raw ? bareCmsId(raw) : "";
 
 if (!slug) {
 	return Astro.redirect("/404");
+}
+if (raw && raw !== slug) {
+	return Astro.redirect(viProjectPath(slug), 301);
 }
 
 const { entry: post, cacheHint } = await getEmDashEntry("posts", slug, { locale: "vi" });
@@ -67,7 +72,7 @@ const { entries: recentPosts } = await getEmDashCollection("posts", {
 	limit: 4,
 	locale: "vi",
 });
-const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
+const otherPosts = recentPosts.filter((p) => bareCmsId(p.id) !== bareCmsId(post.id)).slice(0, 3);
 const year = post.data.nam_hoan_thanh?.trim() || "";
 const scale = post.data.quy_mo?.trim() || "";
 const client = post.data.chu_dau_tu?.trim() || "";
@@ -132,7 +137,7 @@ const showInfo = !!(year || scale || client || location);
 				(post.data.dia_chi || categories.length > 0) && (
 					<p class="project-sub">
 						{categories.length > 0 && (
-							<a href={`/vi/category/${categories[0].slug}`}>
+							<a href={viCategoryPath(categories[0].slug)}>
 								{categories[0].label}
 							</a>
 						)}
@@ -194,7 +199,7 @@ const showInfo = !!(year || scale || client || location);
 					<h2 class="more-title">Dự án khác</h2>
 					<div class="more-grid">
 						{otherPosts.map((p) => (
-							<a href={`/vi/posts/${p.id}`} class="more-item">
+							<a href={viProjectPath(p.id)} class="more-item">
 								{p.data.featured_image && (
 									<div class="more-image">
 										<Image image={p.data.featured_image} alt={projectImageSeo(p.id, "featured").alt} title={projectImageSeo(p.id, "featured").title} />
