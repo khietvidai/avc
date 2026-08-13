@@ -56,7 +56,7 @@ const stats = home
 				<section class="hero" id="top">
 					{home.data.hero_image && (
 						<div class="hero-image" {...home.edit.hero_image}>
-							<Image image={home.data.hero_image} />
+							<Image image={home.data.hero_image} priority width={1200} sizes="100vw" />
 						</div>
 					)}
 					<span class="hero-arrow hero-arrow-left" aria-hidden="true">

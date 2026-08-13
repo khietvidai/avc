@@ -17,21 +17,22 @@
 	--font-size-base: 0.9375rem;
 	--font-weight-heading: 600;
 
-	--color-brand: light-dark(#bbc647, #c9d45a);
-	--color-brand-hover: light-dark(#a9b43c, #d6df76);
-	--color-text: light-dark(#595959, #d4d4d4);
-	--color-text-secondary: light-dark(#7f7470, #a89f9b);
+	/* #BBC647 fails WCAG on white (~1.9:1). Keep the hue; darken for text/UI. */
+	--color-brand: light-dark(#5f6a12, #c9d45a);
+	--color-brand-hover: light-dark(#4e5810, #d6df76);
+	--color-text: light-dark(#4a4a4a, #d4d4d4);
+	--color-text-secondary: light-dark(#5c5552, #a89f9b);
 
 	/* Square corners per design */
 	--radius: 0;
 	--radius-lg: 0;
 
 	/* AVC-specific values consumed by Base.astro and index.astro */
-	--avc-nav-text: #7f7470;
+	--avc-nav-text: #5c5552;
 	--avc-nav-separator: #d9d9d9;
 	--avc-divider: #cfcfcf;
 	--avc-stats-text: light-dark(#333333, #d4d4d4);
-	--avc-footer-text: #8a8a8a;
+	--avc-footer-text: #5a5a5a;
 	--avc-linkedin: #0a66c2;
 }
 

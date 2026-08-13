@@ -41,9 +41,17 @@ const slides = withImage.slice(0, 6).map((p) => ({
 					>
 						{
 							slide?.kind === "static" ? (
-								<img src={slide.src} alt={p.data.title} width="1920" height="1080" />
+								<img
+									src={slide.src}
+									alt={p.data.title}
+									width="1920"
+									height="1080"
+									loading={i === 0 ? "eager" : "lazy"}
+									fetchpriority={i === 0 ? "high" : undefined}
+									decoding="async"
+								/>
 							) : slide ? (
-								<Image image={slide.image} width={1920} height={1080} />
+								<Image image={slide.image} width={1920} height={1080} priority={i === 0} />
 							) : null
 						}
 						<span class="slide-caption">{p.data.title}</span>

@@ -85,10 +85,10 @@ const services = [
 			<p class="lead">Chuỗi giá trị khép kín <strong>tư vấn – thiết kế – sản xuất – thi công – hậu mãi</strong> giúp AVC kiểm soát chất lượng xuyên suốt và tối ưu chi phí đầu tư cho từng công trình bếp công nghiệp.</p>
 		</header>
 
-		{services.map((s) => (
+		{services.map((s, i) => (
 			<section class="service" id={s.id}>
 				<div class="service-banner">
-					<img src={s.banner} alt={s.title} loading="lazy" />
+					<img src={s.banner} alt={s.title} width="1400" height="450" loading={i === 0 ? "eager" : "lazy"} fetchpriority={i === 0 ? "high" : undefined} decoding="async" />
 				</div>
 				<h2 class="service-title">{s.title}</h2>
 				<p class="service-desc">{s.desc}</p>

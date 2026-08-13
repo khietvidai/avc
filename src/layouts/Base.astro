@@ -173,7 +173,6 @@ function socialInitials(label: string): string {
 		<link rel="icon" href="/favicon.png" type="image/png" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<Font cssVariable="--font-body" preload />
-		<Font cssVariable="--font-mono" />
 		<title>{fullTitle}</title>
 		<meta name="theme-color" content="#BBC647" />
 		<link rel="canonical" href={pageCanonical} />
@@ -185,6 +184,7 @@ function socialInitials(label: string): string {
 		<link rel="alternate" type="application/rss+xml" title={siteTitle} href={`${origin}/rss.xml`} />
 		<EmDashHead page={pageCtx} />
 		<script type="application/ld+json" set:html={seoGraphJson} />
+		<slot name="head" />
 	</head>
 	<body>
 		<EmDashBodyStart page={pageCtx} />
@@ -192,7 +192,7 @@ function socialInitials(label: string): string {
 			<div class="header-inner">
 				<a href={localizeUrl("/")} class="site-logo">
 					{siteLogo
-						? <img src={siteLogo.url} alt={siteLogo.alt || siteTitle} class="site-logo-img" />
+						? <img src={siteLogo.url} alt={siteLogo.alt || siteTitle} class="site-logo-img" width="96" height="34" decoding="async" />
 						: <span class="site-logo-text">{siteTitle}</span>
 					}
 				</a>
@@ -226,10 +226,10 @@ function socialInitials(label: string): string {
 					}
 				</nav>
 				<div class="nav-side">
-					<div class="lang-switcher">
-						<a href={viUrl} class:list={[{ active: !isEN }]}>VI</a>
-						<span>|</span>
-						<a href={enUrl} class:list={[{ active: isEN }]}>EN</a>
+					<div class="lang-switcher" role="navigation" aria-label={isEN ? "Language" : "Ngôn ngữ"}>
+						<a href={viUrl} class:list={[{ active: !isEN }]} hreflang="vi" lang="vi" aria-current={!isEN ? "page" : undefined}>VI</a>
+						<span aria-hidden="true">|</span>
+						<a href={enUrl} class:list={[{ active: isEN }]} hreflang="en" lang="en" aria-current={isEN ? "page" : undefined}>EN</a>
 					</div>
 					{
 						isLoggedIn && (
