@@ -13,3 +13,4 @@ data.db
 
 # Local wrangler dev state
 .wrangler
+__pycache__/
