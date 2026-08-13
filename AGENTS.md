@@ -22,11 +22,12 @@ The admin UI is at `http://localhost:4321/_emdash/admin`.
 
 ## Skills
 
-Agent skills are in `.agents/skills/`. Load them when working on specific tasks:
+Agent skills are in `.agents/skills/` (Grok also loads `.grok/skills/`). Load them when working on specific tasks:
 
 - **building-emdash-site** -- Querying content, rendering Portable Text, schema design, seed files, site features (menus, widgets, search, SEO, comments, bylines). Start here.
 - **creating-plugins** -- Building EmDash plugins with hooks, storage, admin UI, API routes, and Portable Text block types.
 - **emdash-cli** -- CLI commands for content management, seeding, type generation, and visual editing flow.
+- **agy-image** -- Recrop project photos to 16:9 via `agy` (or `make-slide.py`); never invent client storefronts.
 
 ## Documentation
 
