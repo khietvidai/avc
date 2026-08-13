@@ -3,9 +3,10 @@ import { getEmDashCollection, getSiteSettings } from "emdash";
 
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import { enProjectSlug } from "../utils/i18n-routes";
+import { publicOrigin } from "../utils/site-url";
 
 export const GET: APIRoute = async ({ site, url }) => {
-	const siteUrl = site?.toString() || url.origin;
+	const siteUrl = publicOrigin(url);
 	const { siteTitle, siteTagline } = resolveBlogSiteIdentity(await getSiteSettings());
 
 	const { entries: posts } = await getEmDashCollection("posts", {

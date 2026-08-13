@@ -9,6 +9,7 @@ import {
 import { Image, PortableText } from "emdash/ui";
 import Base from "../../../layouts/Base.astro";
 import { resolveBlogSiteIdentity } from "../../../utils/site-identity";
+import { publicOrigin } from "../../../utils/site-url";
 
 const slug = decodeSlug(Astro.params.slug);
 
@@ -47,7 +48,7 @@ const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
 
 const seo = getSeoMeta(post, {
 	siteTitle,
-	siteUrl: Astro.url.origin,
+	siteUrl: publicOrigin(Astro.url),
 	path: `/vi/posts/${slug}`,
 	defaultOgImage: featuredImageUrl,
 });
@@ -75,10 +76,19 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 	image={seo.ogImage}
 	canonical={seo.canonical}
 	robots={seo.robots}
-	type="article"
 	publishedTime={post.data.publishedAt?.toISOString() ?? null}
 	modifiedTime={post.data.updatedAt.toISOString()}
 	content={{ collection: "posts", id: post.data.id, slug }}
+	project={{
+		name: post.data.title,
+		description: post.data.excerpt,
+		image: featuredImageUrl,
+		url: seo.canonical ?? "",
+		location: post.data.dia_chi,
+		client: post.data.chu_dau_tu,
+		datePublished: post.data.publishedAt?.toISOString() ?? null,
+		dateModified: post.data.updatedAt.toISOString(),
+	}}
 >
 	<article class="project">
 		{/* Gallery: hàng ảnh lớn kéo ngang + thumbnails */}

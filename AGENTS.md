@@ -63,6 +63,8 @@ Corporate one-page site for **Công ty TNHH Thiết Bị Công Nghiệp AVC** (i
 
 Old `/posts/…`, `/gioi-thieu`, `/category/nha-hang` etc. 301 to the English URLs. Menu rows stay Vietnamese; `toEnUrl` / `toViUrl` map them.
 
+SEO (canonical, hreflang, sitemap, robots, JSON-LD) uses the request host. After pointing a custom domain, set Worker var `PUBLIC_SITE_URL=https://your-domain` only if you need to force the origin; otherwise it follows the Host header.
+
 Primary menu (CMS): Home `/` · About `/gioi-thieu` · Services `/dich-vu` · Products `/san-pham` · Portfolio `/portfolio` · Contact `/lien-he`. Dropdowns on About, Services, Portfolio.
 
 Portfolio flow: `/portfolio` → `/category/restaurants` → `/projects/thong-nhat-steel-canteen`. Service anchors: `#consulting #design #supply #installation #warranty #fabrication`.

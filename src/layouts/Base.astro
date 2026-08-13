@@ -10,6 +10,16 @@ import { createPublicPageContext } from "emdash/page";
 import { Font } from "astro:assets";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import { toEnUrl, toViUrl } from "../utils/i18n-routes";
+import { publicOrigin } from "../utils/site-url";
+import {
+	absolutize,
+	buildSeoGraph,
+	canonicalUrl,
+	defaultDescription,
+	hreflangLinks,
+	type ProjectSchemaInput,
+	type SeoLocale,
+} from "../utils/seo";
 import "../styles/tokens.css";
 import "../styles/theme.css";
 
@@ -26,6 +36,8 @@ interface Props {
 	author?: string | null;
 	/** Pass content reference for plugin page contributions on content pages */
 	content?: { collection: string; id: string; slug?: string | null };
+	/** Project JSON-LD (English / Vietnamese project detail) */
+	project?: ProjectSchemaInput | null;
 }
 
 const {
@@ -40,14 +52,39 @@ const {
 	modifiedTime,
 	author,
 	content,
+	project,
 } = Astro.props;
 const { siteTitle: siteTitleVI, siteLogo } = resolveBlogSiteIdentity(await getSiteSettings());
-const siteTitle =
-	(Astro.currentLocale ?? "en") === "en"
-		? "AVC Industrial Equipment Co., Ltd"
-		: siteTitleVI;
-// If title already includes site title (from getSeoMeta), use as-is
+const locale = (Astro.currentLocale ?? "en") as SeoLocale;
+const isEN = locale === "en";
+const siteTitle = isEN ? "AVC Industrial Equipment Co., Ltd" : siteTitleVI;
 const fullTitle = title.includes(siteTitle) ? title : `${title} — ${siteTitle}`;
+const origin = publicOrigin(Astro.url);
+const pageCanonical = canonical
+	? (absolutize(origin, canonical) as string)
+	: canonicalUrl(origin, Astro.url.pathname);
+const metaDescription = description || defaultDescription(locale);
+const ogImage = absolutize(origin, image) || absolutize(origin, siteLogo?.url);
+const altLinks = hreflangLinks(origin, Astro.url.pathname);
+const seoGraphJson = JSON.stringify(
+	buildSeoGraph({
+	origin,
+	pathname: Astro.url.pathname,
+	locale,
+	title: fullTitle,
+	description: metaDescription,
+	canonical: pageCanonical,
+	image: ogImage,
+	logo: absolutize(origin, siteLogo?.url),
+	project: project
+		? {
+				...project,
+				url: project.url || pageCanonical,
+				image: absolutize(origin, project.image) || ogImage,
+			}
+		: null,
+	}),
+).replace(/</g, "\\u003c");
 
 // Fetch primary menu defined in seed
 const menu = await getMenu("primary", { locale: "vi" });
@@ -63,21 +100,21 @@ const pageCtx = createPublicPageContext({
 	pageType: type,
 	title: fullTitle,
 	pageTitle: pageTitle ?? title,
-	description,
-	canonical,
-	image,
+	description: metaDescription,
+	canonical: pageCanonical,
+	image: ogImage,
 	content,
-	seo: { ogImage: image, robots },
+	seo: { ogImage, robots },
 	articleMeta: { publishedTime, modifiedTime, author },
 	siteName: siteTitle,
+	siteUrl: origin,
+	breadcrumbs: [],
 });
 
 // Check if user is logged in (for showing admin link)
 const isLoggedIn = !!Astro.locals.user;
 
 // --- Song ngữ: locale hiện tại + dịch label menu + URL prefix ---
-const locale = Astro.currentLocale ?? "en";
-const isEN = locale === "en";
 
 const NAV_EN: Record<string, string> = {
 	"Trang chủ": "Home",
@@ -138,7 +175,16 @@ function socialInitials(label: string): string {
 		<Font cssVariable="--font-body" preload />
 		<Font cssVariable="--font-mono" />
 		<title>{fullTitle}</title>
+		<meta name="theme-color" content="#BBC647" />
+		<link rel="canonical" href={pageCanonical} />
+		<link rel="alternate" hreflang="en" href={altLinks.en} />
+		<link rel="alternate" hreflang="vi" href={altLinks.vi} />
+		<link rel="alternate" hreflang="x-default" href={altLinks.xDefault} />
+		<meta property="og:locale" content={isEN ? "en_US" : "vi_VN"} />
+		<meta property="og:locale:alternate" content={isEN ? "vi_VN" : "en_US"} />
+		<link rel="alternate" type="application/rss+xml" title={siteTitle} href={`${origin}/rss.xml`} />
 		<EmDashHead page={pageCtx} />
+		<script type="application/ld+json" set:html={seoGraphJson} />
 	</head>
 	<body>
 		<EmDashBodyStart page={pageCtx} />
