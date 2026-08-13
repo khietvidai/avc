@@ -17,7 +17,7 @@ export function localeSyncPlugin(): PluginDescriptor {
 	return {
 		id: "locale-sync",
 		version: "1.0.0",
-		entrypoint: "./src/plugins/locale-sync.ts",
+		entrypoint: "locale-sync",
 		capabilities: ["content:read", "content:write"],
 		adminPages: [{ path: "/", label: "Đồng bộ EN/VI", icon: "translate" }],
 	};
