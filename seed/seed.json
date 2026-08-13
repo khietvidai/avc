@@ -215,6 +215,34 @@
 					"type": "integer"
 				}
 			]
+		},
+		{
+			"slug": "organization",
+			"label": "Schema doanh nghiệp",
+			"labelSingular": "Schema doanh nghiệp",
+			"description": "Nguồn JSON-LD Google (Organization / LocalBusiness). Sửa ở đây, không sửa code.",
+			"supports": ["drafts"],
+			"fields": [
+				{ "slug": "title", "label": "Tên nội bộ", "type": "string", "required": true },
+				{ "slug": "legal_name", "label": "Tên pháp lý", "type": "string" },
+				{ "slug": "name_vi", "label": "Tên hiển thị (VI)", "type": "string" },
+				{ "slug": "name_en", "label": "Tên hiển thị (EN)", "type": "string" },
+				{ "slug": "description_vi", "label": "Mô tả (VI)", "type": "text" },
+				{ "slug": "description_en", "label": "Mô tả (EN)", "type": "text" },
+				{ "slug": "telephone", "label": "Điện thoại (E.164)", "type": "string" },
+				{ "slug": "email", "label": "Email", "type": "string" },
+				{ "slug": "street_address", "label": "Địa chỉ showroom", "type": "string" },
+				{ "slug": "address_locality", "label": "Thành phố", "type": "string" },
+				{ "slug": "address_region", "label": "Tỉnh / thành", "type": "string" },
+				{ "slug": "postal_code", "label": "Mã bưu chính", "type": "string" },
+				{ "slug": "address_country", "label": "Mã quốc gia (ISO)", "type": "string" },
+				{ "slug": "warehouse_address", "label": "Địa chỉ kho", "type": "string" },
+				{ "slug": "same_as", "label": "Mạng xã hội (mỗi URL một dòng)", "type": "text" },
+				{ "slug": "price_range", "label": "Khoảng giá ($$)", "type": "string" },
+				{ "slug": "founding_year", "label": "Năm thành lập", "type": "string" },
+				{ "slug": "latitude", "label": "Vĩ độ showroom", "type": "string" },
+				{ "slug": "longitude", "label": "Kinh độ showroom", "type": "string" }
+			]
 		}
 	],
 	"taxonomies": [
@@ -380,6 +408,34 @@
 	],
 	"sections": [],
 	"content": {
+		"organization": [
+			{
+				"id": "org-avc",
+				"slug": "avc",
+				"status": "published",
+				"data": {
+					"title": "AVC",
+					"legal_name": "Công ty TNHH Thiết Bị Công Nghiệp AVC",
+					"name_vi": "Công ty TNHH Thiết Bị Công Nghiệp AVC",
+					"name_en": "AVC Industrial Equipment Co., Ltd",
+					"description_vi": "Giải pháp bếp công nghiệp trọn gói tại Việt Nam — tư vấn, thiết kế, cung cấp thiết bị, thi công và bảo trì.",
+					"description_en": "Turnkey commercial kitchen solutions in Vietnam — consulting, design, equipment supply, installation and maintenance.",
+					"telephone": "+84-1900-0054",
+					"email": "info@avc.equipment",
+					"street_address": "58 Nguyen Hoang, Binh Trung Ward",
+					"address_locality": "Ho Chi Minh City",
+					"address_region": "Ho Chi Minh",
+					"postal_code": "",
+					"address_country": "VN",
+					"warehouse_address": "12/64 Thanh Loc 27 St., Quarter 3C, District 12, Ho Chi Minh City",
+					"same_as": "https://www.linkedin.com/company/avc-equipment",
+					"price_range": "$$",
+					"founding_year": "",
+					"latitude": "",
+					"longitude": ""
+				}
+			}
+		],
 		"home": [
 			{
 				"id": "home",

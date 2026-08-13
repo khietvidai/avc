@@ -65,6 +65,8 @@ Old `/posts/…`, `/gioi-thieu`, `/category/nha-hang` etc. 301 to the English UR
 
 SEO (canonical, hreflang, sitemap, robots, JSON-LD) uses the request host. After pointing a custom domain, set Worker var `PUBLIC_SITE_URL=https://your-domain` only if you need to force the origin; otherwise it follows the Host header.
 
+JSON-LD company facts live in CMS collection **Schema doanh nghiệp** (`organization` / slug `avc`). Types follow Google Search gallery 2026: `Organization`+`LocalBusiness` (required `name`+`address`), `WebSite` (site name: `name`+`url`+`alternateName`), `BreadcrumbList`. Do **not** emit `SearchAction` (sitelinks searchbox retired Oct 2024) or `ProfessionalService` (deprecated on schema.org). Project pages use `Service` (not `schema.org/Project` — Google has no rich result for Project). Edit the `avc` row to change address/phone; do not invent tax IDs, hours, or coordinates.
+
 Publishing a **VI** project auto-fills empty SEO Title (50–60 chars) and Meta Description (140–160 chars) via DeepSeek (`DEEPSEEK_API_KEY` wrangler secret or plugin Settings). Admin SEO fields show live word/character counts. English copy is created on **Đồng bộ EN/VI** (AI translation) and refreshed on later VI publishes if the EN row already exists. Leave Canonical URL empty.
 
 Primary menu (CMS): Home `/` · About `/gioi-thieu` · Services `/dich-vu` · Products `/san-pham` · Portfolio `/portfolio` · Contact `/lien-he`. Dropdowns on About, Services, Portfolio.

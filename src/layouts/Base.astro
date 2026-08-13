@@ -1,5 +1,5 @@
 ---
-import { getMenu, getSiteSettings } from "emdash";
+import { getMenu, getSiteSettings, getEmDashEntry } from "emdash";
 import {
 	WidgetArea,
 	EmDashHead,
@@ -18,6 +18,7 @@ import {
 	canonicalUrl,
 	defaultDescription,
 	hreflangLinks,
+	orgFromEntry,
 	type ProjectSchemaInput,
 	type SeoLocale,
 } from "../utils/seo";
@@ -56,15 +57,23 @@ const {
 	project,
 } = Astro.props;
 const { siteTitle: siteTitleVI, siteLogo } = resolveBlogSiteIdentity(await getSiteSettings());
+let orgEntry = null;
+try {
+	const orgQuery = await getEmDashEntry("organization", "avc");
+	orgEntry = orgQuery.entry;
+} catch {
+	orgEntry = null;
+}
+const org = orgFromEntry(orgEntry);
 const locale = (Astro.currentLocale ?? "en") as SeoLocale;
 const isEN = locale === "en";
-const siteTitle = isEN ? "AVC Industrial Equipment Co., Ltd" : siteTitleVI;
+const siteTitle = isEN ? org.nameEn : siteTitleVI || org.nameVi;
 const fullTitle = title.includes(siteTitle) ? title : `${title} — ${siteTitle}`;
 const origin = publicOrigin(Astro.url);
 const pageCanonical = canonical
 	? (absolutize(origin, canonical) as string)
 	: canonicalUrl(origin, Astro.url.pathname);
-const metaDescription = description || defaultDescription(locale);
+const metaDescription = description || defaultDescription(locale, org);
 const ogImage = absolutize(origin, image) || absolutize(origin, siteLogo?.url);
 const altLinks = hreflangLinks(origin, Astro.url.pathname);
 const seoGraphJson = JSON.stringify(
@@ -77,6 +86,7 @@ const seoGraphJson = JSON.stringify(
 	canonical: pageCanonical,
 	image: ogImage,
 	logo: absolutize(origin, siteLogo?.url),
+	org,
 	project: project
 		? {
 				...project,
@@ -107,7 +117,7 @@ const pageCtx = createPublicPageContext({
 	content,
 	seo: { ogImage, robots },
 	articleMeta: { publishedTime, modifiedTime, author },
-	siteName: siteTitle,
+	siteName: "AVC",
 	siteUrl: origin,
 	breadcrumbs: [],
 });
