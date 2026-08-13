@@ -69,16 +69,26 @@ for t in reversed(TABLES):
 
 # Các cột FK trỏ tới bảng không đồng bộ (revisions, users) — NULL hoá
 NULL_COLS = {"live_revision_id", "draft_revision_id", "author_id"}
+# EmDash default locale is "en". AVC content is Vietnamese; a leftover
+# "en" on content_taxonomies hides every project from /category/* queries.
 
 for t in TABLES:
     cols = [r[1] for r in cur.execute(f"PRAGMA table_info({qident(t)})")]
     collist = ",".join(qident(c) for c in cols)
     null_idx = {i for i, c in enumerate(cols) if c in NULL_COLS}
+    locale_idx = (
+        cols.index("locale") if t == "content_taxonomies" and "locale" in cols else None
+    )
     for row in cur.execute(f"SELECT * FROM {qident(t)}"):
-        vals = ",".join(
-            "NULL" if i in null_idx else qval(v) for i, v in enumerate(row)
-        )
-        lines.append(f"INSERT INTO {qident(t)} ({collist}) VALUES ({vals});")
+        vals = []
+        for i, v in enumerate(row):
+            if i in null_idx:
+                vals.append("NULL")
+            elif locale_idx is not None and i == locale_idx:
+                vals.append(qval("vi"))
+            else:
+                vals.append(qval(v))
+        lines.append(f"INSERT INTO {qident(t)} ({collist}) VALUES ({','.join(vals)});")
 
 for name, value in cur.execute(
     "SELECT name, value FROM options "
