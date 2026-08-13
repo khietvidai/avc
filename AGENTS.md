@@ -67,13 +67,13 @@ Primary menu: Trang chủ `/` · Giới thiệu `/gioi-thieu` · Dịch vụ `/d
 
 Portfolio flow (modeled on ricca design studios): `/portfolio` (checkerboard olive/gray grid of 6 lĩnh vực) → `/category/[slug]` (full-width auto-playing slider of featured projects + 3-col hover-overlay gallery) → `/posts/[slug]` (project detail: horizontal gallery with clickable thumbnails, title + olive subtitle, 2-col info block — năm hoàn thành/quy mô | chủ đầu tư/địa chỉ). `/posts` list page still exists but is not in the menu. `/dich-vu` is section-per-service: wide photo banner (`public/images/banner-*.jpg`) + description + 2-col bullet list, anchors `#tu-van #thiet-ke #cung-cap #thi-cong #bao-hanh #san-xuat`.
 
-`posts` collection extra fields (added via SQL, also in production): `chu_dau_tu`, `dia_chi`, `nam_hoan_thanh` (empty — awaiting real data), `quy_mo` (defaults "Bảo mật"), `gallery` (json array of media objects, 3-4 real photos per project extracted from PROFILE_AVC.pdf).
+`posts` collection (label **Dự án**) is the project content type. Add new work in admin → Dự án with the same fields: `title`, `featured_image`, `slide_image` (16:9 banner), `excerpt`, `chu_dau_tu`, `dia_chi`, `nam_hoan_thanh`, `quy_mo`, `gallery` (json array of media), `content`. Assign a `category` term. `nam_hoan_thanh` may be empty; `quy_mo` defaults to "Bảo mật" when confidential.
 
 **Images**: all real photos extracted from `PROFILE_AVC.pdf` (per-page via PyMuPDF, auto-cropped black borders, JPEG-compressed). CMS media (hero, 6 lĩnh vực, 21 project featured images, site logo) live in the media library/R2; static-page images live in `public/images/` (team, thi công, nhà máy, kho, logo…). The site logo is set in settings (`site:logo`) — note settings are cached per worker isolate, restart dev after changing them via SQL.
 
 ## Schema
 
-- `posts` collection (label "Dự án"): `title`, `featured_image`, `content` (Portable Text), `excerpt` (text).
+- `posts` collection ("Dự án"): `title`, `featured_image`, `slide_image` (16:9), `excerpt`, `chu_dau_tu`, `dia_chi`, `nam_hoan_thanh`, `quy_mo`, `gallery` (json), `content` (Portable Text).
 - `pages` collection ("Trang tĩnh"): `title`, `content`.
 - `home` collection ("Trang chủ", single entry with slug `home`): `hero_image`, `stat_1..stat_4`, `intro_heading`, `intro` (Portable Text -- **bold spans render in the brand colour** on the site), `cta_label`, `cta_url`, `services_heading`, `services_intro`.
 - `linh_vuc` collection ("Lĩnh vực", 6 entries): `title`, `image`, `sort_order`.

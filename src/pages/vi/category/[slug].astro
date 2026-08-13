@@ -2,7 +2,7 @@
 import { getTerm, getEmDashCollection, decodeSlug } from "emdash";
 import { Image } from "emdash/ui";
 import Base from "../../../layouts/Base.astro";
-import { slideImageSrc } from "../../../utils/slide-image";
+import { resolveSlide } from "../../../utils/slide-image";
 
 const slug = decodeSlug(Astro.params.slug);
 const term = slug ? await getTerm("category", slug) : null;
@@ -20,8 +20,10 @@ const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
 const withImage = posts.filter((p) => p.data.featured_image);
-// Slider: tối đa 6 dự án nổi bật đầu tiên
-const slides = withImage.slice(0, 6);
+const slides = withImage.slice(0, 6).map((p) => ({
+	post: p,
+	slide: resolveSlide(p.id, p.data.slide_image, p.data.featured_image),
+}));
 ---
 
 <Base
@@ -31,23 +33,18 @@ const slides = withImage.slice(0, 6);
 	{
 		slides.length > 0 && (
 			<section class="slider" aria-label={`Dự án tiêu biểu ${term.label}`}>
-				{slides.map((p, i) => (
+				{slides.map(({ post: p, slide }, i) => (
 					<a
 						href={`/vi/posts/${p.id}`}
 						class:list={["slide", { active: i === 0 }]}
 						data-index={i}
 					>
 						{
-							slideImageSrc(p.id) ? (
-								<img
-									src={slideImageSrc(p.id)!}
-									alt={p.data.title}
-									width="1920"
-									height="1080"
-								/>
-							) : (
-								<Image image={p.data.featured_image} width={1920} height={1080} />
-							)
+							slide?.kind === "static" ? (
+								<img src={slide.src} alt={p.data.title} width="1920" height="1080" />
+							) : slide ? (
+								<Image image={slide.image} width={1920} height={1080} />
+							) : null
 						}
 						<span class="slide-caption">{p.data.title}</span>
 					</a>

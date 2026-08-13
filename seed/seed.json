@@ -15,6 +15,8 @@
 			"slug": "posts",
 			"label": "Dự án",
 			"labelSingular": "Dự án",
+			"description": "Công trình bếp đã triển khai. Thêm dự án mới: điền đủ các trường bên dưới, chọn danh mục, đăng ảnh đại diện + slide 16:9 + thư viện.",
+			"urlPattern": "/posts/{slug}",
 			"supports": [
 				"drafts",
 				"revisions",
@@ -36,15 +38,45 @@
 					"type": "image"
 				},
 				{
-					"slug": "content",
-					"label": "Nội dung",
-					"type": "portableText",
-					"searchable": true
+					"slug": "slide_image",
+					"label": "Ảnh slide (ngang 16:9)",
+					"type": "image"
 				},
 				{
 					"slug": "excerpt",
 					"label": "Tóm tắt",
 					"type": "text"
+				},
+				{
+					"slug": "chu_dau_tu",
+					"label": "Chủ đầu tư",
+					"type": "string"
+				},
+				{
+					"slug": "dia_chi",
+					"label": "Địa chỉ",
+					"type": "string"
+				},
+				{
+					"slug": "nam_hoan_thanh",
+					"label": "Năm hoàn thành",
+					"type": "string"
+				},
+				{
+					"slug": "quy_mo",
+					"label": "Quy mô",
+					"type": "string"
+				},
+				{
+					"slug": "gallery",
+					"label": "Thư viện ảnh",
+					"type": "json"
+				},
+				{
+					"slug": "content",
+					"label": "Nội dung",
+					"type": "portableText",
+					"searchable": true
 				}
 			]
 		},
