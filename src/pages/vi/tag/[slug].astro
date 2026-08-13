@@ -15,7 +15,7 @@ const slug = decodeSlug(Astro.params.slug);
 const term = slug ? await getTerm("tag", slug, { locale: "vi" }) : null;
 
 if (!term) {
-	return rewriteNotFound(Astro, "/vi/404");
+	return rewriteNotFound(Astro, "/404?lang=vi");
 }
 
 const { entries: posts, cacheHint } = await getEmDashCollection("posts", {

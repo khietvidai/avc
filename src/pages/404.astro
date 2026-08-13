@@ -2,7 +2,10 @@
 import Base from "../layouts/Base.astro";
 import NotFound from "../components/NotFound.astro";
 
-const isVI = Astro.currentLocale === "vi" || Astro.url.pathname.startsWith("/vi");
+const isVI =
+	Astro.currentLocale === "vi" ||
+	Astro.url.pathname.startsWith("/vi") ||
+	Astro.url.searchParams.get("lang") === "vi";
 ---
 
 <Base

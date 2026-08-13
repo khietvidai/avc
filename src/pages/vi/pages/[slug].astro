@@ -7,13 +7,13 @@ import { rewriteNotFound } from "../../../utils/not-found";
 const slug = decodeSlug(Astro.params.slug);
 
 if (!slug) {
-	return rewriteNotFound(Astro, "/vi/404");
+	return rewriteNotFound(Astro, "/404?lang=vi");
 }
 
 const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
 
 if (!page) {
-	return rewriteNotFound(Astro, "/vi/404");
+	return rewriteNotFound(Astro, "/404?lang=vi");
 }
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);

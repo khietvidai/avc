@@ -18,7 +18,7 @@ const raw = decodeSlug(Astro.params.slug);
 const slug = raw ? bareCmsId(raw) : "";
 
 if (!slug) {
-	return rewriteNotFound(Astro, "/vi/404");
+	return rewriteNotFound(Astro, "/404?lang=vi");
 }
 if (raw && raw !== slug) {
 	return Astro.redirect(viProjectPath(slug), 301);
@@ -27,7 +27,7 @@ if (raw && raw !== slug) {
 const { entry: post, cacheHint } = await getEmDashEntry("posts", slug, { locale: "vi" });
 
 if (!post) {
-	return rewriteNotFound(Astro, "/vi/404");
+	return rewriteNotFound(Astro, "/404?lang=vi");
 }
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
