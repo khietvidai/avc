@@ -168,7 +168,7 @@ export function buildSeoGraph(opts: {
 
 	if (project) {
 		graph.push({
-			"@type": "Project",
+			"@type": ["Project", "CreativeWork"],
 			"@id": `${canonical}#project`,
 			name: project.name,
 			description: project.description || undefined,

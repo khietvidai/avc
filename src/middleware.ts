@@ -1,6 +1,7 @@
 import { defineMiddleware } from "astro:middleware";
 import { toEnUrl } from "./utils/i18n-routes";
 import { sanitizeHtmlResponse } from "./utils/html-w3c";
+import { ADMIN_SEO_COUNTER_SCRIPT } from "./utils/admin-seo-counters";
 
 export const onRequest = defineMiddleware(async (context, next) => {
 	const { pathname } = context.url;
@@ -32,6 +33,25 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	}
 
 	const response = await next();
+	if (pathname.startsWith("/_emdash/admin")) {
+		return injectAdminSeoCounters(response);
+	}
 	if (pathname.startsWith("/_")) return response;
 	return sanitizeHtmlResponse(response);
 });
+
+async function injectAdminSeoCounters(response: Response): Promise<Response> {
+	const type = response.headers.get("content-type") || "";
+	if (!type.includes("text/html")) return response;
+	const html = await response.text();
+	if (!html.includes("</body>")) {
+		return new Response(html, { status: response.status, headers: response.headers });
+	}
+	const next = html.replace(
+		"</body>",
+		`<script>${ADMIN_SEO_COUNTER_SCRIPT}</script></body>`,
+	);
+	const headers = new Headers(response.headers);
+	headers.delete("content-length");
+	return new Response(next, { status: response.status, headers });
+}

@@ -9,6 +9,9 @@ import type { PluginDescriptor } from "emdash";
 import { definePlugin } from "emdash";
 import { PROJECTS_EN } from "../utils/projects-en";
 import { MARKET_LABEL_EN, bareCmsId } from "../utils/i18n-routes";
+import { runI18nSeo, resolveApiKey } from "./i18n-seo";
+import { translateProject } from "../utils/deepseek";
+import { paragraphsToPortableText, portableTextToPlain } from "../utils/pt-text";
 
 const LOCALES = ["en", "vi"] as const;
 const COLLECTIONS = ["posts", "linh_vuc", "home", "pages"] as const;
@@ -16,25 +19,60 @@ const COLLECTIONS = ["posts", "linh_vuc", "home", "pages"] as const;
 export function localeSyncPlugin(): PluginDescriptor {
 	return {
 		id: "locale-sync",
-		version: "1.0.0",
+		version: "1.1.0",
 		entrypoint: "locale-sync",
-		capabilities: ["content:read", "content:write"],
+		capabilities: ["content:read", "content:write", "network:request"],
+		allowedHosts: ["api.deepseek.com"],
 		adminPages: [{ path: "/", label: "Đồng bộ EN/VI", icon: "translate" }],
+		settingsSchema: {
+			apiKey: {
+				type: "secret",
+				label: "DeepSeek API Key",
+				description: "Dùng để tự dịch dự án VI → EN và điền SEO Title / Meta Description.",
+			},
+		},
 	};
 }
 
 export function createPlugin() {
 	return definePlugin({
 		id: "locale-sync",
-		version: "1.0.0",
-		capabilities: ["content:read", "content:write"],
+		version: "1.1.0",
+		capabilities: ["content:read", "content:write", "network:request"],
+		hooks: {
+			"content:afterPublish": {
+				timeout: 90_000,
+				errorPolicy: "continue",
+				handler: async (event, ctx) => {
+					try {
+						const result = await runI18nSeo(event, ctx);
+						ctx.log.info(`i18n-seo ${event.collection}/${String((event.content as { id?: string }).id)} → ${result}`);
+					} catch (err) {
+						ctx.log.warn(`i18n-seo failed: ${err instanceof Error ? err.message : err}`);
+					}
+				},
+			},
+			"content:afterSave": {
+				timeout: 90_000,
+				errorPolicy: "continue",
+				handler: async (event, ctx) => {
+					const status = String((event.content as { status?: string }).status ?? "");
+					if (status !== "published") return;
+					try {
+						await runI18nSeo(event, ctx);
+					} catch (err) {
+						ctx.log.warn(`i18n-seo save failed: ${err instanceof Error ? err.message : err}`);
+					}
+				},
+			},
+		},
 		routes: {
 			admin: {
 				handler: async (ctx) => {
 					const interaction = ctx.input as { type?: string; action_id?: string };
 					let last: SyncReport | null = null;
 					if (interaction?.type === "block_action" && interaction.action_id === "sync") {
-						last = await runSync(ctx.request);
+						last = await runSync(ctx.request, ctx);
 					}
 					const preview = last ?? (await previewMissing(ctx.request));
 					return {
@@ -64,7 +102,7 @@ function pageBlocks(report: SyncReport) {
 		{ type: "header", text: "Đồng bộ EN ↔ VI" },
 		{
 			type: "section",
-			text: "Admin lọc theo locale. Bài chỉ có tiếng Việt sẽ không hiện khi chọn EN (default). Nút dưới tạo bản dịch còn thiếu (cùng slug, ảnh, nhóm dịch).",
+			text: "Đăng dự án tiếng Việt rồi Publish: SEO Title / Meta Description tự điền (50–60 / 140–160 ký tự). Bản EN được DeepSeek dịch khi bài EN đã có, hoặc khi bấm Đồng bộ (tạo bài còn thiếu).",
 		},
 		{
 			type: "stats",
@@ -84,7 +122,7 @@ function pageBlocks(report: SyncReport) {
 					style: "primary",
 					confirm: {
 						title: "Đồng bộ EN và VI?",
-						text: "Tạo bản dịch còn thiếu. Không ghi đè bài đã có.",
+						text: "Tạo bản dịch còn thiếu và dịch bằng DeepSeek. Không ghi đè bài EN đã có.",
 						confirm: "Đồng bộ",
 						deny: "Huỷ",
 					},
@@ -110,7 +148,7 @@ function pageBlocks(report: SyncReport) {
 			: []),
 		{
 			type: "section",
-			text: "Sau khi đồng bộ: mở Dự án → chọn EN (default) để sửa tiêu đề / nội dung tiếng Anh. Ảnh và gallery được copy từ bản nguồn.",
+			text: "Canonical URL để trống. Ảnh OG lấy từ ảnh đại diện nếu chưa chọn. Có thể dán DeepSeek key ở Settings của plugin nếu secret Wrangler chưa có.",
 		},
 	];
 }
@@ -124,13 +162,14 @@ async function previewMissing(request: Request): Promise<SyncReport> {
 	return { created: 0, skipped: 0, errors: [], missing };
 }
 
-async function runSync(request: Request): Promise<SyncReport> {
+async function runSync(request: Request, pluginCtx?: { kv?: { get: <T>(k: string) => Promise<T | null> } }): Promise<SyncReport> {
 	const report: SyncReport = { created: 0, skipped: 0, errors: [], missing: [] };
+	const apiKey = pluginCtx ? await resolveApiKey(pluginCtx as never) : null;
 	for (const collection of COLLECTIONS) {
 		const unpaired = await findUnpaired(request, collection);
 		for (const item of unpaired) {
 			try {
-				await createTranslation(request, collection, item.sourceId, item.to, item.slug, item.data);
+				await createTranslation(request, collection, item.sourceId, item.to, item.slug, item.data, apiKey);
 				report.created++;
 			} catch (err) {
 				report.errors.push(`${collection}/${item.slug}: ${err instanceof Error ? err.message : err}`);
@@ -186,8 +225,11 @@ async function createTranslation(
 	targetLocale: string,
 	slug: string,
 	sourceData: Record<string, unknown>,
+	apiKey?: string | null,
 ): Promise<void> {
-	const data = shapeData(collection, slug, targetLocale, sourceData);
+	const data = await shapeData(collection, slug, targetLocale, sourceData, apiKey);
+	const title = typeof data.title === "string" ? data.title : "";
+	const excerpt = typeof data.excerpt === "string" ? data.excerpt : "";
 	const created = await api(request, `/_emdash/api/content/${collection}`, {
 		method: "POST",
 		body: JSON.stringify({
@@ -195,6 +237,10 @@ async function createTranslation(
 			translationOf: sourceId,
 			slug,
 			data,
+			seo: {
+				title: title.slice(0, 60),
+				description: (excerpt || title).slice(0, 160),
+			},
 		}),
 	});
 	const item = unwrapItem(created);
@@ -205,12 +251,13 @@ async function createTranslation(
 	});
 }
 
-function shapeData(
+async function shapeData(
 	collection: string,
 	slug: string,
 	targetLocale: string,
 	source: Record<string, unknown>,
-): Record<string, unknown> {
+	apiKey?: string | null,
+): Promise<Record<string, unknown>> {
 	const data: Record<string, unknown> = { ...source };
 	delete data.id;
 	delete data.locale;
@@ -218,6 +265,7 @@ function shapeData(
 	delete data.status;
 	delete data.translation_group;
 	delete data.translationGroup;
+	delete data.seo;
 
 	if (targetLocale === "en" && collection === "posts") {
 		const en = PROJECTS_EN[slug];
@@ -226,12 +274,21 @@ function shapeData(
 			data.excerpt = en.excerpt;
 			data.chu_dau_tu = en.client;
 			data.dia_chi = en.location;
-			data.content = en.body.map((text) => ({
-				_type: "block",
-				style: "normal",
-				markDefs: [],
-				children: [{ _type: "span", text, marks: [] }],
-			}));
+			data.content = paragraphsToPortableText(en.body);
+		} else if (apiKey) {
+			const tr = await translateProject({
+				apiKey,
+				title: String(source.title ?? ""),
+				excerpt: String(source.excerpt ?? ""),
+				chu_dau_tu: String(source.chu_dau_tu ?? ""),
+				dia_chi: String(source.dia_chi ?? ""),
+				body: portableTextToPlain(source.content),
+			});
+			data.title = tr.title;
+			data.excerpt = tr.excerpt;
+			data.chu_dau_tu = tr.chu_dau_tu || source.chu_dau_tu;
+			data.dia_chi = tr.dia_chi || source.dia_chi;
+			data.content = paragraphsToPortableText(tr.content.length ? tr.content : [tr.excerpt]);
 		}
 	}
 	if (targetLocale === "en" && collection === "linh_vuc") {
