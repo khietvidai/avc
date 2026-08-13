@@ -63,7 +63,11 @@ Corporate one-page site for **Công ty TNHH Thiết Bị Công Nghiệp AVC** (i
 | Tag          | `/tag/[slug]`      | Projects filtered by thẻ                                                                              |
 | RSS          | `/rss.xml`         | Generated feed                                                                                        |
 
-Primary menu: Trang chủ `/` · Giới thiệu `/gioi-thieu` · Dịch vụ `/dich-vu` · Sản phẩm `/san-pham` · Dự án `/posts` · Liên hệ `/lien-he`.
+Primary menu: Trang chủ `/` · Giới thiệu `/gioi-thieu` · Dịch vụ `/dich-vu` · Sản phẩm `/san-pham` · Portfolio `/portfolio` · Liên hệ `/lien-he`. "Giới thiệu", "Dịch vụ" and "Portfolio" have dropdown submenus (children in `_emdash_menu_items`, rendered by Base.astro's `.nav-dropdown`).
+
+Portfolio flow (modeled on ricca design studios): `/portfolio` (checkerboard olive/gray grid of 6 lĩnh vực) → `/category/[slug]` (full-width auto-playing slider of featured projects + 3-col hover-overlay gallery) → `/posts/[slug]` (project detail: horizontal gallery with clickable thumbnails, title + olive subtitle, 2-col info block — năm hoàn thành/quy mô | chủ đầu tư/địa chỉ). `/posts` list page still exists but is not in the menu. `/dich-vu` is section-per-service: wide photo banner (`public/images/banner-*.jpg`) + description + 2-col bullet list, anchors `#tu-van #thiet-ke #cung-cap #thi-cong #bao-hanh #san-xuat`.
+
+`posts` collection extra fields (added via SQL, also in production): `chu_dau_tu`, `dia_chi`, `nam_hoan_thanh` (empty — awaiting real data), `quy_mo` (defaults "Bảo mật"), `gallery` (json array of media objects, 3-4 real photos per project extracted from PROFILE_AVC.pdf).
 
 **Images**: all real photos extracted from `PROFILE_AVC.pdf` (per-page via PyMuPDF, auto-cropped black borders, JPEG-compressed). CMS media (hero, 6 lĩnh vực, 21 project featured images, site logo) live in the media library/R2; static-page images live in `public/images/` (team, thi công, nhà máy, kho, logo…). The site logo is set in settings (`site:logo`) — note settings are cached per worker isolate, restart dev after changing them via SQL.
 

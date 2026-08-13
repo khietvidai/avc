@@ -92,6 +92,9 @@ function socialInitials(label: string): string {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="icon" href="/favicon.png" type="image/png" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<Font cssVariable="--font-body" preload />
 		<Font cssVariable="--font-mono" />
 		<title>{fullTitle}</title>
@@ -110,13 +113,29 @@ function socialInitials(label: string): string {
 				<nav class="site-nav" aria-label="Điều hướng chính">
 					{
 						menu?.items.map((item) => (
-							<a
-								href={item.url}
-								target={item.target}
-								class:list={["site-nav-link", { active: isActive(item.url) }]}
-							>
-								{item.label}
-							</a>
+							<div class="nav-item">
+								<a
+									href={item.url}
+									target={item.target}
+									class:list={["site-nav-link", { active: isActive(item.url) }]}
+									aria-haspopup={item.children?.length ? "true" : undefined}
+								>
+									{item.label}
+								</a>
+								{item.children?.length > 0 && (
+									<div class="nav-dropdown">
+										{item.children.map((child) => (
+											<a
+												href={child.url}
+												target={child.target}
+												class="nav-dropdown-link"
+											>
+												{child.label}
+											</a>
+										))}
+									</div>
+								)}
+							</div>
 						))
 					}
 				</nav>
@@ -317,18 +336,77 @@ function socialInitials(label: string): string {
 				text-transform: uppercase;
 			}
 
+			.nav-item {
+				position: relative;
+				display: flex;
+				align-items: center;
+			}
+
+			.nav-item + .nav-item::before {
+				content: "";
+				width: 1px;
+				height: 22px;
+				background: var(--avc-nav-separator);
+			}
+
 			.site-nav-link {
+				display: block;
 				padding: 6px 28px;
 				color: var(--avc-nav-text);
 				white-space: nowrap;
 			}
 
-			.site-nav-link + .site-nav-link {
-				border-left: 1px solid var(--avc-nav-separator);
-			}
-
 			.site-nav-link:hover,
 			.site-nav-link.active {
+				color: var(--color-brand);
+			}
+
+			/* Dropdown submenu */
+			.nav-dropdown {
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				transform: translateX(-50%);
+				min-width: 240px;
+				background: var(--color-bg);
+				border: 1px solid var(--color-border);
+				box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+				display: none;
+				z-index: 200;
+			}
+
+			.nav-item:hover .nav-dropdown,
+			.nav-item:focus-within .nav-dropdown {
+				display: block;
+			}
+
+			/* giữ vùng hover liền mạch giữa link và dropdown */
+			.nav-dropdown::before {
+				content: "";
+				position: absolute;
+				top: -8px;
+				left: 0;
+				right: 0;
+				height: 8px;
+			}
+
+			.nav-dropdown-link {
+				display: block;
+				padding: 13px 22px;
+				text-align: center;
+				font-size: 14px;
+				font-weight: 700;
+				letter-spacing: 0.5px;
+				text-transform: uppercase;
+				color: var(--avc-nav-text);
+				white-space: nowrap;
+			}
+
+			.nav-dropdown-link + .nav-dropdown-link {
+				border-top: 1px solid var(--avc-nav-separator);
+			}
+
+			.nav-dropdown-link:hover {
 				color: var(--color-brand);
 			}
 
@@ -473,6 +551,11 @@ function socialInitials(label: string): string {
 					white-space: normal;
 					text-align: center;
 					font-size: 16px;
+				}
+
+				/* mobile: ẩn dropdown, link cha vẫn điều hướng được */
+				.nav-dropdown {
+					display: none !important;
 				}
 
 				.site-nav {

@@ -1,0 +1,159 @@
+---
+import { getEmDashCollection } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+
+const { entries: linhVucRaw, cacheHint } = await getEmDashCollection("linh_vuc");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const linhVuc = linhVucRaw.toSorted(
+	(a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0)
+);
+
+// Bàn cờ màu như mẫu: hàng 1 [olive|xám], hàng 2 [xám|olive], hàng 3 [olive|xám]
+function isBrand(i: number): boolean {
+	return (Math.floor(i / 2) + (i % 2)) % 2 === 0;
+}
+---
+
+<Base title="Portfolio" description="Portfolio dự án bếp công nghiệp AVC theo lĩnh vực: nhà hàng, khách sạn, bếp trung tâm, khu công nghiệp, bakery, bar & café">
+	<div class="page">
+		<h1 class="page-title">PORTFOLIO</h1>
+		<hr class="dashed-divider" />
+		<p class="lead">1.500+ công trình bếp công nghiệp trên toàn quốc — chọn lĩnh vực để xem các dự án AVC đã triển khai.</p>
+
+		<div class="portfolio-grid">
+			{
+				linhVuc.map((lv, i) => (
+					<a
+						href={`/category/${lv.id}`}
+						class:list={["cell", isBrand(i) ? "cell-brand" : "cell-gray"]}
+					>
+						<div class="cell-label">
+							<span>{lv.data.title}</span>
+						</div>
+						<div class="cell-image">
+							{lv.data.image && <Image image={lv.data.image} />}
+						</div>
+					</a>
+				))
+			}
+		</div>
+	</div>
+</Base>
+
+<style>
+	.page {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 44px 24px 80px;
+		text-align: center;
+	}
+
+	.page-title {
+		font-size: 35px;
+		font-weight: 700;
+		letter-spacing: 1px;
+		color: var(--color-brand);
+	}
+
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 34px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.lead {
+		max-width: 640px;
+		margin: 0 auto 44px;
+		font-size: 17px;
+		line-height: 1.65;
+	}
+
+	.portfolio-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 14px;
+	}
+
+	.cell {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		height: 440px;
+		overflow: hidden;
+	}
+
+	.cell-label {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 0 26px;
+		text-align: left;
+	}
+
+	.cell-brand .cell-label {
+		background: var(--color-brand);
+	}
+
+	.cell-gray .cell-label {
+		background: #a39a96;
+	}
+
+	.cell-label span {
+		color: #ffffff;
+		font-size: 24px;
+		font-weight: 700;
+		letter-spacing: 0.5px;
+		text-transform: uppercase;
+		line-height: 1.3;
+	}
+
+	.cell-image {
+		overflow: hidden;
+		background: #e9e9e9;
+	}
+
+	.cell-image :global(img) {
+		width: 100%;
+		height: 440px;
+		object-fit: cover;
+		transition: transform var(--transition-base);
+	}
+
+	.cell:hover .cell-image :global(img) {
+		transform: scale(1.04);
+	}
+
+	.cell-brand:hover .cell-label {
+		background: var(--color-brand-hover);
+	}
+
+	.cell-gray:hover .cell-label {
+		background: #948b87;
+	}
+
+	@media (max-width: 800px) {
+		.portfolio-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.cell {
+			height: 320px;
+		}
+
+		.cell-image :global(img) {
+			height: 320px;
+		}
+
+		.cell-label span {
+			font-size: 19px;
+		}
+	}
+
+	@media (max-width: 540px) {
+		.page-title {
+			font-size: 26px;
+		}
+	}
+</style>

@@ -1,13 +1,7 @@
 ---
-import {
-	getTerm,
-	getEmDashCollection,
-	getTermsForEntries,
-	decodeSlug,
-} from "emdash";
+import { getTerm, getEmDashCollection, decodeSlug } from "emdash";
+import { Image } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
-import PostCard from "../../components/PostCard.astro";
-import { getReadingTime } from "../../utils/reading-time";
 
 const slug = decodeSlug(Astro.params.slug);
 const term = slug ? await getTerm("category", slug) : null;
@@ -23,106 +17,312 @@ const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
-// Single batched query for tags on every post in this category, rather
-// than calling getEntryTerms() per post (which would be one round-trip
-// per post).
-const tagsByEntry = await getTermsForEntries(
-	"posts",
-	posts.map((p) => p.data.id),
-	"tag",
-);
-const filteredPosts = posts.map((post) => ({
-	post,
-	tags: tagsByEntry.get(post.data.id) ?? [],
-}));
+const withImage = posts.filter((p) => p.data.featured_image);
+// Slider: tối đa 6 dự án nổi bật đầu tiên
+const slides = withImage.slice(0, 6);
 ---
 
-<Base title={`Dự án ${term.label}`} description={`Các dự án thuộc danh mục ${term.label}`}>
-	<section class="archive-section">
-		<header class="archive-header">
-			<span class="archive-label">Danh mục</span>
-			<h1 class="archive-title">{term.label}</h1>
-			<p class="archive-count">
-				{filteredPosts.length} dự án
-			</p>
-		</header>
+<Base
+	title={`${term.label} — Portfolio`}
+	description={`Các dự án bếp công nghiệp AVC đã triển khai trong lĩnh vực ${term.label}`}
+>
+	{
+		slides.length > 0 && (
+			<section class="slider" aria-label={`Dự án tiêu biểu ${term.label}`}>
+				{slides.map((p, i) => (
+					<a
+						href={`/posts/${p.id}`}
+						class:list={["slide", { active: i === 0 }]}
+						data-index={i}
+					>
+						<Image image={p.data.featured_image} />
+						<span class="slide-caption">{p.data.title}</span>
+					</a>
+				))}
+				{slides.length > 1 && (
+					<>
+						<button class="slider-arrow slider-prev" aria-label="Dự án trước">‹</button>
+						<button class="slider-arrow slider-next" aria-label="Dự án sau">›</button>
+						<div class="slider-dots">
+							{slides.map((_, i) => (
+								<button
+									class:list={["dot", { active: i === 0 }]}
+									data-index={i}
+									aria-label={`Slide ${i + 1}`}
+								/>
+							))}
+						</div>
+					</>
+				)}
+			</section>
+		)
+	}
+
+	<div class="page">
+		<h1 class="page-title">{term.label}</h1>
+		<hr class="dashed-divider" />
 
 		{
-			filteredPosts.length === 0 ? (
-				<p class="no-posts">Chưa có dự án trong danh mục này.</p>
+			posts.length === 0 ? (
+				<p class="empty">
+					Chưa có dự án trong lĩnh vực này — các công trình mới sẽ được cập
+					nhật sớm. <a href="/posts">Xem tất cả dự án</a>
+				</p>
 			) : (
-				<div class="posts-grid">
-					{filteredPosts.map(({ post, tags }) => (
-						<PostCard
-							title={post.data.title}
-							excerpt={post.data.excerpt}
-							featuredImage={post.data.featured_image}
-							href={`/posts/${post.id}`}
-							date={post.data.publishedAt ?? undefined}
-							readingTime={getReadingTime(post.data.content)}
-							tags={tags.map((t) => ({ slug: t.slug, label: t.label }))}
-						/>
+				<div class="gallery">
+					{withImage.map(({ id, data }) => (
+						<a href={`/posts/${id}`} class="gallery-item">
+							<Image image={data.featured_image} />
+							<span class="gallery-overlay">
+								<span>{data.title}</span>
+							</span>
+						</a>
 					))}
 				</div>
 			)
 		}
-	</section>
+	</div>
 </Base>
 
+<script>
+	// Slider: tự chạy + mũi tên + chấm điều hướng
+	const slider = document.querySelector(".slider");
+	if (slider) {
+		const slides = [...slider.querySelectorAll<HTMLElement>(".slide")];
+		const dots = [...slider.querySelectorAll<HTMLElement>(".dot")];
+		let current = 0;
+		let timer: ReturnType<typeof setInterval> | undefined;
+
+		function show(i: number) {
+			current = (i + slides.length) % slides.length;
+			slides.forEach((s, j) => s.classList.toggle("active", j === current));
+			dots.forEach((d, j) => d.classList.toggle("active", j === current));
+		}
+
+		function restart() {
+			if (timer) clearInterval(timer);
+			if (slides.length > 1) {
+				timer = setInterval(() => show(current + 1), 5000);
+			}
+		}
+
+		slider.querySelector(".slider-prev")?.addEventListener("click", (e) => {
+			e.preventDefault();
+			show(current - 1);
+			restart();
+		});
+		slider.querySelector(".slider-next")?.addEventListener("click", (e) => {
+			e.preventDefault();
+			show(current + 1);
+			restart();
+		});
+		dots.forEach((d) =>
+			d.addEventListener("click", (e) => {
+				e.preventDefault();
+				show(Number(d.dataset.index));
+				restart();
+			})
+		);
+		restart();
+	}
+</script>
+
 <style>
-	.archive-section {
-		max-width: var(--wide-width);
-		margin: 0 auto;
-		padding: var(--spacing-12) var(--spacing-6);
+	/* Slider full-width */
+	.slider {
+		position: relative;
+		width: 100%;
+		height: 480px;
+		background: #e9e9e9;
+		overflow: hidden;
 	}
 
-	.archive-header {
-		margin-bottom: var(--spacing-12);
-		padding-bottom: var(--spacing-8);
-		border-bottom: 1px solid var(--color-border-subtle);
-	}
-
-	.archive-label {
+	.slide {
+		position: absolute;
+		inset: 0;
 		display: block;
-		font-size: var(--font-size-xs);
-		font-weight: 500;
-		color: var(--color-brand);
+		opacity: 0;
+		transition: opacity 0.6s ease;
+		pointer-events: none;
+	}
+
+	.slide.active {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.slide :global(img) {
+		width: 100%;
+		height: 480px;
+		object-fit: cover;
+	}
+
+	.slide-caption {
+		position: absolute;
+		left: 0;
+		bottom: 56px;
+		padding: 12px 26px;
+		background: rgba(74, 68, 64, 0.78);
+		color: #ffffff;
+		font-size: 17px;
+		font-weight: 700;
+		letter-spacing: 0.5px;
 		text-transform: uppercase;
-		letter-spacing: var(--tracking-wider);
-		margin-bottom: var(--spacing-2);
 	}
 
-	.archive-title {
-		font-size: var(--font-size-4xl);
-		font-weight: var(--font-weight-display);
-		letter-spacing: var(--tracking-tight);
-		margin-bottom: var(--spacing-2);
+	.slider-arrow {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		background: none;
+		border: none;
+		color: rgba(255, 255, 255, 0.85);
+		font-size: 52px;
+		font-weight: 300;
+		line-height: 1;
+		cursor: pointer;
+		padding: 8px 14px;
+		z-index: 5;
+		transition: color var(--transition-fast);
 	}
 
-	.archive-count {
-		font-size: var(--font-size-sm);
-		color: var(--color-muted);
+	.slider-arrow:hover {
+		color: #ffffff;
 	}
 
-	.posts-grid {
+	.slider-prev {
+		left: 14px;
+	}
+
+	.slider-next {
+		right: 14px;
+	}
+
+	.slider-dots {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: 22px;
+		display: flex;
+		gap: 10px;
+		z-index: 5;
+	}
+
+	.dot {
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		border: none;
+		background: rgba(255, 255, 255, 0.55);
+		cursor: pointer;
+		padding: 0;
+	}
+
+	.dot.active {
+		background: #ffffff;
+	}
+
+	/* Nội dung */
+	.page {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 52px 24px 80px;
+		text-align: center;
+	}
+
+	.page-title {
+		font-size: 32px;
+		font-weight: 700;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		color: var(--color-brand);
+	}
+
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 40px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.empty {
+		color: var(--color-text-secondary);
+		font-size: 16px;
+	}
+
+	/* Lưới ảnh 3 cột, hover hiện tên dự án */
+	.gallery {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: var(--spacing-12) var(--spacing-8);
+		gap: 16px;
 	}
 
-	.no-posts {
-		color: var(--color-muted);
+	.gallery-item {
+		position: relative;
+		display: block;
+		height: 280px;
+		overflow: hidden;
+		background: #e9e9e9;
 	}
 
-	@media (max-width: 900px) {
-		.posts-grid {
-			grid-template-columns: repeat(2, 1fr);
+	.gallery-item :global(img) {
+		width: 100%;
+		height: 280px;
+		object-fit: cover;
+		transition: transform var(--transition-base);
+	}
+
+	.gallery-item:hover :global(img) {
+		transform: scale(1.04);
+	}
+
+	.gallery-overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 20px;
+		background: rgba(255, 255, 255, 0.72);
+		opacity: 0;
+		transition: opacity var(--transition-base);
+	}
+
+	.gallery-item:hover .gallery-overlay {
+		opacity: 1;
+	}
+
+	.gallery-overlay span {
+		font-size: 20px;
+		font-weight: 500;
+		line-height: 1.35;
+		color: #4a4440;
+		text-align: center;
+	}
+
+	@media (max-width: 800px) {
+		.slider,
+		.slide :global(img) {
+			height: 320px;
+		}
+
+		.gallery {
+			grid-template-columns: 1fr 1fr;
 		}
 	}
 
-	@media (max-width: 600px) {
-		.posts-grid {
+	@media (max-width: 540px) {
+		.gallery {
 			grid-template-columns: 1fr;
+		}
+
+		.page-title {
+			font-size: 24px;
+		}
+
+		.slide-caption {
+			font-size: 14px;
+			bottom: 44px;
 		}
 	}
 </style>

@@ -63,6 +63,11 @@ export interface Post {
   featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
   content?: PortableTextBlock[];
   excerpt?: string;
+  chu_dau_tu?: string;
+  dia_chi?: string;
+  nam_hoan_thanh?: string;
+  quy_mo?: string;
+  gallery?: unknown;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
