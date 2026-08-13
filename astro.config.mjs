@@ -9,6 +9,11 @@ import emdash from "emdash/astro";
 export default defineConfig({
 	output: "server",
 	adapter: cloudflare(),
+	i18n: {
+		defaultLocale: "vi",
+		locales: ["vi", "en"],
+		fallback: { en: "vi" },
+	},
 	image: {
 		layout: "constrained",
 		responsiveStyles: true,
@@ -27,9 +32,16 @@ export default defineConfig({
 	fonts: [
 		{
 			provider: fontProviders.google(),
-			name: "Roboto",
+			name: "Be Vietnam Pro",
 			cssVariable: "--font-body",
-			weights: [400, 500, 700],
+			weights: [400, 500, 600, 700],
+			fallbacks: ["sans-serif"],
+		},
+		{
+			provider: fontProviders.google(),
+			name: "Montserrat",
+			cssVariable: "--font-heading",
+			weights: [500, 600, 700],
 			fallbacks: ["sans-serif"],
 		},
 		{

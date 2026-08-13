@@ -7,8 +7,8 @@ import {
 	getSiteSettings,
 } from "emdash";
 import { Image, PortableText } from "emdash/ui";
-import Base from "../../layouts/Base.astro";
-import { resolveBlogSiteIdentity } from "../../utils/site-identity";
+import Base from "../../../layouts/Base.astro";
+import { resolveBlogSiteIdentity } from "../../../utils/site-identity";
 
 const slug = decodeSlug(Astro.params.slug);
 
@@ -16,7 +16,9 @@ if (!slug) {
 	return Astro.redirect("/404");
 }
 
-const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
+const { entry: post, cacheHint } = await getEmDashEntry("posts", slug, {
+	locale: "vi",
+});
 
 if (!post) {
 	return Astro.redirect("/404");
@@ -24,7 +26,6 @@ if (!post) {
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
-// Get featured image URL for OG fallback
 function getImageUrl(img: unknown): string | undefined {
 	if (!img || typeof img !== "object") return undefined;
 	const image = img as Record<string, unknown>;
@@ -48,21 +49,27 @@ const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
 const seo = getSeoMeta(post, {
 	siteTitle,
 	siteUrl: Astro.url.origin,
-	path: `/posts/${slug}`,
+	path: `/en/posts/${slug}`,
 	defaultOgImage: featuredImageUrl,
 });
 
-// Gallery: ảnh đại diện + thư viện ảnh phụ
 const galleryRaw = Array.isArray(post.data.gallery) ? post.data.gallery : [];
 const images = [post.data.featured_image, ...galleryRaw].filter(Boolean);
 
-// Danh mục của dự án (đã hydrate trên entry)
+const LV_EN: Record<string, string> = {
+	"nha-hang": "Restaurants",
+	"khach-san": "Hotels",
+	"bep-trung-tam": "Central Kitchens",
+	"khu-cong-nghiep": "Industrial Canteens",
+	bakery: "Bakeries",
+	"bar-cafe": "Bar & Café",
+};
 const categories = post.data.terms?.category ?? [];
 
-// Dự án khác
 const { entries: recentPosts } = await getEmDashCollection("posts", {
 	orderBy: { published_at: "desc" },
 	limit: 4,
+	locale: "vi",
 });
 const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 ---
@@ -80,7 +87,6 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 	content={{ collection: "posts", id: post.data.id, slug }}
 >
 	<article class="project">
-		{/* Gallery: hàng ảnh lớn kéo ngang + thumbnails */}
 		{
 			images.length > 0 && (
 				<section class="gallery-viewer">
@@ -97,7 +103,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 								<button
 									class:list={["thumb", { active: i === 0 }]}
 									data-index={i}
-									aria-label={`Ảnh ${i + 1}`}
+									aria-label={`Photo ${i + 1}`}
 								>
 									<Image image={img} />
 								</button>
@@ -109,14 +115,14 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 		}
 
 		<div class="project-body">
-			<h1 class="project-title" {...post.edit.title}>{post.data.title}</h1>
+			<h1 class="project-title">{post.data.title}</h1>
 			<hr class="dashed-divider" />
 			{
 				(post.data.dia_chi || categories.length > 0) && (
 					<p class="project-sub">
 						{categories.length > 0 && (
-							<a href={`/category/${categories[0].slug}`}>
-								{categories[0].label}
+							<a href={`/en/category/${categories[0].slug}`}>
+								{LV_EN[categories[0].slug] ?? categories[0].label}
 							</a>
 						)}
 						{categories.length > 0 && post.data.dia_chi && " | "}
@@ -128,28 +134,22 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 			<div class="project-info">
 				<div class="info-col">
 					<div class="info-block">
-						<h4>Năm hoàn thành</h4>
-						<p {...post.edit.nam_hoan_thanh}>
-							{post.data.nam_hoan_thanh || "Đang cập nhật"}
-						</p>
+						<h4>Completed</h4>
+						<p>{post.data.nam_hoan_thanh || "Updating"}</p>
 					</div>
 					<div class="info-block">
-						<h4>Quy mô</h4>
-						<p {...post.edit.quy_mo}>{post.data.quy_mo || "Bảo mật"}</p>
+						<h4>Scale</h4>
+						<p>{post.data.quy_mo === "Bảo mật" ? "Confidential" : post.data.quy_mo || "Updating"}</p>
 					</div>
 				</div>
 				<div class="info-col">
 					<div class="info-block">
-						<h4>Chủ đầu tư</h4>
-						<p {...post.edit.chu_dau_tu}>
-							{post.data.chu_dau_tu || "Đang cập nhật"}
-						</p>
+						<h4>Client</h4>
+						<p>{post.data.chu_dau_tu || "Updating"}</p>
 					</div>
 					<div class="info-block">
-						<h4>Địa chỉ</h4>
-						<p {...post.edit.dia_chi}>
-							{post.data.dia_chi || "Đang cập nhật"}
-						</p>
+						<h4>Location</h4>
+						<p>{post.data.dia_chi || "Updating"}</p>
 					</div>
 				</div>
 			</div>
@@ -164,10 +164,10 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 		otherPosts.length > 0 && (
 			<section class="more-projects">
 				<div class="more-inner">
-					<h2 class="more-title">Dự án khác</h2>
+					<h2 class="more-title">More projects</h2>
 					<div class="more-grid">
 						{otherPosts.map((p) => (
-							<a href={`/posts/${p.id}`} class="more-item">
+							<a href={`/en/posts/${p.id}`} class="more-item">
 								{p.data.featured_image && (
 									<div class="more-image">
 										<Image image={p.data.featured_image} />
@@ -183,7 +183,6 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 	}
 
 	<script>
-		// Thumbnail click -> cuộn ảnh tương ứng vào hàng lớn
 		const track = document.getElementById("gallery-track");
 		const thumbs = [...document.querySelectorAll<HTMLElement>(".thumb")];
 		if (track && thumbs.length) {
@@ -206,7 +205,6 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 </Base>
 
 <style>
-	/* Gallery */
 	.gallery-viewer {
 		width: 100%;
 	}
@@ -261,7 +259,6 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 		border-color: var(--color-brand);
 	}
 
-	/* Nội dung */
 	.project-body {
 		max-width: 860px;
 		margin: 0 auto;
@@ -322,9 +319,9 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 	}
 
 	.info-block h4 {
-		font-size: 14px;
+		font-size: 12.5px;
 		font-weight: 700;
-		letter-spacing: 0.5px;
+		letter-spacing: 2px;
 		text-transform: uppercase;
 		color: #6b6560;
 		margin-bottom: 4px;
@@ -351,7 +348,6 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 		color: var(--color-brand);
 	}
 
-	/* Dự án khác */
 	.more-projects {
 		background: var(--color-bg-subtle);
 		padding: 56px 0 64px;
@@ -366,6 +362,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 	.more-title {
 		font-size: 19px;
 		font-weight: 700;
+		letter-spacing: 1px;
 		color: var(--color-brand);
 		margin-bottom: 28px;
 	}
@@ -426,7 +423,7 @@ const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
 
 	@media (max-width: 600px) {
 		.project-title {
-			font-size: 19px;
+			font-size: 18px;
 		}
 
 		.project-info {

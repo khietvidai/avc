@@ -1,0 +1,264 @@
+---
+import Base from "../../layouts/Base.astro";
+
+const services = [
+	{
+		id: "tu-van",
+		title: "Investment Consulting",
+		banner: "/images/banner-tu-van.jpg",
+		desc: "AVC works with investors from day one: assessing capacity, project standards and budget against real operating needs. Experience from 1,500+ projects lets us propose the right equipment strategy for every model — from standalone restaurants to central kitchens and industrial canteens.",
+		items: [
+			"Investment-stage consulting", "Capacity assessment",
+			"Technical standards", "Budget planning",
+			"On-site surveys", "Operational analysis",
+			"Equipment recommendations", "Capex & opex optimisation",
+		],
+	},
+	{
+		id: "thiet-ke",
+		title: "Kitchen Design",
+		banner: "/images/banner-thiet-ke.jpg",
+		desc: "Every project starts with 2D layouts, 3D models and MEP coordination (power – water – ventilation) before manufacturing, so investors can see the kitchen exactly as it will be built and construction risk is removed early. Layouts follow the one-way flow — receiving, prep, cooking, plating, washing — for food safety and lean staffing.",
+		items: [
+			"Site survey & measurement", "Workflow analysis",
+			"2D layout design", "3D modelling",
+			"MEP coordination", "One-way kitchen flow",
+			"Architect & contractor coordination", "Construction documentation",
+		],
+	},
+	{
+		id: "cung-cap",
+		title: "Equipment Supply",
+		banner: "/images/banner-cung-cap.jpg",
+		desc: "AVC distributes equipment from 21 trusted international brands — Hoshizaki, Unox, Hobart, Robot Coupe, Turbocool, Eagle and more — combined with custom stainless steel fabricated at our own factory. Our Ho Chi Minh City warehouse keeps stock on hand for fast nationwide delivery.",
+		items: [
+			"Genuine imported equipment", "Custom stainless fabrication",
+			"21 international brands", "Stock on hand",
+			"Fast nationwide delivery", "Installation & training",
+			"Manufacturer warranty", "Cost-efficient packages",
+		],
+	},
+	{
+		id: "thi-cong",
+		title: "Installation",
+		banner: "/images/banner-thi-cong.jpg",
+		desc: "Equipment is installed to approved technical drawings, coordinated with the main contractor across all trades. AVC applies comprehensive risk-control procedures and international construction methods — especially for high-difficulty scopes such as exhaust systems and cold rooms.",
+		items: [
+			"Kitchen system installation", "Exhaust & ventilation systems",
+			"Stainless bar counters", "Cold & freezer rooms",
+			"Multi-trade coordination", "Layered site safety",
+			"Commissioning & testing", "Acceptance & handover",
+		],
+	},
+	{
+		id: "bao-hanh",
+		title: "Warranty & Maintenance",
+		banner: "/images/banner-bao-hanh.jpg",
+		desc: "After handover, AVC stays with the project for its entire life cycle: contracted equipment warranty, rapid incident response, and scheduled maintenance that keeps the kitchen stable, safe and efficient — backed by a 24/7 technical team.",
+		items: [
+			"Contracted warranty", "Rapid incident response",
+			"Operator training", "Scheduled maintenance",
+			"Condition assessment", "Genuine spare parts",
+			"24/7 technical support", "Long-term maintenance contracts",
+		],
+	},
+	{
+		id: "san-xuat",
+		title: "Stainless Fabrication",
+		banner: "/images/banner-san-xuat.jpg",
+		desc: "AVC's stainless steel factory, equipped with modern CNC laser cutting, fabricates equipment to each project's drawings: tables, sinks, shelving, cabinets, trolleys, bar counters, exhaust hoods and ductwork. In-house manufacturing keeps schedule and quality fully under our control.",
+		items: [
+			"CNC laser cutting", "Made-to-drawing fabrication",
+			"Tables – sinks – shelving – cabinets", "Custom bar counters",
+			"Exhaust hoods & ductwork", "Trolleys & special items",
+			"Detail-level quality control", "Production schedule control",
+		],
+	},
+];
+---
+
+<Base title="Services" description="AVC turnkey commercial kitchen services: investment consulting, 2D/3D & MEP design, equipment supply, installation, warranty & maintenance, stainless fabrication">
+	<div class="page">
+		<header class="page-header">
+			<h1 class="page-title">SERVICES</h1>
+			<hr class="dashed-divider" />
+			<p class="lead">A fully integrated value chain — <strong>consulting – design – manufacturing – installation – after-sales</strong> — lets AVC control quality end-to-end and optimise investment for every commercial kitchen project.</p>
+		</header>
+
+		{services.map((s) => (
+			<section class="service" id={s.id}>
+				<div class="service-banner">
+					<img src={s.banner} alt={s.title} loading="lazy" />
+				</div>
+				<h2 class="service-title">{s.title}</h2>
+				<p class="service-desc">{s.desc}</p>
+				<ul class="service-items">
+					{s.items.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+		))}
+
+		<section class="cta-section">
+			<p class="cta-text">Need a kitchen solution for your project?</p>
+			<a href="/en/lien-he" class="btn">Contact AVC</a>
+			<a href="/en/portfolio" class="btn btn-outline">View portfolio</a>
+		</section>
+	</div>
+</Base>
+
+<style>
+	.page {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 44px 24px 80px;
+	}
+
+	.page-header {
+		text-align: center;
+		margin-bottom: 56px;
+	}
+
+	.page-title {
+		font-size: 26px;
+		font-weight: 700;
+		letter-spacing: 2.5px;
+		color: var(--color-brand);
+	}
+
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 34px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.lead {
+		max-width: 700px;
+		margin: 0 auto;
+		font-size: 15px;
+		line-height: 1.65;
+	}
+
+	.lead strong {
+		color: var(--color-brand);
+		font-weight: 700;
+	}
+
+	.service {
+		margin-bottom: 72px;
+		text-align: center;
+		scroll-margin-top: 24px;
+	}
+
+	.service-banner {
+		height: 280px;
+		overflow: hidden;
+		background: #e9e9e9;
+		margin-bottom: 28px;
+	}
+
+	.service-banner img {
+		width: 100%;
+		height: 280px;
+		object-fit: cover;
+	}
+
+	.service-title {
+		font-size: 18px;
+		font-weight: 700;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		color: var(--color-brand);
+		margin-bottom: 18px;
+	}
+
+	.service-desc {
+		max-width: 780px;
+		margin: 0 auto 26px;
+		font-size: 14.5px;
+		line-height: 1.7;
+		text-align: center;
+	}
+
+	.service-items {
+		list-style: none;
+		max-width: 720px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 10px 48px;
+		text-align: left;
+	}
+
+	.service-items li {
+		font-size: 14px;
+		line-height: 1.5;
+		color: var(--color-text-secondary);
+		padding-left: 20px;
+		position: relative;
+	}
+
+	.service-items li::before {
+		content: "•";
+		position: absolute;
+		left: 4px;
+		color: var(--color-brand);
+		font-weight: 700;
+	}
+
+	.cta-section {
+		text-align: center;
+		margin-top: 8px;
+	}
+
+	.cta-text {
+		font-size: 16px;
+		margin-bottom: 20px;
+	}
+
+	.btn {
+		display: inline-block;
+		margin: 0 6px;
+		padding: 11px 26px;
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+		font-size: 14px;
+		border-radius: 0;
+		transition: background var(--transition-fast);
+	}
+
+	.btn:hover {
+		background: var(--color-brand-hover);
+		color: var(--color-on-brand);
+	}
+
+	.btn-outline {
+		background: transparent;
+		border: 1px solid var(--color-brand);
+		color: var(--color-brand);
+	}
+
+	.btn-outline:hover {
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+	}
+
+	@media (max-width: 640px) {
+		.page-title {
+			font-size: 20px;
+		}
+
+		.service-title {
+			font-size: 15px;
+		}
+
+		.service-banner,
+		.service-banner img {
+			height: 180px;
+		}
+
+		.service-items {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

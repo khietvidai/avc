@@ -40,7 +40,11 @@ const {
 	author,
 	content,
 } = Astro.props;
-const { siteTitle, siteLogo } = resolveBlogSiteIdentity(await getSiteSettings());
+const { siteTitle: siteTitleVI, siteLogo } = resolveBlogSiteIdentity(await getSiteSettings());
+const siteTitle =
+	(Astro.currentLocale ?? "vi") === "en"
+		? "AVC Industrial Equipment Co., Ltd"
+		: siteTitleVI;
 // If title already includes site title (from getSeoMeta), use as-is
 const fullTitle = title.includes(siteTitle) ? title : `${title} — ${siteTitle}`;
 
@@ -70,9 +74,49 @@ const pageCtx = createPublicPageContext({
 // Check if user is logged in (for showing admin link)
 const isLoggedIn = !!Astro.locals.user;
 
+// --- Song ngữ: locale hiện tại + dịch label menu + URL prefix ---
+const locale = Astro.currentLocale ?? "vi";
+const isEN = locale === "en";
+
+const NAV_EN: Record<string, string> = {
+	"Trang chủ": "Home",
+	"Giới thiệu": "About",
+	"Dịch vụ": "Services",
+	"Sản phẩm": "Products",
+	Portfolio: "Portfolio",
+	"Liên hệ": "Contact",
+	"Về AVC": "About AVC",
+	"Giá trị cốt lõi": "Core Values",
+	"Đội ngũ & Văn hoá": "Team & Culture",
+	"Tư vấn đầu tư": "Consulting",
+	"Thiết kế bếp": "Kitchen Design",
+	"Cung cấp thiết bị": "Equipment Supply",
+	"Thi công lắp đặt": "Installation",
+	"Bảo hành – Bảo trì": "Warranty & Maintenance",
+	"Sản xuất inox": "Stainless Fabrication",
+	"Nhà hàng": "Restaurants",
+	"Khách sạn": "Hotels",
+	"Bếp trung tâm": "Central Kitchens",
+	"Khu công nghiệp": "Industrial Canteens",
+	Bakery: "Bakeries",
+	"Bar & Café": "Bar & Café",
+};
+const t = (label: string) => (isEN ? (NAV_EN[label] ?? label) : label);
+const localizeUrl = (url: string) => {
+	if (!isEN || !url.startsWith("/") || url.startsWith("/en")) return url;
+	return url === "/" ? "/en/" : `/en${url}`;
+};
+
+// Switcher: đường dẫn tương ứng của locale còn lại
+const path = Astro.url.pathname;
+const viUrl = isEN ? path.replace(/^\/en\/?/, "/") : path;
+const enUrl = isEN ? path : path === "/" ? "/en/" : `/en${path}`;
+
 // Server-side active state for nav links. Anchor links ("/#gioi-thieu")
 // can't be matched against the pathname, so they're never marked active.
-const currentPath = Astro.url.pathname;
+const currentPathRaw = Astro.url.pathname;
+const currentPath =
+	currentPathRaw.replace(/^\/en(\/|$)/, "/").replace(/\/{2,}/g, "/") || "/";
 function isActive(url: string): boolean {
 	if (url.includes("#")) return false;
 	if (url === "/") return currentPath === "/";
@@ -88,7 +132,7 @@ function socialInitials(label: string): string {
 ---
 
 <!doctype html>
-<html lang="vi">
+<html lang={locale}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -96,6 +140,7 @@ function socialInitials(label: string): string {
 		<link rel="icon" href="/favicon.png" type="image/png" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<Font cssVariable="--font-body" preload />
+		<Font cssVariable="--font-heading" preload />
 		<Font cssVariable="--font-mono" />
 		<title>{fullTitle}</title>
 		<EmDashHead page={pageCtx} />
@@ -110,27 +155,27 @@ function socialInitials(label: string): string {
 						: <span class="site-logo-text">{siteTitle}</span>
 					}
 				</a>
-				<nav class="site-nav" aria-label="Điều hướng chính">
+				<nav class="site-nav" aria-label={isEN ? "Primary navigation" : "Điều hướng chính"}>
 					{
 						menu?.items.map((item) => (
 							<div class="nav-item">
 								<a
-									href={item.url}
+									href={localizeUrl(item.url)}
 									target={item.target}
 									class:list={["site-nav-link", { active: isActive(item.url) }]}
 									aria-haspopup={item.children?.length ? "true" : undefined}
 								>
-									{item.label}
+									{t(item.label)}
 								</a>
 								{item.children?.length > 0 && (
 									<div class="nav-dropdown">
 										{item.children.map((child) => (
 											<a
-												href={child.url}
+												href={localizeUrl(child.url)}
 												target={child.target}
 												class="nav-dropdown-link"
 											>
-												{child.label}
+												{t(child.label)}
 											</a>
 										))}
 									</div>
@@ -139,13 +184,20 @@ function socialInitials(label: string): string {
 						))
 					}
 				</nav>
-				{
-					isLoggedIn && (
-						<a href="/_emdash/admin" class="nav-admin">
-							Admin
-						</a>
-					)
-				}
+				<div class="nav-side">
+					<div class="lang-switcher">
+						<a href={viUrl} class:list={[{ active: !isEN }]}>VI</a>
+						<span>|</span>
+						<a href={enUrl} class:list={[{ active: isEN }]}>EN</a>
+					</div>
+					{
+						isLoggedIn && (
+							<a href="/_emdash/admin" class="nav-admin">
+								Admin
+							</a>
+						)
+					}
+				</div>
 			</div>
 		</header>
 
@@ -154,15 +206,15 @@ function socialInitials(label: string): string {
 		</main>
 
 		<footer class="site-footer" id="lien-he">
-			<nav class="footer-nav" aria-label="Điều hướng chân trang">
+			<nav class="footer-nav" aria-label={isEN ? "Footer navigation" : "Điều hướng chân trang"}>
 				{
 					menu?.items.map((item) => (
 						<a
-							href={item.url}
+							href={localizeUrl(item.url)}
 							target={item.target}
 							class:list={["footer-nav-link", { active: isActive(item.url) }]}
 						>
-							{item.label}
+							{t(item.label)}
 						</a>
 					))
 				}
@@ -313,15 +365,15 @@ function socialInitials(label: string): string {
 			}
 
 			.site-logo-img {
-				width: 150px;
-				height: 52px;
+				width: 96px;
+				height: 34px;
 				object-fit: contain;
 			}
 
 			.site-logo-text {
-				font-size: 22px;
+				font-size: 17px;
 				font-weight: 700;
-				letter-spacing: 0.5px;
+				letter-spacing: 2px;
 				text-transform: uppercase;
 				color: var(--color-brand);
 				white-space: nowrap;
@@ -330,9 +382,10 @@ function socialInitials(label: string): string {
 			.site-nav {
 				display: flex;
 				align-items: center;
-				font-size: 15px;
-				font-weight: 700;
-				letter-spacing: 0.5px;
+				font-family: var(--font-heading);
+				font-size: 12.5px;
+				font-weight: 600;
+				letter-spacing: 1.8px;
 				text-transform: uppercase;
 			}
 
@@ -392,11 +445,11 @@ function socialInitials(label: string): string {
 
 			.nav-dropdown-link {
 				display: block;
-				padding: 13px 22px;
+				padding: 12px 22px;
 				text-align: center;
-				font-size: 14px;
-				font-weight: 700;
-				letter-spacing: 0.5px;
+				font-size: 11.5px;
+				font-weight: 600;
+				letter-spacing: 1.5px;
 				text-transform: uppercase;
 				color: var(--avc-nav-text);
 				white-space: nowrap;
@@ -410,11 +463,38 @@ function socialInitials(label: string): string {
 				color: var(--color-brand);
 			}
 
-			.nav-admin {
+			.nav-side {
 				position: absolute;
 				right: var(--spacing-4);
 				top: 50%;
 				transform: translateY(-50%);
+				display: flex;
+				align-items: center;
+				gap: var(--spacing-4);
+			}
+
+			.lang-switcher {
+				display: flex;
+				align-items: center;
+				gap: 7px;
+				font-size: 11.5px;
+				font-weight: 600;
+				letter-spacing: 1.5px;
+			}
+
+			.lang-switcher span {
+				color: var(--avc-nav-separator);
+			}
+
+			.lang-switcher a {
+				color: var(--avc-nav-text);
+			}
+
+			.lang-switcher a.active {
+				color: var(--color-brand);
+			}
+
+			.nav-admin {
 				font-size: var(--font-size-xs);
 				color: var(--color-text-secondary);
 			}
@@ -440,9 +520,10 @@ function socialInitials(label: string): string {
 				justify-content: center;
 				align-items: center;
 				flex-wrap: wrap;
-				font-size: 13px;
-				font-weight: 700;
-				letter-spacing: 0.5px;
+				font-family: var(--font-heading);
+				font-size: 11px;
+				font-weight: 600;
+				letter-spacing: 1.5px;
 				text-transform: uppercase;
 			}
 
@@ -540,7 +621,7 @@ function socialInitials(label: string): string {
 					padding: 6px 14px;
 				}
 
-				.nav-admin {
+				.nav-side {
 					top: var(--spacing-3);
 					transform: none;
 				}

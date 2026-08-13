@@ -1,36 +1,44 @@
 ---
 import { getEmDashCollection } from "emdash";
 import { Image } from "emdash/ui";
-import Base from "../layouts/Base.astro";
+import Base from "../../layouts/Base.astro";
 
-const { entries: linhVucRaw, cacheHint } = await getEmDashCollection("linh_vuc");
+const { entries: linhVucRaw, cacheHint } = await getEmDashCollection("linh_vuc", { locale: "vi" });
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
 const linhVuc = linhVucRaw.toSorted(
 	(a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0)
 );
 
-// Bàn cờ màu như mẫu: hàng 1 [olive|xám], hàng 2 [xám|olive], hàng 3 [olive|xám]
+const LV_EN: Record<string, string> = {
+	"nha-hang": "Restaurants",
+	"khach-san": "Hotels",
+	"bep-trung-tam": "Central Kitchens",
+	"khu-cong-nghiep": "Industrial Canteens",
+	bakery: "Bakeries",
+	"bar-cafe": "Bar & Café",
+};
+
 function isBrand(i: number): boolean {
 	return (Math.floor(i / 2) + (i % 2)) % 2 === 0;
 }
 ---
 
-<Base title="Portfolio" description="Portfolio dự án bếp công nghiệp AVC theo lĩnh vực: nhà hàng, khách sạn, bếp trung tâm, khu công nghiệp, bakery, bar & café">
+<Base title="Portfolio" description="AVC commercial kitchen portfolio by market: restaurants, hotels, central kitchens, industrial canteens, bakeries, bars & cafés">
 	<div class="page">
 		<h1 class="page-title">PORTFOLIO</h1>
 		<hr class="dashed-divider" />
-		<p class="lead">1.500+ công trình bếp công nghiệp trên toàn quốc — chọn lĩnh vực để xem các dự án AVC đã triển khai.</p>
+		<p class="lead">1,500+ commercial kitchen projects nationwide — choose a market to explore AVC's completed work.</p>
 
 		<div class="portfolio-grid">
 			{
 				linhVuc.map((lv, i) => (
 					<a
-						href={`/category/${lv.id}`}
+						href={`/en/category/${lv.id}`}
 						class:list={["cell", isBrand(i) ? "cell-brand" : "cell-gray"]}
 					>
 						<div class="cell-label">
-							<span>{lv.data.title}</span>
+							<span>{LV_EN[lv.id] ?? lv.data.title}</span>
 						</div>
 						<div class="cell-image">
 							{lv.data.image && <Image image={lv.data.image} />}
@@ -102,11 +110,11 @@ function isBrand(i: number): boolean {
 
 	.cell-label span {
 		color: #ffffff;
-		font-size: 19px;
-		font-weight: 700;
-		letter-spacing: 0.5px;
+		font-size: 18px;
+		font-weight: 600;
+		letter-spacing: 2px;
 		text-transform: uppercase;
-		line-height: 1.3;
+		line-height: 1.35;
 	}
 
 	.cell-image {
@@ -147,13 +155,13 @@ function isBrand(i: number): boolean {
 		}
 
 		.cell-label span {
-			font-size: 16px;
+			font-size: 15px;
 		}
 	}
 
 	@media (max-width: 540px) {
 		.page-title {
-			font-size: 21px;
+			font-size: 20px;
 		}
 	}
 </style>

@@ -13,6 +13,10 @@
 	/* Corporate white site — pin light mode regardless of OS preference */
 	color-scheme: light;
 
+	/* Premium look: Montserrat, smaller refined sizes, airier tracking */
+	--font-size-base: 0.9375rem;
+	--font-weight-heading: 600;
+
 	--color-brand: light-dark(#bbc647, #c9d45a);
 	--color-brand-hover: light-dark(#a9b43c, #d6df76);
 	--color-text: light-dark(#595959, #d4d4d4);
