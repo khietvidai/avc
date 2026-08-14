@@ -74,7 +74,10 @@ const pageCanonical = canonical
 	? (absolutize(origin, canonical) as string)
 	: canonicalUrl(origin, Astro.url.pathname);
 const metaDescription = description || defaultDescription(locale, org);
-const ogImage = absolutize(origin, image) || absolutize(origin, siteLogo?.url);
+// Default share card (1200×630) — the raw logo (728×225) crops badly on Zalo/Facebook
+const DEFAULT_OG_IMAGE = "/images/og-default.jpg";
+const usesDefaultOgImage = !image;
+const ogImage = absolutize(origin, image) || absolutize(origin, DEFAULT_OG_IMAGE);
 const altLinks = hreflangLinks(origin, Astro.url.pathname);
 const seoGraphJson = JSON.stringify(
 	buildSeoGraph({
@@ -137,6 +140,7 @@ const NAV_EN: Record<string, string> = {
 	"Về AVC": "About AVC",
 	"Giá trị cốt lõi": "Core Values",
 	"Đội ngũ & Văn hoá": "Team & Culture",
+	"Tải Profile": "Download Profile",
 	"Tư vấn đầu tư": "Consulting",
 	"Thiết kế bếp": "Kitchen Design",
 	"Cung cấp thiết bị": "Equipment Supply",
@@ -194,6 +198,11 @@ function socialInitials(label: string): string {
 		<meta property="og:locale:alternate" content={isEN ? "vi_VN" : "en_US"} />
 		<link rel="alternate" type="application/rss+xml" title={siteTitle} href={`${origin}/rss.xml`} />
 		<EmDashHead page={pageCtx} />
+		{/* Structured og:image props must follow the og:image tag emitted by EmDashHead */}
+		{usesDefaultOgImage && <meta property="og:image:width" content="1200" />}
+		{usesDefaultOgImage && <meta property="og:image:height" content="630" />}
+		{usesDefaultOgImage && <meta property="og:image:type" content="image/jpeg" />}
+		<meta property="og:image:alt" content={fullTitle} />
 		<script type="application/ld+json" set:html={seoGraphJson} />
 		<slot name="head" />
 	</head>

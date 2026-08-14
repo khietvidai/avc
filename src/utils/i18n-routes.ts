@@ -122,6 +122,15 @@ export function enCategorySlug(cmsSlug: string): string {
 	return CATEGORY_TO_EN[bare] ?? bare;
 }
 
+/** Static downloads under /files/ — locale variants of the same document. */
+export const FILE_TO_EN: Record<string, string> = {
+	"/files/AVC-Profile.pdf": "/files/AVC-Profile-EN.pdf",
+};
+
+export const FILE_TO_VI: Record<string, string> = Object.fromEntries(
+	Object.entries(FILE_TO_EN).map(([vi, en]) => [en, vi]),
+);
+
 function splitHash(url: string): { path: string; hash: string } {
 	const i = url.indexOf("#");
 	if (i < 0) return { path: url, hash: "" };
@@ -140,6 +149,7 @@ function mapHash(hash: string, table: Record<string, string>): string {
 /** Menu / CMS path → English public URL. */
 export function toEnUrl(url: string): string {
 	if (!url.startsWith("/") || url.startsWith("/_")) return url;
+	if (url.startsWith("/files/")) return FILE_TO_EN[url] ?? url;
 	const { path, hash } = splitHash(url);
 	const bare = stripLocale(path);
 
@@ -164,6 +174,7 @@ export function toEnUrl(url: string): string {
 /** English or bare path → Vietnamese /vi/... URL. */
 export function toViUrl(url: string): string {
 	if (!url.startsWith("/") || url.startsWith("/_")) return url;
+	if (url.startsWith("/files/")) return FILE_TO_VI[url] ?? url;
 	const { path, hash } = splitHash(url);
 	const bare = stripLocale(path);
 

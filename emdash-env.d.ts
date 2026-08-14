@@ -55,36 +55,6 @@ export interface Page {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
-export interface Organization {
-  id: string;
-  slug: string | null;
-  status: string;
-  title: string;
-  legal_name?: string;
-  name_vi?: string;
-  name_en?: string;
-  description_vi?: string;
-  description_en?: string;
-  telephone?: string;
-  email?: string;
-  street_address?: string;
-  address_locality?: string;
-  address_region?: string;
-  postal_code?: string;
-  address_country?: string;
-  warehouse_address?: string;
-  same_as?: string;
-  price_range?: string;
-  founding_year?: string;
-  latitude?: string;
-  longitude?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  publishedAt: Date | null;
-  bylines?: ContentBylineCredit[];
-  terms?: Record<string, TaxonomyTerm[]>;
-}
-
 export interface Post {
   id: string;
   slug: string | null;
@@ -92,13 +62,13 @@ export interface Post {
   title: string;
   featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
   slide_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
-  content?: PortableTextBlock[];
   excerpt?: string;
   chu_dau_tu?: string;
   dia_chi?: string;
   nam_hoan_thanh?: string;
   quy_mo?: string;
   gallery?: unknown;
+  content?: PortableTextBlock[];
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -110,7 +80,6 @@ declare module "emdash" {
   interface EmDashCollections {
     home: Home;
     linh_vuc: LinhVuc;
-    organization: Organization;
     pages: Page;
     posts: Post;
   }
