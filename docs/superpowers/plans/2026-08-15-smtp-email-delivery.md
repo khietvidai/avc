@@ -27,7 +27,7 @@
 **Interfaces:**
 - Produces: `export function smtpPlugin(): PluginDescriptor` exported from `emdash-plugin-smtp`
 
-- [ ] **Step 1: Create `packages/emdash-plugin-smtp/package.json`**
+- [x] **Step 1: Create `packages/emdash-plugin-smtp/package.json`**
 
 ```json
 {
@@ -46,7 +46,7 @@
 }
 ```
 
-- [ ] **Step 2: Create `packages/emdash-plugin-smtp/tsconfig.json`**
+- [x] **Step 2: Create `packages/emdash-plugin-smtp/tsconfig.json`**
 
 ```json
 {
@@ -60,7 +60,7 @@
 }
 ```
 
-- [ ] **Step 3: Create `packages/emdash-plugin-smtp/src/index.ts`**
+- [x] **Step 3: Create `packages/emdash-plugin-smtp/src/index.ts`**
 
 ```typescript
 import type { PluginDescriptor } from "emdash";
@@ -78,7 +78,7 @@ export function smtpPlugin(): PluginDescriptor {
 }
 ```
 
-- [ ] **Step 4: Create `packages/emdash-plugin-smtp/src/sandbox-entry.ts`**
+- [x] **Step 4: Create `packages/emdash-plugin-smtp/src/sandbox-entry.ts`**
 
 ```typescript
 import { definePlugin } from "emdash";
@@ -368,7 +368,7 @@ export default definePlugin({
 });
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/emdash-plugin-smtp
@@ -386,16 +386,16 @@ git commit -m "feat: add emdash-plugin-smtp package"
 - Consumes: `packages/emdash-plugin-smtp`
 - Produces: `emdash-plugin-smtp` dependency in `node_modules`
 
-- [ ] **Step 1: Update `package.json`**
+- [x] **Step 1: Update `package.json`**
 
 Add `"emdash-plugin-smtp": "file:./packages/emdash-plugin-smtp"` to `"dependencies"`.
 
-- [ ] **Step 2: Run `pnpm install`**
+- [x] **Step 2: Run `pnpm install`**
 
 Run: `pnpm install`
 Expected: Dependencies resolved and `emdash-plugin-smtp` linked.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add package.json pnpm-lock.yaml
@@ -413,7 +413,7 @@ git commit -m "build: add emdash-plugin-smtp dependency"
 - Consumes: `smtpPlugin` from `emdash-plugin-smtp`
 - Produces: Updated EmDash configuration registering `smtpPlugin()`
 
-- [ ] **Step 1: Update `astro.config.mjs`**
+- [x] **Step 1: Update `astro.config.mjs`**
 
 Remove:
 ```typescript
@@ -439,7 +439,7 @@ plugins: [
 ],
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add astro.config.mjs
@@ -453,12 +453,12 @@ git commit -m "feat: configure smtpPlugin in astro.config.mjs"
 **Files:**
 - None (verification)
 
-- [ ] **Step 1: Run type checking**
+- [x] **Step 1: Run type checking**
 
 Run: `pnpm run typecheck`
 Expected: 0 errors.
 
-- [ ] **Step 2: Build verification**
+- [x] **Step 2: Build verification**
 
 Run: `pnpm run build`
 Expected: Astro build succeeds.
