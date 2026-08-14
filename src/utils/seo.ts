@@ -15,7 +15,7 @@ export const ORG = {
 		"Giải pháp bếp công nghiệp trọn gói tại Việt Nam — tư vấn, thiết kế, cung cấp thiết bị, thi công và bảo trì.",
 	telephone: "+84-1900-0054",
 	email: "info@avc.equipment",
-	sameAs: ["https://www.linkedin.com/company/avc-equipment"],
+	sameAs: ["https://www.linkedin.com/in/avc-equipment/"],
 	streetAddress: "58 Nguyen Hoang, Binh Trung Ward",
 	addressLocality: "Ho Chi Minh City",
 	addressRegion: "Ho Chi Minh",

@@ -162,5 +162,5 @@ INSERT OR IGNORE INTO "ec_organization" (
 	'+84-1900-0054','info@avc.equipment',
 	'58 Nguyen Hoang, Binh Trung Ward','Ho Chi Minh City','Ho Chi Minh','',
 	'VN','12/64 Thanh Loc 27 St., Quarter 3C, District 12, Ho Chi Minh City',
-	'https://www.linkedin.com/company/avc-equipment','$$','','',''
+	'https://www.linkedin.com/in/avc-equipment/','$$','','',''
 );

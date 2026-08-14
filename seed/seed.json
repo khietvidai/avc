@@ -355,7 +355,7 @@
 				{
 					"type": "custom",
 					"label": "LinkedIn",
-					"url": "https://www.linkedin.com/company/avc-equipment"
+					"url": "https://www.linkedin.com/in/avc-equipment/"
 				}
 			]
 		}
@@ -428,7 +428,7 @@
 					"postal_code": "",
 					"address_country": "VN",
 					"warehouse_address": "12/64 Thanh Loc 27 St., Quarter 3C, District 12, Ho Chi Minh City",
-					"same_as": "https://www.linkedin.com/company/avc-equipment",
+					"same_as": "https://www.linkedin.com/in/avc-equipment/",
 					"price_range": "$$",
 					"founding_year": "",
 					"latitude": "",
