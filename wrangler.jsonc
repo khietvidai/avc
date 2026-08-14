@@ -10,6 +10,8 @@
 			"database_name": "avc-db","database_id": "11d861bd-4476-4e74-b928-710f9cee74da",
 		},
 	],
+	// Cloudflare Email Sending for magic-link login (sender domain must be onboarded in dash)
+	"send_email": [{ "name": "EMAIL" }],
 	"r2_buckets": [
 		{
 			"binding": "MEDIA",
