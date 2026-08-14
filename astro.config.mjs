@@ -2,9 +2,9 @@ import { fileURLToPath } from "node:url";
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import { d1, r2, sandbox } from "@emdash-cms/cloudflare";
-import { cloudflareEmail } from "@emdash-cms/cloudflare/plugins";
 import { formsPlugin } from "@emdash-cms/plugin-forms";
 import webhookNotifier from "@emdash-cms/plugin-webhook-notifier";
+import { smtpPlugin } from "emdash-plugin-smtp";
 import { defineConfig, fontProviders } from "astro/config";
 import emdash from "emdash/astro";
 import { localeSyncPlugin } from "./src/plugins/locale-sync";
@@ -35,9 +35,7 @@ export default defineConfig({
 			plugins: [
 				formsPlugin(),
 				localeSync,
-				cloudflareEmail({
-					from: { email: "cms@avc.equipment", name: "AVC CMS" },
-				}),
+				smtpPlugin(),
 			],
 			sandboxed: [webhookNotifier],
 			sandboxRunner: sandbox(),
