@@ -16,9 +16,9 @@ export default defineConfig({
 	output: "server",
 	adapter: cloudflare(),
 	i18n: {
-		defaultLocale: "vi",
-		locales: ["vi", "en"],
-		fallback: { en: "vi" },
+		defaultLocale: "en",
+		locales: ["en", "vi"],
+		fallback: { vi: "en" },
 		routing: {
 			prefixDefaultLocale: false,
 		},
