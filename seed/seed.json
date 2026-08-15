@@ -1,6 +1,7 @@
 {
 	"$schema": "https://emdashcms.com/seed.schema.json",
 	"version": "1",
+	"defaultLocale": "vi",
 	"meta": {
 		"name": "AVC",
 		"description": "Công ty TNHH Thiết Bị Công Nghiệp AVC — giải pháp bếp công nghiệp trọn gói",
