@@ -97,8 +97,10 @@ export function defaultDescription(locale: SeoLocale, org: OrgProfile = orgFromE
 }
 
 export function hreflangLinks(origin: string, pathname: string): { en: string; vi: string; xDefault: string } {
-	const en = origin + toEnUrl(pathname);
-	const vi = origin + toViUrl(pathname);
+	// Normalise through canonicalUrl: an hreflang that differs from the page's
+	// own canonical (e.g. "/vi/" vs "/vi") points Google at a second URL.
+	const en = canonicalUrl(origin, toEnUrl(pathname));
+	const vi = canonicalUrl(origin, toViUrl(pathname));
 	return { en, vi, xDefault: en };
 }
 

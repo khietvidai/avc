@@ -10,7 +10,7 @@ const [{ entry: home, cacheHint: homeHint }, settings] = await Promise.all([
 	getEmDashEntry("home", "home", { locale: "vi" }),
 	getSiteSettings(),
 ]);
-const { siteTitle, siteTagline } = resolveBlogSiteIdentity(settings);
+const { siteTitle } = resolveBlogSiteIdentity(settings);
 
 if (Astro.cache?.enabled) Astro.cache.set(homeHint);
 
@@ -35,7 +35,7 @@ const stats = home
 
 <Base
 	title={siteTitle}
-	description={siteTagline}
+	description="Giải pháp bếp công nghiệp trọn gói tại Việt Nam — tư vấn, thiết kế, cung cấp thiết bị, thi công lắp đặt và bảo trì cho nhà hàng, khách sạn, bếp trung tâm."
 	content={home
 		? { collection: "home", id: home.data.id, slug: home.id }
 		: undefined}

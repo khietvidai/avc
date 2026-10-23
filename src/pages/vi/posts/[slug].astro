@@ -14,6 +14,11 @@ import { projectImageSeo } from "../../../utils/image-seo";
 import { galleryImages } from "../../../utils/gallery";
 import { bareCmsId, viCategoryPath, viProjectPath } from "../../../utils/i18n-routes";
 import { rewriteNotFound } from "../../../utils/not-found";
+import { portableTextToParagraphs } from "../../../utils/pt-text";
+import {
+	composeMetaDescription,
+	META_DESCRIPTION_MIN,
+} from "../../../utils/meta-description";
 
 const raw = decodeSlug(Astro.params.slug);
 const slug = raw ? bareCmsId(raw) : "";
@@ -80,12 +85,22 @@ const scale = post.data.quy_mo?.trim() || "";
 const client = post.data.chu_dau_tu?.trim() || "";
 const location = post.data.dia_chi?.trim() || "";
 const showInfo = !!(year || scale || client || location);
+
+// Dự án đã có Meta Description do DeepSeek sinh thì giữ nguyên; dự án chưa
+// có thì ghép từ đoạn mở đầu của nội dung cho đủ độ dài Google hiển thị.
+const seoDescription = seo.description ?? "";
+const metaDescription = composeMetaDescription(
+	[seoDescription || post.data.excerpt || "", portableTextToParagraphs(post.data.content)[0] ?? ""],
+	// Đủ dài thì giữ nguyên câu chữ của CMS (chỉ cắt khi vượt giới hạn);
+	// quá ngắn thì mượn thêm đoạn mở đầu của nội dung.
+	{ fill: seoDescription.length < META_DESCRIPTION_MIN },
+);
 ---
 
 <Base
 	title={post.data.title}
 	pageTitle={post.data.title}
-	description={seo.description}
+	description={metaDescription}
 	image={seo.ogImage}
 	canonical={seo.canonical}
 	robots={seo.robots}
@@ -94,7 +109,7 @@ const showInfo = !!(year || scale || client || location);
 	content={{ collection: "posts", id: post.data.id, slug }}
 	project={{
 		name: post.data.title,
-		description: post.data.excerpt,
+		description: metaDescription,
 		image: featuredImageUrl,
 		url: seo.canonical ?? "",
 		location: post.data.dia_chi,
