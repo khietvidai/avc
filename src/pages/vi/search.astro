@@ -4,6 +4,7 @@ export const prerender = false;
 import { search } from "emdash";
 import Base from "../../layouts/Base.astro";
 import { viProjectPath } from "../../utils/i18n-routes";
+import { searchFallback } from "../../utils/search-fallback";
 
 const query = Astro.url.searchParams.get("q")?.trim() || "";
 
@@ -11,14 +12,19 @@ const query = Astro.url.searchParams.get("q")?.trim() || "";
 // filtering in JS. FTS scales as the post count grows, returns ranked
 // results, and handles tokenization/stemming. Templates that grep all
 // post bodies in JS quickly become unusable past a few hundred posts.
-const { items: results } = query
+const { items: matches } = query
 	? await search(query, { collections: ["posts"], limit: 30 })
 	: { items: [] };
+
+// FTS bỏ sót một số truy vấn không dấu ("bep"); khi không có kết quả thì tìm
+// lại bằng cách bỏ dấu hai phía thay vì trả về trang trống.
+const results = query && matches.length === 0 ? await searchFallback(query) : matches;
 ---
 
 <Base
 	title={query ? `Tìm kiếm: ${query}` : "Tìm kiếm"}
 	description="Tìm kiếm dự án"
+	robots="noindex, follow"
 >
 	<section class="search-page">
 		<h1 class="search-title">Tìm kiếm</h1>

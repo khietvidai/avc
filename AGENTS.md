@@ -56,6 +56,7 @@ Corporate one-page site for **Công ty TNHH Thiết Bị Công Nghiệp AVC** (i
 | Services     | `/services`                 | Six services. VI: `/vi/dich-vu` |
 | Products     | `/products`                 | Product groups + brands. VI: `/vi/san-pham` |
 | Contact      | `/contact`                  | Showroom / warehouse. VI: `/vi/lien-he` |
+| Cookie policy | `/cookie-policy`           | Cookie policy. VI: `/vi/chinh-sach-cookie` |
 | Portfolio    | `/portfolio`                | Six markets. Same path under `/vi/portfolio` |
 | Project      | `/projects/[en-slug]`       | English detail (copy in `src/utils/projects-en.ts`). VI: `/vi/posts/[cms-slug]` |
 | Category     | `/category/restaurants` …   | English slugs. VI: `/vi/category/nha-hang` … |
@@ -68,6 +69,16 @@ SEO (canonical, hreflang, sitemap, robots, JSON-LD) uses the request host. After
 JSON-LD company facts live in CMS collection **Schema doanh nghiệp** (`organization` / slug `avc`). Types follow Google Search gallery 2026: `Organization`+`LocalBusiness` (required `name`+`address`), `WebSite` (site name: `name`+`url`+`alternateName`), `BreadcrumbList`. Do **not** emit `SearchAction` (sitelinks searchbox retired Oct 2024) or `ProfessionalService` (deprecated on schema.org). Project pages use `Service` (not `schema.org/Project` — Google has no rich result for Project). Edit the `avc` row to change address/phone; do not invent tax IDs, hours, or coordinates.
 
 Publishing a **VI** project auto-fills empty SEO Title (50–60 chars) and Meta Description (140–160 chars) via DeepSeek (`DEEPSEEK_API_KEY` wrangler secret or plugin Settings). Admin SEO fields show live word/character counts. English copy is created on **Đồng bộ EN/VI** (AI translation) and refreshed on later VI publishes if the EN row already exists. Leave Canonical URL empty.
+
+Project pages never ship a one-line description: `src/utils/meta-description.ts` packs whole fragments (opening paragraph, then `Client:` / `Location:` on EN, the first content paragraph on VI) up to 160 characters, and clamps anything longer on a word boundary. Edit the CMS Meta Description to override it.
+
+Search uses EmDash FTS, which misses some unaccented Vietnamese queries (`bep`, `cong nghiep`). When FTS returns nothing, `src/utils/search-fallback.ts` re-runs the query with diacritics folded on both sides over the project fields (title, excerpt, chủ đầu tư, địa chỉ). Both search pages are `noindex, follow` and stay out of the sitemap.
+
+**Cookie consent.** `src/components/CookieConsent.astro` (mounted in `Base.astro` after the footer) renders the bottom-sheet banner and its per-category preferences panel, bilingual off a `locale` prop. The choice is stored in `localStorage["avc-consent"]` (versioned JSON, 12-month expiry) and mirrored to an `avc_consent` cookie so a Worker can read it server-side later. Constants and the ES5 no-flash bootstrap live in `src/utils/consent.ts`.
+
+The banner ships `hidden` and is unhidden by an `is:inline` script — bundled Astro scripts are deferred modules relocated by `src/utils/html-w3c.ts`, so they run too late to avoid a flash. Keep `.cc[hidden], .cc [hidden] { display: none !important }` first in the component stylesheet: `hidden` loses to the `display: grid` rule in the desktop media query.
+
+To gate a future analytics tag, read `window.avcConsent.has("analytics")` and listen for the `avc:consent` event on `document` — see the doc block in `src/utils/consent.ts`. Any element with `data-cc-open` re-opens the preferences panel (the footer and the cookie policy page both use it). If the cookie mirror is ever read in `middleware.ts` to gate server-injected tags, that response needs `Vary: Cookie` or it will poison the edge cache.
 
 Primary menu (CMS): Home `/` · About `/gioi-thieu` · Services `/dich-vu` · Products `/san-pham` · Portfolio `/portfolio` · Contact `/lien-he`. Dropdowns on About, Services, Portfolio.
 
