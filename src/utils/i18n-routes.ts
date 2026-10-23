@@ -6,6 +6,7 @@ export const PAGE_TO_EN: Record<string, string> = {
 	"/san-pham": "/products",
 	"/lien-he": "/contact",
 	"/posts": "/projects",
+	"/chinh-sach-cookie": "/cookie-policy",
 };
 
 export const PAGE_TO_VI: Record<string, string> = {
@@ -14,6 +15,7 @@ export const PAGE_TO_VI: Record<string, string> = {
 	"/products": "/san-pham",
 	"/contact": "/lien-he",
 	"/projects": "/posts",
+	"/cookie-policy": "/chinh-sach-cookie",
 };
 
 export const HASH_TO_EN: Record<string, string> = {

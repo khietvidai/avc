@@ -64,7 +64,7 @@ const slides = withImage.slice(0, 6).map((p) => ({
 								/>
 							) : slide ? (
 								<Image
-									image={slide.image}
+									image={slide.image as any}
 									alt={projectImageSeo(p.id, "slide").alt}
 									title={projectImageSeo(p.id, "slide").title}
 									width={1920}

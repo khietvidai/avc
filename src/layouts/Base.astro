@@ -191,7 +191,6 @@ function socialInitials(label: string): string {
 		<Font cssVariable="--font-body" preload />
 		<title>{fullTitle}</title>
 		<meta name="theme-color" content="#5f6a12" />
-		<link rel="canonical" href={pageCanonical} />
 		<link rel="alternate" hreflang="en" href={altLinks.en} />
 		<link rel="alternate" hreflang="vi" href={altLinks.vi} />
 		<link rel="alternate" hreflang="x-default" href={altLinks.xDefault} />
@@ -204,7 +203,7 @@ function socialInitials(label: string): string {
 		{usesDefaultOgImage && <meta property="og:image:height" content="630" />}
 		{usesDefaultOgImage && <meta property="og:image:type" content="image/jpeg" />}
 		<meta property="og:image:alt" content={fullTitle} />
-		<script type="application/ld+json" set:html={seoGraphJson} />
+		<script type="application/ld+json" is:inline set:html={seoGraphJson} />
 		<slot name="head" />
 	</head>
 	<body>

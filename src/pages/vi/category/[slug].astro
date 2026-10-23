@@ -59,7 +59,7 @@ const slides = withImage.slice(0, 6).map((p) => ({
 									decoding="async"
 								/>
 							) : slide ? (
-								<Image image={slide.image} alt={projectImageSeo(p.id, "slide").alt} title={projectImageSeo(p.id, "slide").title} width={1920} height={1080} priority={i === 0} />
+								<Image image={slide.image as any} alt={projectImageSeo(p.id, "slide").alt} title={projectImageSeo(p.id, "slide").title} width={1920} height={1080} priority={i === 0} />
 							) : null
 						}
 						<span class="slide-caption">{p.data.title}</span>

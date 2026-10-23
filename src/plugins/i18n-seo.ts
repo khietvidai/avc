@@ -43,6 +43,7 @@ async function resolveApiKey(ctx: PluginContext): Promise<string | null> {
 	const fromKv = await ctx.kv.get<string>("settings:apiKey");
 	if (fromKv && fromKv.trim()) return fromKv.trim();
 	try {
+		// @ts-ignore
 		const mod = await import("cloudflare:workers");
 		const env = (mod as { env?: Record<string, string | undefined> }).env;
 		if (env?.DEEPSEEK_API_KEY) return env.DEEPSEEK_API_KEY;

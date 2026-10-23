@@ -34,7 +34,11 @@ const stats = [
 				slot="head"
 				rel="preload"
 				as="image"
-				href={(home.data.hero_image.meta?.storageKey && `/_emdash/api/media/file/${home.data.hero_image.meta.storageKey}`) || home.data.hero_image.src || ""}
+				href={
+					((home.data.hero_image as Record<string, unknown> | null)?.meta as Record<string, unknown> | undefined)?.storageKey
+						? `/_emdash/api/media/file/${((home.data.hero_image as Record<string, unknown>).meta as Record<string, unknown>).storageKey}`
+						: (home.data.hero_image as Record<string, unknown> | null)?.src ? String((home.data.hero_image as Record<string, unknown>).src) : ""
+				}
 				fetchpriority="high"
 			/>
 		)

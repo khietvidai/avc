@@ -199,7 +199,8 @@ async function findUnpaired(request: Request, collection: string): Promise<Unpai
 	for (const locale of LOCALES) {
 		const json = await api(request, `/_emdash/api/content/${collection}?locale=${locale}&limit=200`);
 		for (const row of listItems(json)) {
-			const slug = bareCmsId(String(row.slug ?? row.data?.slug ?? row.id));
+			const rowData = (row.data ?? {}) as Record<string, unknown>;
+			const slug = bareCmsId(String(row.slug ?? rowData.slug ?? row.id));
 			byLocale[locale].push({ id: String(row.id), slug, data: (row.data ?? row) as Record<string, unknown> });
 		}
 	}

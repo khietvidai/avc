@@ -10,7 +10,7 @@ const STATIC_PAIRS: Array<[string, string]> = [
 	["/products", "/vi/san-pham"],
 	["/contact", "/vi/lien-he"],
 	["/portfolio", "/vi/portfolio"],
-	["/search", "/vi/search"],
+	["/cookie-policy", "/vi/chinh-sach-cookie"],
 ];
 
 function urlEntry(origin: string, locPath: string, enPath: string, viPath: string, lastmod?: Date | string | null) {
@@ -33,17 +33,33 @@ function pair(origin: string, enPath: string, viPath: string, lastmod?: Date | s
 export const GET: APIRoute = async ({ url }) => {
 	const origin = publicOrigin(url);
 
-	const { entries: posts } = await getEmDashCollection("posts", {
-		orderBy: { published_at: "desc" },
-		locale: "vi",
-		limit: 200,
-	});
+	const [{ entries: posts }, { entries: pages }] = await Promise.all([
+		getEmDashCollection("posts", {
+			orderBy: { published_at: "desc" },
+			locale: "vi",
+			limit: 200,
+		}).catch(() => ({ entries: [] })),
+		getEmDashCollection("pages", {
+			orderBy: { published_at: "desc" },
+			locale: "vi",
+			limit: 100,
+		}).catch(() => ({ entries: [] })),
+	]);
 
 	const urls = [
 		...STATIC_PAIRS.flatMap(([en, vi]) => pair(origin, en, vi)),
 		urlEntry(origin, "/vi/posts", "/portfolio", "/vi/posts"),
 		...Object.entries(CATEGORY_TO_EN).flatMap(([viSlug, enSlug]) =>
 			pair(origin, `/category/${enSlug}`, `/vi/category/${viSlug}`),
+		),
+		...pages.map((pg) =>
+			urlEntry(
+				origin,
+				`/vi/pages/${pg.id.replace(/^vi\//, "")}`,
+				`/vi/pages/${pg.id.replace(/^vi\//, "")}`,
+				`/vi/pages/${pg.id.replace(/^vi\//, "")}`,
+				pg.data.updatedAt ?? pg.data.publishedAt,
+			),
 		),
 		...posts.flatMap((p) =>
 			pair(
