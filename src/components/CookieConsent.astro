@@ -1,0 +1,762 @@
+---
+import { CONSENT_BOOTSTRAP_SCRIPT, type ConsentCategory } from "../utils/consent";
+
+interface Props {
+	locale?: "en" | "vi";
+}
+
+/** Defaults to English: the site's default locale. */
+const { locale = "en" } = Astro.props;
+
+interface CategoryCopy {
+	id: ConsentCategory;
+	name: string;
+}
+
+interface Copy {
+	title: string;
+	intro: string;
+	listTitle: string;
+	listNote: string;
+	policyIntro: string;
+	policyLabel: string;
+	policyHref: string;
+	accept: string;
+	save: string;
+	deny: string;
+	closeLabel: string;
+	saved: string;
+	always: string;
+	cats: CategoryCopy[];
+}
+
+const COPY: Record<"en" | "vi", Copy> = {
+	en: {
+		title: "Cookies & your experience at AVC",
+		intro:
+			"We use cookies to keep this website running reliably and to make your visit smoother. Some are essential; the rest are only set if you allow them.",
+		listTitle: "Cookie list",
+		listNote:
+			"Declining some types of cookies may affect how certain features on this website work.",
+		policyIntro: "Learn more in our",
+		policyLabel: "Cookie Policy",
+		policyHref: "/cookie-policy",
+		accept: "Accept all",
+		save: "Save choices",
+		deny: "Decline",
+		closeLabel: "Close and deny non-essential cookies",
+		saved: "Preferences saved",
+		always: "Always on",
+		cats: [
+			{ id: "necessary", name: "Required for the website to work" },
+			{ id: "functional", name: "Remember your settings and personal preferences" },
+			{ id: "analytics", name: "Measure and improve the quality of our service" },
+			{ id: "marketing", name: "Show products, offers and ads that match your interests" },
+		],
+	},
+	vi: {
+		title: "Cookie & trải nghiệm tại AVC",
+		intro:
+			"Chúng tôi sử dụng cookie để website hoạt động ổn định và giúp bạn duyệt web thuận tiện hơn. Một số cookie là bắt buộc; các loại còn lại chỉ được bật khi bạn đồng ý.",
+		listTitle: "Danh sách Cookies",
+		listNote:
+			"Việc từ chối một số loại cookie có thể ảnh hưởng đến hoạt động của một số chức năng trên website.",
+		policyIntro: "Tìm hiểu thêm tại",
+		policyLabel: "Chính sách Cookie",
+		policyHref: "/vi/chinh-sach-cookie",
+		accept: "Xác nhận tất cả",
+		save: "Lưu lựa chọn",
+		deny: "Từ chối",
+		closeLabel: "Đóng và từ chối cookie không thiết yếu",
+		saved: "Đã lưu tuỳ chọn",
+		always: "Luôn bật",
+		cats: [
+			{ id: "necessary", name: "Cần thiết để website hoạt động" },
+			{ id: "functional", name: "Ghi nhớ cài đặt và tuỳ chọn cá nhân" },
+			{ id: "analytics", name: "Nâng cao chất lượng dịch vụ và cá nhân hoá trải nghiệm" },
+			{
+				id: "marketing",
+				name: "Cung cấp thông tin sản phẩm, khuyến mại và quảng cáo phù hợp với bạn",
+			},
+		],
+	},
+};
+
+const c = COPY[locale];
+---
+
+<div id="cc" class="cc" hidden role="dialog" aria-labelledby="cc-title" aria-describedby="cc-desc">
+	<div class="cc__sheet">
+		<div class="cc__head">
+			<h2 id="cc-title" class="cc__title" tabindex="-1">
+				<svg
+					class="cc__icon"
+					viewBox="0 0 24 24"
+					width="18"
+					height="18"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.6"
+					aria-hidden="true"
+				>
+					<path d="M12 3a9 9 0 1 0 9 9 4 4 0 0 1-4.6-2.4A4 4 0 0 1 12 3Z"></path>
+					<circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"></circle>
+					<circle cx="8.5" cy="15" r="1" fill="currentColor" stroke="none"></circle>
+					<circle cx="13.5" cy="14.5" r="1" fill="currentColor" stroke="none"></circle>
+				</svg>
+				{c.title}
+			</h2>
+			<button type="button" class="cc__close" data-cc-action="deny" aria-label={c.closeLabel}>
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<hr class="cc__divider" />
+
+		<p id="cc-desc" class="cc__text">{c.intro}</p>
+
+		<h3 class="cc__list-title">{c.listTitle}</h3>
+		<p class="cc__note">{c.listNote}</p>
+
+		<ul class="cc__cats">
+			{
+				c.cats.map((cat) => (
+					<li class="cc__cat">
+						<span class="cc__cat-name" id={`cc-cat-${cat.id}`}>
+							{cat.name}
+						</span>
+						<span class="cc__cat-control">
+							{cat.id === "necessary" && <span class="cc__pill">{c.always}</span>}
+							<label class="cc__switch">
+								<input
+									type="checkbox"
+									class="cc__sr"
+									data-cc-cat={cat.id}
+									checked={cat.id === "necessary"}
+									disabled={cat.id === "necessary"}
+									aria-labelledby={`cc-cat-${cat.id}`}
+								/>
+								<span class="cc__track" aria-hidden="true" />
+							</label>
+						</span>
+					</li>
+				))
+			}
+		</ul>
+
+		<p class="cc__policy">{c.policyIntro} <a href={c.policyHref}>{c.policyLabel}</a>.</p>
+
+		<div class="cc__actions">
+			<button type="button" class="cc__btn cc__btn--outline" data-cc-action="deny">
+				{c.deny}
+			</button>
+			<button
+				type="button"
+				class="cc__btn cc__btn--primary"
+				data-cc-action="primary"
+				data-cc-label-accept={c.accept}
+				data-cc-label-save={c.save}
+			>
+				{c.accept}
+			</button>
+		</div>
+
+		<p class="cc__status" role="status" data-cc-status={c.saved}></p>
+	</div>
+</div>
+
+<script is:inline set:html={CONSENT_BOOTSTRAP_SCRIPT} />
+
+<style>
+	/*
+	 * `hidden` is a UA display:none and loses to any author `display:` rule —
+	 * and the rules below set `display: flex`/`grid` inside the card. This must
+	 * stay first, and must cover descendants: without it every returning visitor
+	 * sees the card paint before the deferred module can hide it.
+	 */
+	.cc[hidden],
+	.cc [hidden] {
+		display: none !important;
+	}
+
+	.cc {
+		position: fixed;
+		inset: auto auto var(--spacing-5) var(--spacing-5);
+		width: min(440px, calc(100vw - 2 * var(--spacing-5)));
+		/* Above the nav dropdown (200), below the skip link (9999) so a keyboard
+		   user tabbing in still sees "skip to content" over the card. */
+		z-index: 9000;
+	}
+
+	.cc__sheet {
+		padding: var(--spacing-5);
+		max-height: min(85dvh, 620px);
+		overflow-y: auto;
+		background: var(--color-bg);
+		border: 1px solid var(--color-border);
+		border-top: 2px solid var(--color-brand);
+		border-radius: var(--radius);
+		box-shadow: 0 6px 28px rgb(0 0 0 / 0.14);
+		font-family: var(--font-body);
+		font-size: 14px;
+		line-height: 1.6;
+		color: var(--color-text);
+		animation: cc-slide-in 260ms ease both;
+	}
+
+	@keyframes cc-slide-in {
+		from {
+			opacity: 0;
+			transform: translateY(16px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.cc__sheet {
+			animation: none;
+		}
+	}
+
+	.cc__head {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: var(--spacing-3);
+	}
+
+	.cc__title {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-size: 14px;
+		font-weight: 700;
+		letter-spacing: 1.5px;
+		text-transform: uppercase;
+		color: var(--color-brand);
+	}
+
+	.cc__title:focus {
+		outline: none;
+	}
+
+	.cc__icon {
+		flex: none;
+	}
+
+	.cc__close {
+		flex: none;
+		width: 32px;
+		height: 32px;
+		margin: -6px -6px 0 0;
+		display: grid;
+		place-items: center;
+		background: none;
+		border: none;
+		font-size: 26px;
+		line-height: 1;
+		color: var(--avc-nav-text);
+		cursor: pointer;
+		transition: color var(--transition-fast);
+	}
+
+	.cc__close:hover {
+		color: var(--color-brand);
+	}
+
+	.cc__divider {
+		width: 210px;
+		margin: 10px 0 16px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.cc__list-title {
+		margin-top: var(--spacing-5);
+		font-size: 13px;
+		font-weight: 700;
+		letter-spacing: 1.5px;
+		text-transform: uppercase;
+		color: var(--color-text);
+	}
+
+	.cc__note {
+		margin-top: 4px;
+		font-size: 13px;
+		font-style: italic;
+		line-height: 1.5;
+		color: var(--color-text-secondary);
+	}
+
+	.cc__cats {
+		list-style: none;
+		margin: var(--spacing-3) 0 0;
+		padding: 0;
+		border-top: 1px solid var(--color-border-subtle);
+	}
+
+	.cc__cat {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--spacing-4);
+		padding: 10px 0;
+		border-bottom: 1px solid var(--color-border-subtle);
+	}
+
+	.cc__cat-name {
+		font-size: 13.5px;
+		line-height: 1.45;
+		color: var(--color-text);
+	}
+
+	.cc__cat-control {
+		flex: none;
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+	}
+
+	.cc__pill {
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 1px;
+		text-transform: uppercase;
+		color: var(--color-text-secondary);
+	}
+
+	.cc__policy {
+		margin-top: var(--spacing-4);
+		font-size: 13.5px;
+		color: var(--color-text-secondary);
+	}
+
+	.cc__policy a {
+		color: var(--color-brand);
+		text-decoration: underline;
+	}
+
+	.cc__actions {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--spacing-3);
+		margin-top: var(--spacing-5);
+	}
+
+	.cc__btn {
+		width: 100%;
+		min-height: 44px;
+		padding: 11px 16px;
+		border: 1px solid transparent;
+		border-radius: var(--radius);
+		background: none;
+		font-family: inherit;
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 1.5px;
+		text-transform: uppercase;
+		color: var(--avc-nav-text);
+		cursor: pointer;
+		transition:
+			background var(--transition-fast),
+			color var(--transition-fast),
+			border-color var(--transition-fast);
+	}
+
+	.cc__btn--primary {
+		background: var(--color-brand);
+		border-color: var(--color-brand);
+		color: var(--color-on-brand);
+	}
+
+	.cc__btn--primary:hover {
+		background: var(--color-brand-hover);
+		border-color: var(--color-brand-hover);
+	}
+
+	/* The global :focus-visible ring is --color-brand, invisible on the olive
+	   button. Ring in the page background colour, inset, instead. */
+	.cc__btn--primary:focus-visible {
+		outline-color: var(--color-bg);
+		outline-offset: -5px;
+	}
+
+	.cc__btn--outline {
+		border-color: var(--color-brand);
+		color: var(--color-brand);
+	}
+
+	.cc__btn--outline:hover {
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+	}
+
+	/*
+	 * Real checkbox, clipped rather than display:none — display:none would drop
+	 * it from the accessibility tree and make it unfocusable.
+	 */
+	.cc__sr {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+		clip-path: inset(50%);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	.cc__switch {
+		position: relative;
+		display: inline-flex;
+		cursor: pointer;
+	}
+
+	.cc__track {
+		display: block;
+		width: 42px;
+		height: 22px;
+		position: relative;
+		background: var(--color-bg-subtle);
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		transition:
+			background var(--transition-fast),
+			border-color var(--transition-fast);
+	}
+
+	.cc__track::after {
+		content: "";
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		background: var(--color-muted);
+		transition:
+			transform var(--transition-fast),
+			background var(--transition-fast);
+	}
+
+	.cc__sr:checked + .cc__track {
+		background: var(--color-brand);
+		border-color: var(--color-brand);
+	}
+
+	.cc__sr:checked + .cc__track::after {
+		transform: translateX(20px);
+		background: var(--color-on-brand);
+	}
+
+	.cc__sr:disabled + .cc__track {
+		opacity: 0.55;
+	}
+
+	.cc__switch:has(.cc__sr:disabled) {
+		cursor: not-allowed;
+	}
+
+	.cc__sr:focus-visible + .cc__track {
+		outline: 2px solid var(--color-brand);
+		outline-offset: 3px;
+	}
+
+	.cc__status {
+		margin-top: var(--spacing-3);
+		font-size: 13px;
+		color: var(--color-brand);
+	}
+
+	.cc__status:empty {
+		display: none;
+	}
+
+	/* Phones: bottom sheet, full width, buttons stacked. */
+	@media (max-width: 640px) {
+		.cc {
+			inset: auto 0 0 0;
+			width: auto;
+		}
+
+		.cc__sheet {
+			padding: var(--spacing-5) var(--spacing-4);
+			max-height: min(88dvh, 640px);
+			border-left: none;
+			border-right: none;
+			border-bottom: none;
+		}
+
+		.cc__title {
+			font-size: 13px;
+			letter-spacing: 1px;
+		}
+
+		.cc__actions {
+			grid-template-columns: 1fr;
+			gap: var(--spacing-2);
+		}
+
+		/* Primary action first on a phone, where it sits under the thumb. */
+		.cc__btn--primary {
+			order: -1;
+		}
+	}
+</style>
+
+<script>
+	import {
+		CONSENT_COOKIE,
+		CONSENT_EVENT,
+		CONSENT_KEY,
+		CONSENT_MAX_AGE_DAYS,
+		CONSENT_VERSION,
+		allGranted,
+		consentCookieValue,
+		defaultCategories,
+		necessaryOnly,
+		type ConsentCategories,
+		type ConsentCategory,
+		type ConsentState,
+	} from "../utils/consent";
+
+	const root = document.getElementById("cc");
+
+	if (root) {
+		const title = root.querySelector<HTMLElement>("#cc-title");
+		const status = root.querySelector<HTMLElement>("[data-cc-status]");
+		const primary = root.querySelector<HTMLElement>('[data-cc-action="primary"]');
+		const boxes = [...root.querySelectorAll<HTMLInputElement>("input[data-cc-cat]")];
+		const savedMessage = status?.dataset.ccStatus || "";
+
+		/** Fallback when localStorage is unavailable (Safari private browsing). */
+		let memory: ConsentState | null = null;
+		let lastFocused: HTMLElement | null = null;
+		let openedFromControl = false;
+
+		function read(): ConsentState | null {
+			try {
+				const raw = localStorage.getItem(CONSENT_KEY);
+				if (!raw) return memory;
+				const parsed = JSON.parse(raw) as ConsentState | null;
+				if (!parsed || parsed.v !== CONSENT_VERSION || !parsed.categories) return memory;
+				if (Date.now() - Date.parse(parsed.ts) > CONSENT_MAX_AGE_DAYS * 864e5) return memory;
+				return parsed;
+			} catch {
+				return memory;
+			}
+		}
+
+		function write(categories: ConsentCategories): ConsentState {
+			const state: ConsentState = {
+				v: CONSENT_VERSION,
+				ts: new Date().toISOString(),
+				categories: { ...categories, necessary: true },
+			};
+
+			memory = state;
+
+			try {
+				localStorage.setItem(CONSENT_KEY, JSON.stringify(state));
+			} catch {
+				/* Storage disabled — the choice still applies to this page view. */
+			}
+
+			try {
+				const secure = location.protocol === "https:" ? "; Secure" : "";
+				const maxAge = CONSENT_MAX_AGE_DAYS * 86400;
+				document.cookie = `${CONSENT_COOKIE}=${consentCookieValue(state)}; Path=/; Max-Age=${maxAge}; SameSite=Lax${secure}`;
+			} catch {
+				/* Cookies disabled — localStorage remains the source of truth. */
+			}
+
+			document.documentElement.setAttribute("data-cc", "set");
+			document.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: state, bubbles: true }));
+			return state;
+		}
+
+		function seed(categories: ConsentCategories): void {
+			for (const box of boxes) {
+				const id = box.dataset.ccCat as ConsentCategory | undefined;
+				if (id && id !== "necessary") box.checked = Boolean(categories[id]);
+			}
+		}
+
+		function collect(): ConsentCategories {
+			const next = defaultCategories();
+			for (const box of boxes) {
+				const id = box.dataset.ccCat as ConsentCategory | undefined;
+				if (id && id !== "necessary") next[id] = box.checked;
+			}
+			return next;
+		}
+
+		function anyOptionalOn(): boolean {
+			return boxes.some((box) => !box.disabled && box.checked);
+		}
+
+		/*
+		 * One primary button for two outcomes, so flipping a switch and then
+		 * pressing it can never grant more than the switches show: while every
+		 * optional switch is off it offers "accept all"; as soon as one is on it
+		 * becomes "save choices".
+		 */
+		function syncPrimary(): void {
+			if (!primary) return;
+			const labels = primary.dataset;
+			const next = anyOptionalOn() ? labels.ccLabelSave : labels.ccLabelAccept;
+			if (next && primary.textContent !== next) primary.textContent = next;
+		}
+
+		function close(): void {
+			root!.hidden = true;
+			root!.removeAttribute("aria-modal");
+			document.documentElement.style.overflow = "";
+			if (status) status.textContent = "";
+
+			const target = lastFocused && document.contains(lastFocused) ? lastFocused : null;
+			target?.focus();
+			lastFocused = null;
+			openedFromControl = false;
+		}
+
+		function openCard(): void {
+			seed(read()?.categories ?? defaultCategories());
+			syncPrimary();
+			root!.hidden = false;
+
+			/* Only a card opened from a control is truly modal. Claiming aria-modal
+			   on the first-visit card, while focus can leave it, would lie to
+			   screen readers. */
+			if (openedFromControl) {
+				root!.setAttribute("aria-modal", "true");
+				document.documentElement.style.overflow = "hidden";
+			}
+
+			title?.focus();
+		}
+
+		function commit(categories: ConsentCategories, announce: boolean): void {
+			write(categories);
+			if (announce && status && savedMessage) {
+				status.textContent = savedMessage;
+				window.setTimeout(close, 700);
+				return;
+			}
+			close();
+		}
+
+		function handle(action: string): void {
+			switch (action) {
+				case "accept":
+					commit(allGranted(), false);
+					break;
+				case "deny":
+					commit(necessaryOnly(), false);
+					break;
+				case "save":
+					commit(collect(), true);
+					break;
+				case "primary":
+					if (anyOptionalOn()) commit(collect(), true);
+					else commit(allGranted(), false);
+					break;
+			}
+		}
+
+		const FOCUSABLE =
+			'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])';
+
+		function focusableInCard(): HTMLElement[] {
+			return [...root!.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+				(el) => el.offsetParent !== null,
+			);
+		}
+
+		root.addEventListener("click", (event) => {
+			const target = event.target as HTMLElement | null;
+			const btn = target?.closest<HTMLElement>("[data-cc-action]");
+			if (!btn || !root.contains(btn)) return;
+			handle(btn.dataset.ccAction ?? "");
+		});
+
+		for (const box of boxes) box.addEventListener("change", syncPrimary);
+
+		/* Any [data-cc-open] control on the page re-opens the card — the footer
+		   button and the cookie policy page use it, with no shared import. */
+		document.addEventListener("click", (event) => {
+			const target = event.target as HTMLElement | null;
+			const trigger = target?.closest<HTMLElement>("[data-cc-open]");
+			if (!trigger) return;
+			event.preventDefault();
+			lastFocused = trigger;
+			openedFromControl = true;
+			openCard();
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (root.hidden) return;
+
+			if (event.key === "Escape") {
+				/* Opened from a control it is modal, so Escape always closes it.
+				   On first visit it is not: only claim Escape when focus is inside,
+				   so we never swallow Escape from a search field elsewhere. */
+				if (openedFromControl || root.contains(document.activeElement)) {
+					event.preventDefault();
+					handle("deny");
+				}
+				return;
+			}
+
+			if (event.key === "Tab" && openedFromControl) {
+				const items = focusableInCard();
+				if (!items.length) return;
+				const first = items[0]!;
+				const last = items[items.length - 1]!;
+				if (event.shiftKey && document.activeElement === first) {
+					event.preventDefault();
+					last.focus();
+				} else if (!event.shiftKey && document.activeElement === last) {
+					event.preventDefault();
+					first.focus();
+				}
+			}
+		});
+
+		window.avcConsent = {
+			get: () => read(),
+			has: (category: ConsentCategory) => Boolean(read()?.categories[category]),
+			open: () => {
+				lastFocused = document.activeElement as HTMLElement | null;
+				openedFromControl = true;
+				openCard();
+			},
+			accept: () => commit(allGranted(), false),
+			deny: () => commit(necessaryOnly(), false),
+			save: (categories) => commit({ ...defaultCategories(), ...categories }, false),
+		};
+
+		/* The card is interactive before this module boots, so a switch may
+		   already be on: label the primary button for what it would do now. */
+		syncPrimary();
+
+		/* Replay clicks the bootstrap captured before this module was ready. Must
+		   run after window.avcConsent exists, or the capture would re-queue them. */
+		const queued = window.__avcQueue ?? [];
+		delete window.__avcQueue;
+		for (const action of queued) handle(action);
+
+		/* Re-announce a stored choice so listeners registered either before or
+		   after this module see the initial state exactly once. */
+		queueMicrotask(() => {
+			const stored = read();
+			if (stored) {
+				document.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: stored, bubbles: true }));
+			}
+		});
+	}
+</script>

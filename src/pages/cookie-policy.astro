@@ -1,0 +1,312 @@
+---
+import Base from "../layouts/Base.astro";
+
+const updated = "2026-08-22";
+---
+
+<Base
+	title="Cookie Policy"
+	description="How AVC Industrial Equipment uses cookies and similar technologies, and how to manage your choices."
+>
+	<div class="page">
+		<section class="section">
+			<h1 class="page-title">COOKIE POLICY</h1>
+			<hr class="dashed-divider" />
+			<p class="lead">
+				This page explains which cookies and similar technologies AVC Industrial Equipment Co., Ltd
+				uses on this website, why we use them, and how you can change your choice at any time.
+			</p>
+			<p class="updated">Last updated: <time datetime={updated}>22 August 2026</time></p>
+		</section>
+
+		<section class="section prose">
+			<h2 class="section-title">1. WHAT ARE COOKIES?</h2>
+			<hr class="dashed-divider" />
+			<p>
+				A cookie is a small text file a website stores on your device so it can recognise your
+				browser on a later visit. Websites also use related technologies that behave the same way —
+				this site uses <strong>localStorage</strong>, a browser storage area, to remember your cookie
+				choice. Wherever this policy says “cookies”, it covers both.
+			</p>
+		</section>
+
+		<section class="section prose">
+			<h2 class="section-title">2. WHY AVC USES THEM</h2>
+			<hr class="dashed-divider" />
+			<ul>
+				<li>To make the site work — page navigation, security, and load balancing.</li>
+				<li>To remember the language version you are reading.</li>
+				<li>To remember your cookie choice, so we do not ask again on every page.</li>
+				<li>
+					In future, to understand how visitors use the site so we can improve it — only if you
+					consent.
+				</li>
+			</ul>
+		</section>
+
+		<section class="section prose">
+			<h2 class="section-title">3. CATEGORIES WE USE</h2>
+			<hr class="dashed-divider" />
+			<div class="table-scroll">
+				<table>
+					<thead>
+						<tr>
+							<th scope="col">Category</th>
+							<th scope="col">Purpose</th>
+							<th scope="col">Examples</th>
+							<th scope="col">Retention</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">Necessary</th>
+							<td>Site operation, security, and storing your cookie choice. Cannot be switched off.</td>
+							<td>
+								<code>avc-consent</code> (localStorage), <code>avc_consent</code> (cookie), Cloudflare
+								security cookie, EmDash admin session cookie (staff only)
+							</td>
+							<td>Up to 12 months; the admin session ends when the browser closes</td>
+						</tr>
+						<tr>
+							<th scope="row">Functional</th>
+							<td>
+								Remembering choices such as language or region, and enabling embedded content such
+								as maps and videos.
+							</td>
+							<td><em>AVC currently sets none.</em></td>
+							<td>—</td>
+						</tr>
+						<tr>
+							<th scope="row">Analytics</th>
+							<td>
+								Understanding how visitors use the site — pages viewed, time on page — in aggregate.
+							</td>
+							<td><em>AVC currently sets none.</em></td>
+							<td>—</td>
+						</tr>
+						<tr>
+							<th scope="row">Marketing</th>
+							<td>Showing relevant advertising and measuring campaign effectiveness.</td>
+							<td><em>AVC currently sets none.</em></td>
+							<td>—</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p>
+				To be clear: this website does <strong>not</strong> currently set any functional, analytics or
+				marketing cookies. They are described here so that if we ever enable one, it happens only with
+				your consent and this page already tells you what it would do.
+			</p>
+		</section>
+
+		<section class="section prose">
+			<h2 class="section-title">4. THIRD PARTIES</h2>
+			<hr class="dashed-divider" />
+			<p>
+				The site is hosted and delivered by <strong>Cloudflare</strong>, which may set a cookie to
+				distinguish legitimate visitors from automated traffic. This is a necessary security function.
+			</p>
+			<p>
+				Web fonts are <strong>self-hosted</strong> from our own domain, so displaying this page sends
+				no request to Google or any other font provider.
+			</p>
+		</section>
+
+		<section class="section prose">
+			<h2 class="section-title">5. MANAGING YOUR CHOICES</h2>
+			<hr class="dashed-divider" />
+			<p>You can change or withdraw your choice at any time:</p>
+			<p>
+				<button type="button" class="btn" data-cc-open>Manage cookie preferences</button>
+			</p>
+			<p>
+				The same link is in the footer of every page. You can also clear or block cookies in your
+				browser settings — Chrome, Edge: <em>Settings → Privacy and security → Cookies</em>; Safari:
+				<em>Settings → Privacy</em>; Firefox: <em>Settings → Privacy &amp; Security</em>. Note that
+				blocking necessary cookies will stop parts of this site from working.
+			</p>
+		</section>
+
+		<section class="section prose">
+			<h2 class="section-title">6. YOUR RIGHTS</h2>
+			<hr class="dashed-divider" />
+			<p>
+				Where the GDPR applies, you have the right to access, correct and erase your personal data, to
+				object to processing, and to withdraw consent at any time without detriment. In Vietnam, the
+				processing of personal data is governed by <strong>Decree 13/2023/ND-CP</strong>. To exercise
+				any of these rights, contact us using the details below.
+			</p>
+		</section>
+
+		<section class="section prose">
+			<h2 class="section-title">7. CHANGES TO THIS POLICY</h2>
+			<hr class="dashed-divider" />
+			<p>
+				We may update this policy as the site changes. The “last updated” date at the top is
+				authoritative. If a change materially affects how we use cookies, we will ask for your consent
+				again rather than relying on your previous answer.
+			</p>
+		</section>
+
+		<section class="section prose">
+			<h2 class="section-title">8. CONTACT</h2>
+			<hr class="dashed-divider" />
+			<p>
+				AVC Industrial Equipment Co., Ltd<br />
+				58 Nguyen Hoang, Binh Trung Ward, Ho Chi Minh City, Vietnam<br />
+				Hotline <a href="tel:19000054">1900 0054</a> ·
+				<a href="mailto:info@avc.equipment">info@avc.equipment</a>
+			</p>
+		</section>
+	</div>
+</Base>
+
+<style>
+	.page {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 44px 24px 80px;
+	}
+
+	.section {
+		margin-bottom: 56px;
+		text-align: center;
+	}
+
+	.page-title {
+		font-size: 26px;
+		font-weight: 700;
+		letter-spacing: 2.5px;
+		color: var(--color-brand);
+	}
+
+	.section-title {
+		font-size: 18px;
+		font-weight: 700;
+		letter-spacing: 2.5px;
+		color: var(--color-brand);
+	}
+
+	.dashed-divider {
+		width: 210px;
+		margin: 16px auto 28px;
+		border: none;
+		border-bottom: 2px dashed var(--avc-divider);
+	}
+
+	.lead {
+		max-width: 640px;
+		margin: 0 auto 16px;
+		font-size: 15px;
+		line-height: 1.65;
+	}
+
+	.updated {
+		font-size: 13px;
+		color: var(--color-text-secondary);
+	}
+
+	.prose {
+		text-align: left;
+	}
+
+	.prose p,
+	.prose li {
+		font-size: 14.5px;
+		line-height: 1.7;
+	}
+
+	.prose p + p,
+	.prose ul {
+		margin-top: var(--spacing-3);
+	}
+
+	.prose ul {
+		padding-left: 20px;
+	}
+
+	.prose li + li {
+		margin-top: 4px;
+	}
+
+	.prose a {
+		color: var(--color-brand);
+		text-decoration: underline;
+	}
+
+	.prose code {
+		font-family: var(--font-mono);
+		font-size: 12.5px;
+		background: var(--color-bg-subtle);
+		padding: 1px 5px;
+	}
+
+	.table-scroll {
+		overflow-x: auto;
+	}
+
+	table {
+		width: 100%;
+		min-width: 640px;
+		border-collapse: collapse;
+		margin-bottom: var(--spacing-4);
+	}
+
+	th,
+	td {
+		padding: 10px 12px;
+		border: 1px solid var(--color-border);
+		font-size: 13.5px;
+		line-height: 1.55;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	thead th {
+		background: var(--color-bg-subtle);
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 1.5px;
+		text-transform: uppercase;
+		color: var(--color-brand);
+	}
+
+	tbody th {
+		font-weight: 700;
+		white-space: nowrap;
+	}
+
+	.btn {
+		display: inline-block;
+		padding: 11px 26px;
+		border: 1px solid var(--color-brand);
+		background: var(--color-brand);
+		color: var(--color-on-brand);
+		font-family: inherit;
+		font-size: 14px;
+		border-radius: 0;
+		cursor: pointer;
+		transition: background var(--transition-fast);
+	}
+
+	.btn:hover {
+		background: var(--color-brand-hover);
+		border-color: var(--color-brand-hover);
+	}
+
+	.btn:focus-visible {
+		outline-color: var(--color-bg);
+		outline-offset: -5px;
+	}
+
+	@media (max-width: 540px) {
+		.page-title {
+			font-size: 20px;
+		}
+
+		.section-title {
+			font-size: 16px;
+		}
+	}
+</style>

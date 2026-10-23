@@ -7,6 +7,7 @@ import {
 	EmDashBodyEnd,
 } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
+import CookieConsent from "../components/CookieConsent.astro";
 import { Font } from "astro:assets";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import { toEnUrl, toViUrl } from "../utils/i18n-routes";
@@ -318,9 +319,21 @@ function socialInitials(label: string): string {
 					<a href="mailto:info@avc.equipment" class="footer-mail">info@avc.equipment</a>
 					&nbsp;·&nbsp; thietbibepauviet.com | avc.equipment
 				</div>
-				<div class="footer-copyright">© {year} {siteTitle}</div>
+				<div class="footer-copyright">
+					© {year} {siteTitle}
+					<span aria-hidden="true"> · </span>
+					<a href={isEN ? "/cookie-policy" : "/vi/chinh-sach-cookie"} class="footer-legal-link">
+						{isEN ? "Cookie Policy" : "Chính sách Cookie"}
+					</a>
+					<span aria-hidden="true"> · </span>
+					<button type="button" class="footer-legal-link" data-cc-open>
+						{isEN ? "Cookie settings" : "Tuỳ chọn cookie"}
+					</button>
+				</div>
 			</div>
 		</footer>
+
+		<CookieConsent locale={isEN ? "en" : "vi"} />
 
 		<style is:global>
 			/*
@@ -697,6 +710,20 @@ function socialInitials(label: string): string {
 
 			.footer-copyright {
 				margin-top: 6px;
+			}
+
+			.footer-legal-link {
+				padding: 0;
+				border: 0;
+				background: none;
+				font: inherit;
+				color: var(--avc-footer-text);
+				text-decoration: underline;
+				cursor: pointer;
+			}
+
+			.footer-legal-link:hover {
+				color: var(--color-brand);
 			}
 
 			@media (max-width: 900px) {

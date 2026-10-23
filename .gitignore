@@ -14,3 +14,6 @@ data.db
 # Local wrangler dev state
 .wrangler
 __pycache__/
+
+# macOS
+.DS_Store
